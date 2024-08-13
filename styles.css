@@ -37,6 +37,8 @@ header {
 .logo {
     font-size: 24px;
     font-weight: bold;
+/*     position: absolute;
+    left: 50rem; */
 }
 
 /* Menu button styling */
@@ -187,6 +189,12 @@ button:hover {
     width: 370px;
     text-align: center;
 }
+
+/* #register {
+  padding: 7px 0 12px;
+} */
+
+
 /* Footer styling */
 footer {
     background-color: #1f2421;
