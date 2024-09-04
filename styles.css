@@ -31,17 +31,34 @@ header {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
+    justify-content: center;
 }
 
 /* Logo styling */
+.logoimage{
+    height: 50px;
+    width: 254px;
+    background-size: cover;
+    background-color: #1f2421;
+    
+}
 .logo {
+    background-image: url("logo-Photoroom.png");
+    height: 50px;
+    width: 254px;
     font-size: 24px;
     font-weight: bold;
+    position: absolute;
+    
 }
 
 /* Menu button styling */
+.space{
+    flex: 1;
+}
 .menu {
     position: relative;
+    flex: 1;
 }
 
 .menu-button {
@@ -98,7 +115,7 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: calc(100vh - 60px); /* Adjust height considering header height */
+    height:  49.2rem;
     background-color: #dce1de;
 }
 
@@ -187,6 +204,12 @@ button:hover {
     width: 370px;
     text-align: center;
 }
+
+#register {
+  padding: 7px 0 12px;
+}
+
+
 /* Footer styling */
 footer {
     background-color: #1f2421;
@@ -207,7 +230,7 @@ footer {
 .footer-links a {
     color: #fff;
     text-decoration: none;
-    margin: 0 155px;
+    margin: 0 10rem;
     font-size: 14px;
 }
 
