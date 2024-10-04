@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Files in {{ folder.name }}</h2>
+    <ul>
+        {% for file in files %}
+            <li>
+                <a href="{% url 'display_file_content' file.id %}">{{ file.name }}</a>
+                {% if file.user == request.user %}
+                    | <a href="{% url 'edit_file' file.id %}">Edit</a>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'home' %}">Back to Home</a>
+{% endblock %}

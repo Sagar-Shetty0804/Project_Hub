@@ -1,0 +1,10 @@
+<!-- templates/file_not_found.html -->
+{% extends 'base.html' %}
+
+{% block title %}File Not Found{% endblock %}
+
+{% block content %}
+    <h2>File Not Found</h2>
+    <p>The file "{{ file_name }}" does not exist.</p>
+    <a href="{% url 'home' %}">Back to Home</a>
+{% endblock %}

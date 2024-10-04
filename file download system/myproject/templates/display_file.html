@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ file_name }} - File Viewer{% endblock %}
+
+{% block content %}
+    <h2>Content of {{ file_name }}</h2>
+    <pre>{{ file_content|escape }}</pre>
+    <a href="{% url 'home' %}">Back to Home</a>
+    {% if is_owner %}
+        | <a href="{% url 'edit_file' file_id %}">Edit File</a>
+    {% endif %}
+{% endblock %}
