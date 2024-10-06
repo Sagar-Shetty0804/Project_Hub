@@ -1,0 +1,146 @@
+<!--From Settings branch-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="settings.css">
+    <title>Settings</title>
+</head>
+<body>
+    <div class="container">
+        <header>
+          <div class="header-container">
+            <div class="logo"></div>
+          </div>
+        </header>
+        
+        <div style="height:max-content;" class="settings-page">
+            <nav class="sidebar"></nav>
+    
+            <br>
+            <main class="main-content">
+            <form>
+                <section id="account">
+                    <h2>Account Settings</h2>
+                    <label for="current-password">Current Password:</label>
+                    <input type="password" id="current-password">
+                    
+                    <label for="new-password">New Password:</label>
+                    <input type="password" id="new-password">
+                    
+                    <label for="confirm-password">Confirm New Password:</label>
+                    <input type="password" id="confirm-password">
+                    <br>
+                    <button class="update">Update Password</button>
+                    <br><br>
+                    <label for="recovery-options">Password Recovery:</label>
+                    <input type="email" id="email" placeholder="Enter your recovery email">
+                    <input type="phone number" id="phone number" placeholder="Enter your recovery phone number">
+                    <br>
+                    <button class="save">Save</button><br><br>
+                </section>
+
+                    <br><br>
+
+                <section id="notifications">
+                    <h2>Notification Preferences</h2>
+                    <div class="sliderSwitch">
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider round"></span>                      
+                            
+                        </label>
+                        <p>Always</p>
+                    </div>
+                    <br>
+                    <div class="sliderSwitch">
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider round"></span>                      
+                            
+                        </label>
+                        <p>1 hour</p>
+                    </div>
+                    
+                    <br>
+                    <div class="sliderSwitch">
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider round"></span>                      
+                            
+                        </label>
+                        <p>Never</p>
+                    </div>
+                </section>
+                <br><br>
+                <section id="accesibility">
+                    <h2>Data Accesibility</h2>
+                    <div class="sliderSwitch">
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider round"></span>                      
+                            
+                        </label>
+                        <p>Everyone</p>
+                    </div>
+                    
+                    <br>
+                    <div class="sliderSwitch">
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider round"></span>                      
+                            
+                        </label>
+                        <p>Only Group members</p>
+                    </div>
+                    
+                    <br>
+                    <div class="sliderSwitch">
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider round"></span>                      
+                            
+                        </label>
+                        <p>None</p>
+                    </div>
+                    
+
+                </section>
+               
+                <br><br>
+               
+                <section id="social">
+                    <h2>Social Accounts</h2><br>
+                    <input type="link" id="link" placeholder="Add your LinkedIn profile">
+                    <input type="link" id="link" placeholder="Add your GitHub profile"><br>
+                    <button class="save">Save</button>
+                </section>
+            </form>
+                <br><br>
+                <div class="toggleContainer">
+                <button class="toggle-dark-button" onclick="toggleButton" >Toggle dark mode</button>
+                <script src="script.js"></script>
+                </div>
+                
+                <br><br>
+        
+                <button class="logout">Logout</button> <br>
+                <button class="deletion">Delete your account</button><br><br>
+            </main>
+        </div>
+        
+        
+        <footer>
+            <div class="footer-container">
+                <p>&copy; 2024 Project Hub. All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Contact Us</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
