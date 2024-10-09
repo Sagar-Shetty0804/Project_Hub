@@ -1,1 +1,63 @@
 
+<!-- file_list.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uploaded Files</title>
+</head>
+<body>
+    <h1>Uploaded Files</h1>
+
+    <h2>Code Files</h2>
+    <ul>
+        {% for file in code_files %}
+            <li>
+                <strong>{{ file.group_code.groupCode }}</strong>: 
+                <a href="{% url 'student:view_file_content' 'code' file.id %}">{{ file.file.name }}</a> - Uploaded on {{ file.upload_date }}
+            </li>
+        {% empty %}
+            <li>No code files uploaded yet.</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Database Files</h2>
+    <ul>
+        {% for file in database_files %}
+            <li>
+                <strong>{{ file.group_code.groupCode }}</strong>: 
+                <a href="{% url 'student:view_file_content' 'database' file.id %}">{{ file.file.name }}</a> - Uploaded on {{ file.upload_date }}
+            </li>
+        {% empty %}
+            <li>No database files uploaded yet.</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Document Files</h2>
+    <ul>
+        {% for file in document_files %}
+            <li>
+                <strong>{{ file.group_code.groupCode }}</strong>: 
+                <a href="{% url 'student:view_file_content' 'document' file.id %}">{{ file.file.name }}</a> - Uploaded on {{ file.upload_date }}
+            </li>
+        {% empty %}
+            <li>No document files uploaded yet.</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Additional Files</h2>
+    <ul>
+        {% for file in additional_files %}
+            <li>
+                <strong>{{ file.group_code.groupCode }}</strong>: 
+                <a href="{% url 'student:view_file_content' 'additional' file.id %}">{{ file.file.name }}</a> - Uploaded on {{ file.upload_date }}
+            </li>
+        {% empty %}
+            <li>No additional files uploaded yet.</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'student:upload_code_file' %}">Upload another file</a>
+</body>
+</html>

@@ -55,7 +55,12 @@
                 </table>
             </div>
             <input type="hidden" name="groupCode" value="{{ group_code }}">
-            <input type="submit" value="Submit">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Upload</button>
+            </form>
+            
         </form>
     </div>
     <p><b>Note: </b>Click<a href="{% url 'student:view' %}"><i class="fa-solid fa-eye" id="view_link"></i></a>icon to view your project details.</P>
