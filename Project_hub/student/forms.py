@@ -4,7 +4,7 @@ from Login_page.models import RegisterStudent
 class CodeFileUploadForm(forms.ModelForm):
     class Meta:
         model = CodeFile
-        fields = ['group_code', 'file']
+        fields = ['file']
 
 class DatabaseFileUploadForm(forms.ModelForm):
     class Meta:

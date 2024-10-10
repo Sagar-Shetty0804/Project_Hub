@@ -2,7 +2,8 @@ from django.shortcuts import render,redirect
 from django.contrib import messages
 # from student.models import UploadedFile
 from Login_page.models import RegisterStudent
-
+from django.contrib.auth.models import User,Group
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 def homePage(request):
     print("working")
@@ -43,19 +44,34 @@ def view_details(request):
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import CodeFileUploadForm, DatabaseFileUploadForm, DocumentFileUploadForm, AdditionalFileUploadForm
 from .models import CodeFile, DatabaseFile, DocumentFile, AdditionalFile
+
+@login_required
 def upload_code_file(request):
+    current_user = request.user
+    print(current_user)
+    register_student = RegisterStudent.objects.get(username=current_user)
+    #print(groupCode)
     if request.method == 'POST':
         form = CodeFileUploadForm(request.POST, request.FILES)
+
         if form.is_valid():
-            form.save()
+            code_file = form.save(commit=False)
+            code_file.group_code = register_student
+            code_file.save()
     else:
         form = CodeFileUploadForm()
-    return render(request, 'uploads\\code.html', {'form': form, 'file_type': 'Code'})
+    return render(request, 'uploa\\upload_file.html', {'form': form, 'file_type': 'Code'})
 
 
-
+@login_required
 def file_list(request):
-    code_files = CodeFile.objects.all()
+    current_user = request.user
+    try:
+        register_student = RegisterStudent.objects.get(username=current_user)
+    except RegisterStudent.DoesNotExist:
+        messages.error(request, "You do not have a group code associated with your account.")
+        return redirect('home')
+    code_files = CodeFile.objects.filter(group_code=register_student)
     database_files = DatabaseFile.objects.all()
     document_files = DocumentFile.objects.all()
     additional_files = AdditionalFile.objects.all()
@@ -67,7 +83,7 @@ def file_list(request):
         'additional_files': additional_files,
     }
     
-    return render(request, 'uploads\\view.html', context)
+    return render(request, 'uploa\\file_list.html', context)
 
 
 def view_file_content(request, file_type, file_id):
@@ -83,4 +99,4 @@ def view_file_content(request, file_type, file_id):
     else:
         return render(request, '404.html')  # Handle unknown file types
 
-    return render(request, 'uploads\\view_file_content.html', {'file': file_obj, 'file_type': file_type})
+    return render(request, 'uploa\\view_file_content.html', {'file': file_obj, 'file_type': file_type})
