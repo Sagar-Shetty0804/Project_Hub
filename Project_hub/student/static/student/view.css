@@ -187,7 +187,7 @@ a{
 .mainBody {
     margin: 20px auto; /* Center the main body */
     padding: 30px; /* Increased padding for better spacing */
-    height: auto; /* Allow height to adjust based on content */
+    height: 80vh; /* Allow height to adjust based on content */
     width: 80vw; /* Adjusted width for better responsiveness */
     display: flex;
     align-items: center;
@@ -319,8 +319,8 @@ button[type="submit"]:hover {
     max-height: 100%;
     overflow-y: auto;
 }
-h3{
-    margin: 0px 0px 80px 0px;
+h2 {
+    color: #333; /* Darker heading color */
 }
 /* Custom File Upload Styles */
 .custom-file-upload {
@@ -359,6 +359,67 @@ h3{
 
 .filename{
     margin: 30px 0px 20px 0px;
+}
+
+ul {
+    list-style-type: none; /* Remove default bullet points */
+    padding: 0; /* Remove default padding */
+    max-height: 300px; /* Set max height for scrolling */
+    overflow-y: auto; /* Enable vertical scrolling */
+    border: 1px solid #ddd; /* Light border around the list */
+    border-radius: 4px; /* Rounded corners for the list */
+}
+
+li {
+    padding: 10px; /* Padding inside each list item */
+    border-bottom: 1px solid #eee; /* Light border between items */
+}
+
+li:last-child {
+    border-bottom: none; /* Remove border from last item */
+}
+
+li a {
+    text-decoration: none; /* Remove underline from links */
+    color: #007bff; /* Link color */
+}
+
+li a:hover {
+    text-decoration: underline; /* Underline on hover for links */
+}
+
+/* Sidebar Styling */
+.function, .settings {
+    display: flex;
+    flex-direction: column;
+}
+
+.function a, .settings a {
+    margin-bottom: 10px; /* Spacing between icons */
+}
+
+.function i, .settings i {
+    font-size: 2rem; /* Icon size */
+    color: #49A078; /* Icon color */
+}
+
+.function a:hover i, .settings a:hover i {
+    color: #0056b3; /* Change icon color on hover */
+}
+
+/* Button Styling for Upload Link */
+a.upload-link {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 15px;
+    background-color: #49A078;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+a.upload-link:hover {
+    background-color: #299160; /* Darker green on hover */
 }
 /* .messages {
     border: 1px solid #ccc;

@@ -9,17 +9,17 @@ class CodeFileUploadForm(forms.ModelForm):
 class DatabaseFileUploadForm(forms.ModelForm):
     class Meta:
         model = DatabaseFile
-        fields = ['group_code', 'file']
+        fields = [ 'file']
 
 class DocumentFileUploadForm(forms.ModelForm):
     class Meta:
         model = DocumentFile
-        fields = ['group_code', 'file']
+        fields = [ 'file']
 
 class AdditionalFileUploadForm(forms.ModelForm):
     class Meta:
         model = AdditionalFile
-        fields = ['group_code', 'file']
+        fields = [ 'file']
 
 
 

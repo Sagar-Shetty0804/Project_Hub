@@ -187,7 +187,7 @@ a{
 .mainBody {
     margin: 20px auto; /* Center the main body */
     padding: 30px; /* Increased padding for better spacing */
-    height: auto; /* Allow height to adjust based on content */
+    height: 80vh; /* Allow height to adjust based on content */
     width: 80vw; /* Adjusted width for better responsiveness */
     display: flex;
     align-items: center;
@@ -319,8 +319,8 @@ button[type="submit"]:hover {
     max-height: 100%;
     overflow-y: auto;
 }
-h3{
-    margin: 0px 0px 80px 0px;
+h2 {
+    color: #333; /* Darker heading color */
 }
 /* Custom File Upload Styles */
 .custom-file-upload {
@@ -360,33 +360,87 @@ h3{
 .filename{
     margin: 30px 0px 20px 0px;
 }
-/* .messages {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin-bottom: 20px;
+
+.container {
+    max-width: 800px; /* Limit width for better readability */
+    margin: auto; /* Center the container */
+    background-color: white; /* White background for content */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    padding: 20px; /* Padding around content */
 }
 
-.messages ul {
-    list-style-type: none;
-    padding: 0;
+/* Heading Styles */
+h1 {
+    color: #333; /* Dark heading color */
 }
 
-.messages li {
-    color: green; /* Change the color as needed */
-/* } */ 
+h2 {
+    color: #333; /* Darker heading color for sections */
+    margin-top: 20px; /* Space above section headings */
+}
+
+/* Textarea for Editing Content */
+textarea {
+    width: 100%; /* Full width */
+    height: 200px; /* Set height for textarea */
+    padding: 10px; /* Padding inside textarea */
+    border: 1px solid #ccc; /* Light border */
+    border-radius: 4px; /* Rounded corners */
+    resize: vertical; /* Allow vertical resizing only */
+}
+
+/* Button Styling */
+button {
+    padding: 10px 15px;
+    background-color: #49A078; /* Primary button color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #299160; /* Darker green on hover */
+}
+
+/* Link Styling for Back and Upload Links */
+a {
+    text-decoration: none; /* Remove underline from links */
+    color: #007bff; /* Link color */
+}
+
+a:hover {
+    text-decoration: underline; /* Underline on hover for links */
+}
+
+/* Delete Confirmation Styling */
+.delete-confirmation {
+    color: red; /* Red text for delete confirmation message */
+}
+
+.delete-button {
+    background-color: red; /* Red button for delete action */
+}
+
+.delete-button:hover {
+    background-color: darkred; /* Darker red on hover */
+}
+
+/* Responsive Design Adjustments */
 @media (max-width: 768px) {
-    .mainBody {
-        width: 95vw; 
-        padding: 20px; 
-    }
-    
-    .mainBodyHead {
-        font-size: 24px; 
+    .container {
+        width: 95%; /* Full width on smaller screens */
+        padding: 15px; /* Reduced padding on smaller screens */
+        margin-top: 10px; /* Top margin adjustment on smaller screens */
     }
 
-    button[type="submit"] {
-        width: 100%; 
-        font-size: 16px; 
-        padding: 10px; 
+    h1 {
+        font-size: 24px; /* Smaller font size for headings on mobile devices */
+    }
+
+    h2 {
+        font-size: 20px; /* Smaller font size for section headings on mobile devices */
+        margin-top: 15px;
     }
 }
