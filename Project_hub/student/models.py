@@ -14,28 +14,27 @@ class CodeFile(models.Model):
     
 
     def save(self, *args, **kwargs):
-        if not self.pk:
+        if not self.pk:  # Only read content when creating a new instance
             super().save(*args, **kwargs)  # Save the file first
 
-    # Read the content after saving the file
             if self.file:
-                with self.file.open('rb') as f:  # Open file in read-binary mode
+                with self.file.open('rb') as f:
                     file_data = f.read()
                     try:
-                        self.content = file_data.decode('utf-8')  # Try decoding as UTF-8
+                        self.content = file_data.decode('utf-8')
                     except UnicodeDecodeError:
-                        self.content = file_data.decode('latin-1') 
-        else:
-             super().save(*args, **kwargs)
+                        self.content = file_data.decode('latin-1')
+
+        super().save(*args, **kwargs)  # Save again to update content field
+
+    def __str__(self):
+        return f"{self.group_code.groupCode} - Code File"
     def delete(self, *args, **kwargs):
         # Delete the file from the filesystem
         if self.file:
             if os.path.isfile(self.file.path):
                 os.remove(self.file.path)
         super().delete(*args, **kwargs)
-
-    def __str__(self):
-        return f"{self.group_code.groupCode} - Code File"
 
 
 
