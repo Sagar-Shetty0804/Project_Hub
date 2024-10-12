@@ -103,7 +103,7 @@ main{
 
 .mainBody{
     height: 85vh;
-    width: 70vw;    
+    width: 90vw; 
     background: #dce1de;
     overflow: auto;
 
@@ -114,11 +114,7 @@ main{
 
 
 /* left body */
-.leftSidebar{
-    height: 85vh;
-    width: 22vw;
-    background: #216869;
-}
+
 
 /* Footer styling */
 footer {
@@ -146,4 +142,21 @@ footer {
 
 .footer-links a:hover {
     text-decoration: underline;
+}
+
+
+.function{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+i {
+    font-size: 2rem;
+    color: #49A078;
+    padding: 20px;
+}
+
+i:hover{
+    cursor: pointer;
+    box-shadow: 5px 2px 2px black;
 }

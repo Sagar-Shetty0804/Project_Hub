@@ -25,6 +25,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('Login_page.urls')),
     path('studentPage/', include(('student.urls', 'student'), namespace='student')),
-    path('guide/',include('guide.urls')),
-    path('evaluator/',include('evaluator.urls')),
+    path('guide/',include(('guide.urls','guide'),namespace='guide')),
+    path('evaluator/',include(('evaluator.urls','evaluator'),namespace='evaluator')),
 ]

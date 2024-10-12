@@ -1,0 +1,27 @@
+.filter{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+}
+.dropDown{
+    height: 2.5rem;
+    border: 1rem solid #1f2421;
+    color: #49a078;
+    border-radius: 10%;
+}
+.filter button{
+    padding: 10px;
+    background-color: #49A078;
+    border: none;
+    border-radius: 20px;
+    color: #dce1de;
+    font-size: 16px;
+    cursor: pointer;
+}
+.mainBody{
+    height: 85vh;
+    width: 90vw; 
+    background: #dce1de;
+}
+

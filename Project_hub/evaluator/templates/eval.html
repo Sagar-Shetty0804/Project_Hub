@@ -4,16 +4,26 @@
 {% block css %}  
   <link rel="stylesheet" href="{% static '\home.css' %}">  
 {% endblock css %}
+{% block subcss %}
+  
+{% endblock subcss %} 
 
 {% block mainBody %}
 <div class="rigthSidebar">
-  
+  <div class="function">
+    <a href="/evaluator/studentGroup"><i class="fa-solid fa-users-line"></i></a>
+    <a href="/evaluator/table"><i class="fa-solid fa-table"></i></a>
+  </div>
 </div>
 <div class="mainBody">
+  {% block subMainBody %}
+
+  {% endblock subMainBody %}
   
 </div>
-<div class="leftSidebar">
+{% block evalMarks %}
 
-</div>
+{% endblock evalMarks %}
+
 {% endblock mainBody %}
 

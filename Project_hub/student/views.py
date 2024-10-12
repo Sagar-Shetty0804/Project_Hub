@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+
 from django.contrib import messages
 # from student.models import UploadedFile
 from Login_page.models import RegisterStudent
@@ -32,9 +32,10 @@ def group_groups(request):
 @login_required
 def upload_code_file(request):
     current_user = request.user
-    print(current_user)
+    
     register_student = RegisterStudent.objects.get(username=current_user)
     #print(groupCode)
+    print(register_student.groupCode)
     if request.method == 'POST':
         form = CodeFileUploadForm(request.POST, request.FILES)
 
