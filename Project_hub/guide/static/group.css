@@ -78,7 +78,6 @@ main{
     height: 85vh;
     width: 70vw;
     background: #dce1de;
-    overflow: auto;
     left: 35vh;
 }
 
@@ -121,7 +120,11 @@ i:hover{
     
 } */
   
-
+.fileView{
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+}
 
 
 .mainBodyGuide{
@@ -129,7 +132,8 @@ i:hover{
     height: 85vh;
     width: 70vw;    
     background: #dce1de;
-    overflow: auto;
+    display: flex;
+    flex-direction: row;
     
 
 }

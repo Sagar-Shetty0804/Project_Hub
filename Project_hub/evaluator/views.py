@@ -35,9 +35,9 @@ def studentView(request):
     gc = RegisterStudent.objects.filter(groupCode = data).values_list("username")
     register_student = gc[0][0]
     code_files = CodeFile.objects.filter(group_code=register_student)
-    database_files = DatabaseFile.objects.all()
-    document_files = DocumentFile.objects.all()
-    additional_files = AdditionalFile.objects.all()
+    database_files = DatabaseFile.objects.filter(group_code=register_student)
+    document_files = DocumentFile.objects.filter(group_code=register_student)
+    additional_files = AdditionalFile.objects.filter(group_code=register_student)
 
     print(code_files,database_files,document_files,additional_files)
     context = {

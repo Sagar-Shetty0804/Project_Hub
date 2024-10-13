@@ -12,10 +12,12 @@
     <div class="mainBodyTable">
         <div class="groupOptions">
             {% for obj in data %}
-                <button class="groupOption">
-                    <p>{{obj.groupCode}}</p>
-                    <p>{{obj.projectName}}</p>
-                </button>
+                <a href="{% url 'guide:studentView' %}?button_value={{obj.groupCode}}">
+                    <button class="groupOption">
+                        <p>{{obj.groupCode}}</p>
+                        <p>{{obj.projectName}}</p>
+                    </button>
+                </a>
             {% endfor %} 
         </div>                
     </div>
