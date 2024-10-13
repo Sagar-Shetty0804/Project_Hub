@@ -1,13 +1,14 @@
-
+from django.shortcuts import render,redirect
 from django.contrib import messages
-# from student.models import UploadedFile
+from django.http import FileResponse  
+from django.conf import settings  
 from Login_page.models import RegisterStudent
 from django.contrib.auth.models import User,Group
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import CodeFileUploadForm, DatabaseFileUploadForm, DocumentFileUploadForm, AdditionalFileUploadForm
 from .models import CodeFile, DatabaseFile, DocumentFile, AdditionalFile
-
+import os
 # Create your views here.
 def homePage(request):
     print("working")
@@ -79,6 +80,9 @@ def view_file_content(request, file_type, file_id):
         file_obj = get_object_or_404(DatabaseFile, id=file_id)
     elif file_type == 'document':
         file_obj = get_object_or_404(DocumentFile, id=file_id)
+        if file_obj.file.name.endswith('.pdf'):
+            file_path = os.path.join(settings.MEDIA_ROOT, file_obj.file.name)
+            return FileResponse(open(file_path, 'rb'), content_type='application/pdf')
     elif file_type == 'additional':
         file_obj = get_object_or_404(AdditionalFile, id=file_id)
     else:

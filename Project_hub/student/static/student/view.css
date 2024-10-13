@@ -107,7 +107,7 @@ main {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    margin-top: 12rem;
+    margin-top: 4rem;
 
 }
 
@@ -187,7 +187,8 @@ a{
 .mainBody {
     margin: 20px auto; /* Center the main body */
     padding: 30px; /* Increased padding for better spacing */
-    height: 80vh; /* Allow height to adjust based on content */
+    max-height: 80vh; /* Allow height to adjust based on content */
+    overflow-y: auto;
     width: 80vw; /* Adjusted width for better responsiveness */
     display: flex;
     align-items: center;
@@ -320,6 +321,7 @@ button[type="submit"]:hover {
     overflow-y: auto;
 }
 h2 {
+    padding: 20px;
     color: #333; /* Darker heading color */
 }
 /* Custom File Upload Styles */
@@ -364,8 +366,6 @@ h2 {
 ul {
     list-style-type: none; /* Remove default bullet points */
     padding: 0; /* Remove default padding */
-    max-height: 300px; /* Set max height for scrolling */
-    overflow-y: auto; /* Enable vertical scrolling */
     border: 1px solid #ddd; /* Light border around the list */
     border-radius: 4px; /* Rounded corners for the list */
 }
@@ -373,6 +373,9 @@ ul {
 li {
     padding: 10px; /* Padding inside each list item */
     border-bottom: 1px solid #eee; /* Light border between items */
+    display: grid;
+    justify-items: start;
+    width: 70vw;
 }
 
 li:last-child {

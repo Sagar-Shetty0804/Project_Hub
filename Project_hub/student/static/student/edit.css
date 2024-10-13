@@ -362,7 +362,7 @@ h2 {
 }
 
 .container {
-    max-width: 800px; /* Limit width for better readability */
+    width: 75vw; /* Limit width for better readability */
     margin: auto; /* Center the container */
     background-color: white; /* White background for content */
     border-radius: 8px; /* Rounded corners */
@@ -383,10 +383,11 @@ h2 {
 /* Textarea for Editing Content */
 textarea {
     width: 100%; /* Full width */
-    height: 200px; /* Set height for textarea */
+    height: 255px; /* Set height for textarea */
     padding: 10px; /* Padding inside textarea */
     border: 1px solid #ccc; /* Light border */
     border-radius: 4px; /* Rounded corners */
+    margin: 13px;
     resize: vertical; /* Allow vertical resizing only */
 }
 
@@ -426,7 +427,14 @@ a:hover {
 .delete-button:hover {
     background-color: darkred; /* Darker red on hover */
 }
+pre {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 75vw;
+    margin: 10px;
+    overflow-y: auto;
 
+}
 /* Responsive Design Adjustments */
 @media (max-width: 768px) {
     .container {

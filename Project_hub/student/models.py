@@ -44,12 +44,22 @@ class DatabaseFile(models.Model):
     content = models.TextField(blank=True, null=True)
     upload_date = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return f"{self.group_code.groupCode} - Database File"
-
     def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)  # Save the file first
+        if not self.pk:  # Only read content when creating a new instance
+            super().save(*args, **kwargs)  # Save the file first
 
+            if self.file:
+                with self.file.open('rb') as f:
+                    file_data = f.read()
+                    try:
+                        self.content = file_data.decode('utf-8')
+                    except UnicodeDecodeError:
+                        self.content = file_data.decode('latin-1')
+
+        super().save(*args, **kwargs)  # Save again to update content field
+
+    def __str__(self):
+        return f"{self.group_code.groupCode} - Code File"
     def delete(self, *args, **kwargs):
         # Delete the file from the filesystem
         if self.file:
@@ -75,7 +85,7 @@ class DocumentFile(models.Model):
 class AdditionalFile(models.Model):
     group_code = models.ForeignKey(RegisterStudent, on_delete=models.CASCADE, related_name="additional_files")
     file = models.FileField(upload_to="uploads/additional/", validators=[
-        FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png', 'gif', 'mp4', 'mov', 'avi'])
+        FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png', 'gif', 'mp4', 'mov', 'avi', 'jfif'])
     ])
     upload_date = models.DateTimeField(auto_now_add=True)
 
