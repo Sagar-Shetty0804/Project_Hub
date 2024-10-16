@@ -37,8 +37,10 @@
             <li>
                 <strong>{{ file.group_code.groupCode }}</strong>: 
                 <a href="{% url 'student:view_file_content' 'code' file.id %}">{{ file.file.name }}</a> - Uploaded on {{ file.upload_date }}
+                {% if user.username == file.group_code.username %}
                 <a href="{% url 'student:edit_file' 'code' file.id %}">Edit</a>
                 <a href="{% url 'student:delete_file' 'code' file.id %}" style="color: red; margin-left: 10px;">Delete</a>
+                {% endif %}
             </li>
         {% empty %}
             <li>No code files uploaded yet.</li>
@@ -51,7 +53,9 @@
             <li>
                 <strong>{{ file.group_code.groupCode }}</strong>: 
                 <a href="{% url 'student:view_file_content' 'database' file.id %}">{{ file.file.name }}</a> - Uploaded on {{ file.upload_date }}
+                {% if user.username == file.group_code.username %}
                 <a href="{% url 'student:delete_file' 'database' file.id %}" style="color: red; margin-left: 10px;">Delete</a>
+                {% endif %}
             </li>
         {% empty %}
             <li>No database files uploaded yet.</li>
@@ -64,7 +68,9 @@
             <li>
                 <strong>{{ file.group_code.groupCode }}</strong>: 
                 <a href="{{ file.file.url }}" target="_blank">{{ file.file.name }}</a> - Uploaded on {{ file.upload_date }}
+                {% if user.username == file.group_code.username %}
                 <a href="{% url 'student:delete_file' 'document' file.id %}" style="color: red; margin-left: 10px;">Delete</a>
+                {% endif %}
             </li>
         {% empty %}
             <li>No document files uploaded yet.</li>
@@ -77,7 +83,9 @@
             <li>
                 <strong>{{ file.group_code.groupCode }}</strong>: 
                 <a href="{{ file.file.url }}" target="_blank">{{ file.file.name }}</a> - Uploaded on {{ file.upload_date }}
+                {% if user.username == file.group_code.username %}
                 <a href="{% url 'student:delete_file' 'additional' file.id %}" style="color: red; margin-left: 10px;">Delete</a>
+                {% endif %}
             </li>
         {% empty %}
             <li>No additional files uploaded yet.</li>
@@ -85,6 +93,8 @@
     </ul>
 
     <!-- Link to upload another file -->
+    {% if code_files and user.username == code_files.0.group_code.username %}
     <a href="{% url 'student:upload_code_file' %}">Upload another file</a>
+    {% endif %}
 
 {% endblock mainBody %}

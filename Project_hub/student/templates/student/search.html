@@ -3,24 +3,89 @@
 {% block css %}
 <link rel="stylesheet" href="{% static 'student\search.css' %}">
 {% endblock css %}
+
 {% block sideBar %}
 <div class="function">
-    <i class="fa-solid fa-magnifying-glass" id="sersymbol"></i>
-    <i class="fa-regular fa-clock" id="clock"></i>
-    <i class="fa-regular fa-star" id="fav"></i>
+    <a href"#"><i class="fa-solid fa-bookmark" id="fav"></i></a>
 </div>
 <div class="settings">
     <i class="fa-solid fa-bell" id="bell"></i>
     <i class="fa-solid fa-gear" id="sett"></i>
-
 </div>
-
 {% endblock sideBar %}
+
+{% block mainBody %}
+<table border="1">
+    <thead>
+        <tr>
+            <th>Group Code</th>
+            <th>Project Title</th>
+            <th>Team Members</th>
+            <th>Project</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for group in group_details %}
+            <tr>
+                <td>{{ group.group_code }}</td>
+                <td>{{group.project_name}}</td>
+                <td>
+                    <ul>
+                        {% for member in group.team_members %}
+                            <li>{{ member }}</li> <!-- Displaying each team member as a list item -->
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td><a href="{% url 'student:file_list' group_code=group.group_code %}">View Project</a>
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="4">No projects found.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock mainBody %}
 {% block search %}
 <div class="searchbox">
-    <input id="inputbox" type="text" placeholder="Search...">
-    <i class="fa-solid fa-magnifying-glass" id="inputsearchicon"></i>
+    <h1>Filter</h1>
+    <form action='/studentPage/search/' method="POST"> 
+        {% csrf_token %}
 
+        <label for="projYear">Project Type:</label>
+        <select id="projYear" name="projYear">
+            <option value="" selected>All</option>
+            <option value="MI1">Mini Project 1</option>
+            <option value="MN1">Minor Project 1</option>
+            <option value="MA1">Major Project 1</option>
+            <option value="MI2">Mini Project 2</option>
+            <option value="MN2">Minor Project 2</option>
+            <option value="MA2">Major Project 2</option>
+        </select>
+        <br><br>
 
+        <label for="branch">Branch:</label>
+        <select id="branch" name="branch">
+            <option value="" selected>All</option>
+            <option value="COMPS">COMPS</option>
+            <option value="IT">IT</option>
+            <option value="AIDS">AIDS</option>
+            <option value="EXTC">EXTC</option>
+        </select>
+        <br><br>
+
+        <label for="year">Academic Year:</label>
+        <input type="number" name="year" id="year" min="1900" max="2099" step="1" placeholder="All">
+        <br><br>
+
+        <label for="groupNumber">Group Number:</label>
+        <input type="text" id="groupNumber" name="groupNumber" placeholder="All">
+        <br><br>
+        <input type="submit" value="Filter Projects">
+    </form>
 </div>
 {% endblock search %}
+
+{% block script %}
+{% endblock script %}

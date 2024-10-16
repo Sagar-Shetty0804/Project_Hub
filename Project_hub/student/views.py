@@ -15,7 +15,51 @@ def homePage(request):
     return render(request,'student\\home.html')
 
 def search(request):
-    return render(request,'student\\search.html')
+    # Get all projects initially
+    project_queryset = RegisterStudent.objects.all()
+
+    # Check if the request method is POST (i.e., filters are applied)
+    if request.method == 'POST':
+        projYear = request.POST.get('projYear')
+        branch = request.POST.get('branch')
+        year = request.POST.get('year')
+        groupNumber = request.POST.get('groupNumber')
+
+        # Apply filters only if they are provided
+        if projYear and projYear != "":
+            project_queryset = project_queryset.filter(groupCode__startswith=projYear)
+
+        if branch and branch != "":
+            project_queryset = project_queryset.filter(groupCode__icontains=f"_{branch}_")
+
+        if year and year != "":
+            project_queryset = project_queryset.filter(groupCode__icontains=f"_{year}_")
+
+        if groupNumber and groupNumber != "":
+            project_queryset = project_queryset.filter(groupCode__endswith=f"_{groupNumber}")
+
+    # Remove duplicates using distinct group codes
+    distinct_groups = project_queryset.values('groupCode').distinct()
+
+    group_details = []
+    for group in distinct_groups:
+        # Fetch all students in the current group
+        students_in_group = RegisterStudent.objects.filter(groupCode=group['groupCode'])
+        team_members = [student.name for student in students_in_group]
+        project_name = students_in_group.first().projectName if students_in_group.exists() else "Unknown"
+
+        # Append group code, team members, and a link (assuming each group has a dedicated project page)
+        group_details.append({
+            'group_code': group['groupCode'],
+            'project_name': project_name,
+            'team_members': team_members,
+            'project_link': f'/projects/{group["groupCode"]}'  # Dynamic link to the project page
+        })
+
+    context = {
+        'group_details': group_details,
+    }
+    return render(request, 'student/search.html', context)
 
 def resources(request):
     return render(request,'student\\resources.html')
@@ -63,6 +107,7 @@ def file_list(request):
     additional_files = AdditionalFile.objects.all()
 
     context = {
+        'register_student': register_student,
         'code_files': code_files,
         'database_files': database_files,
         'document_files': document_files,
@@ -71,6 +116,46 @@ def file_list(request):
     
     return render(request, 'uploads\\file_list.html', context)
 
+@login_required
+def project_link(request, group_code):
+    try:
+        register_student = RegisterStudent.objects.filter(groupCode=group_code)
+        if not register_student.exists():
+          messages.error(request, "No group found with the provided group code.")
+          return redirect('home')
+
+        code_files = CodeFile.objects.filter(group_code__groupCode=group_code)
+        database_files = DatabaseFile.objects.filter(group_code__groupCode=group_code)
+        document_files = DocumentFile.objects.filter(group_code__groupCode=group_code)
+        additional_files = AdditionalFile.objects.filter(group_code__groupCode=group_code)
+
+        context = {
+        'register_students': register_student,
+        'code_files': code_files,
+        'database_files': database_files,
+        'document_files': document_files,
+        'additional_files': additional_files,
+        }
+        return render(request, 'uploads/file_list.html', context)
+    except RegisterStudent.DoesNotExist:
+        messages.error(request, "No group found with the provided group code.")
+        return redirect('home')
+
+
+def view_file_content(request, file_type, file_id):
+    # Determine the type of file and get the corresponding file object
+    if file_type == 'code':
+        file_obj = get_object_or_404(CodeFile, id=file_id)
+    elif file_type == 'database':
+        file_obj = get_object_or_404(DatabaseFile, id=file_id)
+    elif file_type == 'document':
+        file_obj = get_object_or_404(DocumentFile, id=file_id)
+    elif file_type == 'additional':
+        file_obj = get_object_or_404(AdditionalFile, id=file_id)
+    else:
+        return render(request, '404.html')  # Handle unknown file types
+
+    return render(request, 'uploads\\view_file_content.html', {'file': file_obj, 'file_type': file_type})
 
 def view_file_content(request, file_type, file_id):
     # Determine the type of file and get the corresponding file object
