@@ -5,7 +5,7 @@
 {% endblock subcss %}
 
 {% block subBody %}
-    <div class="mainBody">
+    <div id="addgrp" class="mainBody">
         <div class="mainBodyHead">
             Add Projects
         </div>
@@ -14,7 +14,7 @@
                 {% csrf_token %}
                 <div class="groupOptions">
                     {% for obj in data %}
-                        <div class="groupOption">                                              
+                        <div id="name" class="groupOption">                                              
                             <input type="checkbox" name="code" id="{{obj.groupCode}}" value = "{{obj.groupCode}},{{obj.projectName}}">
                             <label for="{{obj.groupCode}}">
                                 <p>{{obj.groupCode}}</p>

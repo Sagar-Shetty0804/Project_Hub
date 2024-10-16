@@ -6,11 +6,11 @@
 
 {% block subBody %}
 <div class="mainBody">
-    <div class="mainBodyHead">
+    <div id="group"class="mainBodyHead">
         Groups
     </div>
     <div class="mainBodyTable">
-        <div class="groupOptions">
+        <div id="block" class="groupOptions">
             {% for obj in data %}
                 <a href="{% url 'guide:studentView' %}?button_value={{obj.groupCode}}">
                     <button class="groupOption">
