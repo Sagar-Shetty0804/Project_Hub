@@ -1,0 +1,97 @@
+/* Basic reset for margin and padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Basic styling for the body */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header styling */
+header {
+    background-color: #1f2421;
+    color: #fff;
+    padding: 40px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    width: 100vw;
+    max-width: 1200px;
+    margin: 0 auto;
+    justify-content: center;
+}
+
+/* Logo styling */
+.logoimage{
+    height: 50px;
+    width: 254px;
+    background-size: cover;
+    margin-left: 0px;
+    background-color: #1f2421;
+    display: flex;  
+}
+
+.logo{
+    background-image: url("logo-Photoroom.png");
+    height: 50px;
+    width: 254px;
+    font-size: 24px;
+    flex: 1;    
+    font-weight: bold;
+    position: absolute;
+    
+}
+
+main{
+    flex: 1;
+    background:#dce1de;
+    text-align:center;
+    padding-left: 35px;
+    padding-top: 30px;
+    text-justify: auto; 
+    font-size:40px;
+    font-family:Arial, Helvetica, sans-serif;  
+}
+
+
+/* Footer styling */
+footer {
+    background-color: #1f2421;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-links {
+    margin-top: 10px;
+}
+
+.footer-links a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 8rem;
+    font-size: 14px;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}
+
