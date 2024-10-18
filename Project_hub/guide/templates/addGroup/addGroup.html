@@ -1,0 +1,35 @@
+{% extends "guide.html" %}
+{% load static %}
+{% block subcss %}
+<link rel="stylesheet" href="{% static 'addGroups/addGroup.css' %}">  
+{% endblock subcss %}
+
+{% block subBody %}
+    <div id="addgrp" class="mainBody">
+        <div class="mainBodyHead">
+            Add Projects
+        </div>
+        <div class="mainBodyTable">
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="groupOptions">
+                    {% for obj in data %}
+                        <div id="name" class="groupOption">                                              
+                            <input type="checkbox" name="code" id="{{obj.groupCode}}" value = "{{obj.groupCode}},{{obj.projectName}}">
+                            <label for="{{obj.groupCode}}">
+                                <p>{{obj.groupCode}}</p>
+                                <p>{{obj.projectName}}</p>
+                            </label>
+                        </div> 
+                    {% endfor %} 
+                </div>
+                <input type="submit" value="Submit">
+            </form>
+            
+        </div>
+    </div>
+{% endblock subBody %}
+
+{% block Script %}
+    
+{% endblock Script %}

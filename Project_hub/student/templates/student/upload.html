@@ -1,0 +1,125 @@
+{% extends "student\base.html" %}
+{%load static%}
+{% block css %}
+<link rel="stylesheet" href="{% static 'student\upload.css' %}">
+{% endblock css %}
+
+{% block css_sub %}
+<style>
+    #code{
+        font-size: 2.5rem;
+        color: #dce1de;    
+    }
+    #code:hover{
+        box-shadow: none;
+    }
+</style>
+{% endblock css_sub %}
+
+{% block sideBar %}
+<div class="function">
+    <a href="{% url 'student:upload' %}"><i class="fa-regular fa-file-code" id="code"></i></a>
+    <a href="{% url 'student:database' %}"><i class="fa-solid fa-database" id="database"></i></a>
+    <a href="{% url 'student:document' %}"><i class="fa-solid fa-folder" id="folder"></i></a>
+    <a href="{% url 'student:additional' %}"><i class="fa-solid fa-paperclip" id="additional"></i></a>
+    <a href="{% url 'student:view' %}"><i class="fa-regular fa-eye" id="view"></i></a>
+</div>
+<div class="settings">
+    <a><i class="fa-solid fa-bell" id="bell"></i></a>
+    <a><i class="fa-solid fa-gear" id="sett"></i></a>
+</div>
+{% endblock sideBar %}
+
+{% block mainBody%}
+<div class=mainBodyHead>
+        {% block File %}Code Files{% endblock File%}
+</div>
+
+    <div class="mainBodyTable">
+        {% for message in messages %}
+        <div class="alert">{{ message }}</div>
+        {% endfor %}
+        <form action="{% block form_action %}{% url 'student:upload' %}{% endblock form_action %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+        <div class="edit-icons">
+        <i class="fa-solid fa-folder-plus no-shadow" id="add-files" title="Add Files"></i>
+        <i class="fa-solid fa-folder-minus no-shadow" id="remove-files" title="Remove Files"></i>
+        </div>
+            <hr>
+            <div class="fileoptiondiv">
+                <div class="fileOptions">
+                    <input type="file" id="file-input" name="files" hidden multiple>
+                    <table id="file-table">
+                        <tbody id="file-list">
+                        <!-- File names will be appended here as rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <input type="hidden" name="groupCode" value="{{ group_code }}">
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+    <p><b>Note: </b>Click<a href="{% url 'student:view' %}"><i class="fa-solid fa-eye" id="view_link"></i></a>icon to view your project details.</P>
+{% endblock mainBody %}
+
+<script>
+    {% block script %}
+    document.addEventListener('DOMContentLoaded', function () {
+        const addFilesButton = document.getElementById('add-files');
+        const fileInput = document.getElementById('file-input');
+        const fileTableBody = document.querySelector('#file-table tbody');
+    
+        // Trigger file input click when add files icon is clicked
+        addFilesButton.addEventListener('click', function () {
+            fileInput.click();
+        });
+    
+        // Handle file input change event to add files to the table
+        fileInput.addEventListener('change', function () {
+            const files = fileInput.files;
+    
+            for (const file of files) {
+                // Create a new row and add it to the table body
+                const row = document.createElement('tr');
+    
+                // Add the checkbox cell
+                const checkboxCell = document.createElement('td');
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.className = 'file-checkbox';
+                checkboxCell.appendChild(checkbox);
+    
+                // Add the file name cell
+                const fileNameCell = document.createElement('td');
+                fileNameCell.textContent = file.name;
+    
+                // Append both cells to the row
+                row.appendChild(checkboxCell);
+                row.appendChild(fileNameCell);
+    
+                // Add the new row to the table body
+                fileTableBody.appendChild(row);
+            }
+    
+            // Clear the file input after adding files to the table
+            fileInput.value = '';
+        });
+    });
+    
+    document.addEventListener('DOMContentLoaded', function () {
+        const removeFilesButton = document.getElementById('remove-files');
+        const fileTable = document.getElementById('file-table');
+
+        removeFilesButton.addEventListener('click', function () {
+            const checkboxes = fileTable.querySelectorAll('.file-checkbox:checked');
+
+            // Iterate through all checked checkboxes and remove the corresponding rows
+            checkboxes.forEach(checkbox => {
+                const row = checkbox.closest('tr');
+                row.remove();
+            });
+        });
+    });
+    {% endblock script %}
+</script>

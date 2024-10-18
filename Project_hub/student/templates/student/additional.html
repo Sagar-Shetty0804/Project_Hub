@@ -1,0 +1,19 @@
+{% extends "student\upload.html" %}
+
+{% block css_sub %}
+<style>
+    #additional{
+        font-size: 2.5rem;
+        color: #dce1de;    
+    }
+    #additional:hover{
+        box-shadow: none;
+    }
+</style>
+{% endblock css_sub %}
+
+{% block File %}
+Additional Files
+{% endblock File %}
+
+{% block form_action %}{% url 'student:additional' %}{% endblock form_action %}

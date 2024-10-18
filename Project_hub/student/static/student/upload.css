@@ -1,0 +1,392 @@
+/* Basic reset for margin and padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Basic styling for the body */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header styling */
+header {
+    background-color: #1f2421;
+    color: #fff;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    width: 100vw;
+    max-width: 1200px;
+    margin: 0 auto;
+    justify-content: center;
+}
+
+/* Logo styling */
+.logoimage{
+    height: 50px;
+    width: 254px;
+    background-size: cover;
+    margin-left: 0px;
+    background-color: #1f2421;
+    display: flex;
+    
+}
+.logo {
+    background-image: url("/static/logo-Photoroom.png");
+    height: 50px;
+    width: 254px;
+    font-size: 24px;
+    flex: 1;    
+    font-weight: bold;
+    position: absolute;
+    
+}
+
+
+/* main styling */
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height:  85vh;
+    background-color: #dce1de;
+    justify-content: start;
+}
+.options{
+    display: flex;
+    width: 70vw;
+    height: 100%;
+    flex-wrap: wrap;
+    margin-left: 3rem;
+}
+.options a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: x-large;
+    padding-right: 2rem;
+    padding-left: 2rem;
+
+
+}
+#upload{
+    font-size: 32px;
+    color: #49A078;
+}
+.options a:hover:not(#upload) {
+    color: #49A078;
+    box-shadow: 5px 2px 2px black;
+}
+
+
+/* side bar styling */
+.sideBar{
+    width: 5rem;
+    height: 100%;
+    background-color: #216869;
+}
+.function{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.settings{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 8rem;
+
+}
+
+/* icon styling */
+i {
+    font-size: 2rem;
+    color: #49A078;
+    padding: 14px;
+}
+
+i:hover{
+    cursor: pointer;
+    box-shadow: 5px 2px 2px black;
+}
+
+#code{
+    width: 80px;
+    padding-left: 28px;    
+}
+#database{
+    width: 80px;
+    padding-left: 26px;
+}
+#folder{
+    width: 80px;
+    padding-left: 24px;
+}
+#additional{
+    width: 80px;
+    padding-left: 24px;
+}
+#view{
+    width: 80px;
+    padding-left: 21px;
+}
+#bell{
+    width: 80px;
+    padding-left: 28px;
+}
+#sett{
+    width: 80px;
+    padding-left: 28px;
+}
+
+/* Footer styling */
+footer {
+    background-color: #1f2421;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-links {
+    margin-top: 10px;
+}
+
+.footer-links a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 8rem;
+    font-size: 14px;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}
+
+a{
+    text-decoration: none;
+}
+
+.mainBody {
+    margin: 20px auto; /* Center the main body */
+    padding: 30px; /* Increased padding for better spacing */
+    height: auto; /* Allow height to adjust based on content */
+    width: 80vw; /* Adjusted width for better responsiveness */
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    background-color: #ffffff; /* White background for contrast */
+    border-radius: 12px; /* Slightly larger border radius */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Enhanced shadow for depth */
+}
+
+/* Header styling */
+.mainBodyHead {
+    padding: 1.5rem;
+    font-size: 28px; /* Increased font size for better visibility */
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #1f2421;
+}
+
+form{
+    width: 100%; /* Full width form */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Table styling */
+.mainBodyTable {
+    width: 85%;
+    border: 0.1rem solid #9eaba3;
+    padding: 2rem;
+    border-radius: 2rem;
+    height: 70%;
+    position: relative;
+}
+
+.mainBodyTable form {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Checkbox and label styling */
+.fileOption {
+    display: flex;
+    align-items: center;
+}
+
+.fileOption label {
+    display: flex;
+    flex-direction: row;
+    gap: 7rem; /* Adjust the gap as needed */
+}
+
+.fileOption p {
+    margin: 0;
+    width: 100%;
+    text-align: left;
+    
+}
+
+/* Submit button styling */
+button[type="submit"] {
+    padding: 12px 25px; /* Increased padding for better touch targets */
+    background-color: #49A078; 
+    color: #ffffff; 
+    border: none;
+    border-radius: 6px; 
+    cursor: pointer;
+    font-size: 18px; 
+    transition: background-color 0.3s ease; 
+}
+
+button[type="submit"]:hover {
+    background-color: #299160; 
+}
+
+.edit-icons {
+    position: absolute;
+    top: -5px; 
+    right: 20px; 
+}
+
+.edit-icons i{
+    font-size: 1.5rem;
+    color: #49A078;
+    padding: 10px;
+}
+
+.edit-icons i:hover {
+    box-shadow: none !important; /* No box-shadow */
+    color: #299160;   
+}
+
+#view_link{
+    color:#49A078;
+    font-size: 1.2rem;
+    padding: 5px;
+}
+
+#view_link:hover{
+    box-shadow: none !important;
+    color: #299160;
+}
+
+#file-table {
+    border-collapse: collapse; 
+    width: 100%;
+}
+
+#file-table tr {
+    display: table-row; 
+}
+
+#file-table td {
+    text-align: left;
+    display: table-cell;
+    padding: 8px; 
+}
+
+#file-table tbody tr td {
+    border-bottom: 1px solid #9eaba3 !important; 
+}
+
+#file-table tbody tr:nth-child(odd) {
+    background-color:#dce1de ; 
+} 
+.fileoptiondiv{
+    width: 100%;
+    max-height: 100%;
+    overflow-y: auto;
+}
+h3{
+    margin: 0px 0px 80px 0px;
+}
+/* Custom File Upload Styles */
+.custom-file-upload {
+    position: relative;
+    display: inline-block;
+}
+
+.custom-file-upload input[type='file'] {
+    display: none; /* Hide the default file input */
+}
+
+.custom-file-upload label {
+    padding: 10px 20px;
+    border: 1px solid #49A078; /* Border color */
+    color: #49A078; /* Text color */
+    background-color: white; /* Background color */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    display: flex;
+    align-items: center;
+}
+
+.custom-file-upload label i {
+    margin-right: 8px; /* Space between icon and text */
+}
+
+.custom-file-upload label:hover {
+    background-color: #f0f0f0; /* Light background on hover */
+}
+#file-name {
+    margin-left: 10px; /* Space between label and file name */
+    font-weight: normal;
+    margin-top: 3px;
+    margin-bottom: 3px; /* Normal weight for the file name */
+}
+
+.filename{
+    margin: 30px 0px 20px 0px;
+}
+/* .messages {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.messages ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.messages li {
+    color: green; /* Change the color as needed */
+/* } */ 
+@media (max-width: 768px) {
+    .mainBody {
+        width: 95vw; 
+        padding: 20px; 
+    }
+    
+    .mainBodyHead {
+        font-size: 24px; 
+    }
+
+    button[type="submit"] {
+        width: 100%; 
+        font-size: 16px; 
+        padding: 10px; 
+    }
+}

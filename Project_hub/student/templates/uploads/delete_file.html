@@ -1,0 +1,14 @@
+{%load static%}
+{% block css %}
+<link rel="stylesheet" href="{% static 'student\edit.css' %}">
+{% endblock css %}
+
+{% block content %}
+<h2>Delete {{ file.file.name }}</h2>
+<p>Are you sure you want to delete this file?</p>
+<form method="post">
+  {% csrf_token %}
+  <button type="submit">Yes, delete</button>
+</form>
+<a href="{% url 'student:file_list' %}">Cancel</a>
+{% endblock %}

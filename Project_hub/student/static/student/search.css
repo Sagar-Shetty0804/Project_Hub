@@ -1,0 +1,290 @@
+/* Basic reset for margin and padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Basic styling for the body */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header styling */
+header {
+    background-color: #1f2421;
+    color: #fff;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    width: 100vw;
+    max-width: 1200px;
+    margin: 0 auto;
+    justify-content: center;
+}
+
+/* Logo styling */
+.logoimage{
+    height: 50px;
+    width: 254px;
+    background-size: cover;
+    margin-left: 0px;
+    background-color: #1f2421;
+    display: flex;
+    
+}
+.logo {
+    background-image: url("./logo-Photoroom.png");
+    height: 50px;
+    width: 254px;
+    font-size: 24px;
+    flex: 1;    
+    font-weight: bold;
+    position: absolute;
+    
+}
+
+
+/* main styling */
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height:  85vh;
+    background-color: #dce1de;
+    justify-content: start;
+}
+.options{
+    display: flex;
+    width: 70vw;
+    height: 100%;
+    flex-wrap: wrap;
+    margin-left: 3rem;
+}
+.options a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: x-large;
+    padding-right: 2rem;
+    padding-left: 2rem;
+
+}
+
+#search{
+    font-size: 32px;
+    color: #49A078;
+}
+.options a:hover:not(#search) {
+    color: #49A078;
+    box-shadow: 5px 2px 2px black;
+}
+
+
+/* side bar styling */
+.sideBar{
+    width: 5rem;
+    height: 100%;
+    background-color: #216869;
+    margin-right:30px;
+}
+.function{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.settings{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 25rem;
+
+}
+
+/* icon styling */
+i {
+    font-size: 2rem;
+    padding: 20px;
+    color: #49A078;
+}
+i:hover{
+    cursor: pointer;
+    box-shadow: 5px 2px 2px black;
+}
+#fav{
+    width: 80px;
+    padding-left: 26px;
+}
+#bell{
+    width: 80px;
+    padding-left: 28px;
+}
+#sett{
+    width: 80px;
+    padding-left: 28px;
+}
+/* Footer styling */
+footer {
+    background-color: #1f2421;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-links {
+    margin-top: 10px;
+}
+
+.footer-links a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 8rem;
+    font-size: 14px;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}
+/* Project list styling*/
+
+/* table{
+    border-collapse: collapse;
+    border: transparent;
+    width: 65rem;
+    margin: auto;
+    text-align: center;
+}*/
+
+ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0;
+    padding-top: 10px;
+}
+
+ul li {
+    margin-bottom: 5px; /* Adjust this for more or less spacing */
+}
+/*td{
+    border: 3px solid #49A078;
+    border-radius: 5px;
+} */
+table {
+    border-collapse: collapse;
+    width: 170%;
+    margin: 40px auto;
+    text-align: center;
+    background-color: #fff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+    padding: 12px;
+    border: 2px solid #49A078;
+}
+
+th {
+    background-color: #49A078;
+    color: white;
+    font-size: 16px;
+    text-transform: uppercase;
+    
+}
+tbody tr {
+    min-height: 70px; /* Adjust as needed */
+    display: table-row; /* Ensures rows expand properly */
+    vertical-align: middle; /* Center content vertically */
+    border: 2px solid #49A078;
+    background-color: white;
+}
+
+tbody tr td {
+    padding: 12px;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+td a {
+    text-decoration: none;
+    color: white;
+    background-color: #216869;
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+td a:hover {
+    background-color: #49A078;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+
+/*search box styling*/
+/* .searchbox{
+    width: 20rem;
+    height: 85vh;
+    background-color: #fff;
+    position: absolute;
+    right: 0;
+    top: 70px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+} */
+.searchbox {
+    width: 20rem;
+    height: 85vh;
+    background-color: #fff;
+    position: absolute;
+    right: 0;
+    top: 70px;
+    padding: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.searchbox h1 {
+    margin-bottom: 20px;
+    color: #49A078;
+    text-align: center;
+}
+
+.searchbox select, .searchbox input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.searchbox input[type="submit"] {
+    background-color: #216869;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 12px;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.searchbox input[type="submit"]:hover {
+    background-color: #49A078;
+}

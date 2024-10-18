@@ -1,0 +1,19 @@
+{% extends "student\upload.html" %}
+
+{% block css_sub %}
+<style>
+    #folder{
+        font-size: 2.5rem;
+        color: #dce1de;    
+    }
+    #folder:hover{
+        box-shadow: none;
+    }
+</style>
+{% endblock css_sub %}
+
+{% block File %}
+Documentation
+{% endblock File %}
+
+{% block form_action %}{% url 'student:document' %}{% endblock form_action %}

@@ -1,0 +1,20 @@
+{% extends "student\upload.html" %}
+
+{% block css_sub %}
+<style>
+    #database{
+        font-size: 2.5rem;
+        color: #dce1de;    
+    }
+    #database:hover{
+        box-shadow: none;
+    }
+</style>
+{% endblock css_sub %}
+
+{% block File %}
+Databases
+{% endblock File %}
+
+{% block form_action %}{% url 'student:database' %}{% endblock form_action %}
+

@@ -1,0 +1,213 @@
+/* Basic reset for margin and padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Basic styling for the body */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header styling */
+header {
+    background-color: #1f2421;
+    color: #fff;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Logo styling */
+.logoimage{
+    height: 50px;
+    width: 254px;
+    background-size: cover;
+    background-color: #1f2421;
+    
+}
+.logo {
+    background-image: url("logo-Photoroom.png");
+    height: 50px;
+    width: 254px;
+    font-size: 24px;
+    font-weight: bold;
+    position: absolute;
+    
+}
+
+/* Menu button styling */
+.space {
+    flex: 1;
+}
+
+.menu {
+    position: relative;
+    flex: 1;
+}
+
+.menu-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.dot {
+    width: 40px;
+    height: 5px;
+    background-color: #fff;
+    border-radius: 10%;
+    margin: 3px 0;
+}
+
+/* Menu content styling */
+.menu-content {
+    display: none;
+    position: absolute;
+    top: 40px;
+    right: 0;
+    background-color: #fff;
+    color: #000;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    z-index: 10;
+}
+
+.menu-content a {
+    display: block;
+    padding: 10px 20px;
+    color: #216869;
+    text-decoration: none;
+}
+
+.menu-content a:hover {
+    background-color: #f0f0f0;
+}
+
+/* Show menu when button is clicked */
+.menu-button:focus + .menu-content,
+.menu-button:hover + .menu-content {
+    display: block;
+}
+
+/* Styling for group-code container */
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 49.2rem;
+    background-color: #dce1de;
+}
+
+.groupcode-container {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 35%;
+    text-align: center;
+    color: #333;
+    border: 1px solid #e0e0e0;
+}
+
+/* Form elements styling */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    text-align: left;
+}
+ 
+input[type="text"] {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    font-size: 16px;
+    height: 4.5rem;
+}
+
+button {
+    padding: 10px;
+    background-color: #49A078;
+    border: none;
+    border-radius: 20px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #216869;
+}
+
+/* Footer styling */
+footer {
+    background-color: #1f2421;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-links {
+    margin-top: 10px;
+}
+
+.footer-links a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 8px; /* Adjusted spacing for smaller screens */
+    font-size: 14px;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .footer-links {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .footer-links a {
+        margin: 5px 0;
+    }
+}

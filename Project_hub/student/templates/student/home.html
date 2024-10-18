@@ -1,0 +1,28 @@
+{% extends "student/base.html" %}
+{%load static%}
+{% block css %}  
+  <link rel="stylesheet" href="{% static 'student\home.css' %}">
+  
+{% endblock css %}
+
+{% block sideBar %}
+<div class="function">
+  <a href="/studentPage/homepage/file" class="sidebarIcons">
+    <i class="fa-solid fa-file-lines" id="file"></i>
+  </a>
+  <a href="/studentPage/homepage/groups" class="sidebarIcons">
+    <i class="fa-solid fa-user-group" id="groups"></i>
+  </a>
+  <a href="" class="sidebarIcons">
+    <i class="fa-solid fa-user-plus" id="addfr"></i>
+  </a>    
+</div>
+
+<div class="settings">
+    <i class="fa-solid fa-bell" id="bell"></i>
+    <i class="fa-solid fa-gear" id="sett"></i>
+
+</div>
+{% endblock sideBar %}
+
+

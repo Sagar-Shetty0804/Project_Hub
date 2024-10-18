@@ -1,0 +1,32 @@
+{% extends "eval.html" %}
+{% load static %}
+
+{% block subMainBody %}
+    <h1>File Content</h1>
+
+    <h2>{{ file.file.name }}</h2>
+    <p><strong>Group Code:</strong> {{ file.group_code.groupCode }}</p>
+    <p><strong>Uploaded on:</strong> {{ file.upload_date }}</p>
+
+    <pre>{{ file.content }}</pre>  <!-- Display the file content in a preformatted block -->
+
+    <a href="{% url 'evaluator:studentView' %}?button_value={{ file.group_code.groupCode }}">Back to File List</a>
+    
+{% endblock subMainBody %}
+
+{% block evalMarks %}
+<div class="evalMarks">
+    <form action="#" method="get">
+        <label for="logBookMarks">Log Book Marks:</label>
+        <input type="number" name="logBookMarks" id="logBook" min="1" max="10" step="1" >
+        <br>
+        <label for="projectReport">Quality of Project Report</label>
+        <input type="number" name="projectReport" id="projectReport" min="1" max="10" step="1">
+        <br>
+        <label for="studentEffort">Effort Taken by Students</label>
+        <input type="number" name="studentEffort" id="studentEffort" min="1" max="10" step="1" >
+        <br>
+        <button type="submit">Submit</button>
+    </form>
+</div>
+{% endblock evalMarks %}
