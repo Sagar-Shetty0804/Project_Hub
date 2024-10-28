@@ -366,8 +366,6 @@ h2 {
 ul {
     list-style-type: none; /* Remove default bullet points */
     padding: 0; /* Remove default padding */
-    border: 1px solid #ddd; /* Light border around the list */
-    border-radius: 4px; /* Rounded corners for the list */
 }
 
 li {
@@ -395,10 +393,6 @@ li a:hover {
 .function, .settings {
     display: flex;
     flex-direction: column;
-}
-
-.function a, .settings a {
-    margin-bottom: 10px; /* Spacing between icons */
 }
 
 .function i, .settings i {
@@ -452,5 +446,421 @@ a.upload-link:hover {
         width: 100%; 
         font-size: 16px; 
         padding: 10px; 
+    }
+}
+
+/* Basic reset for margin and padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Basic styling for the body */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header styling */
+header {
+    background-color: #1f2421;
+    color: #fff;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    width: 100vw;
+    max-width: 1200px;
+    margin: 0 auto;
+    justify-content: center;
+}
+
+/* Logo styling */
+.logoimage{
+    height: 50px;
+    width: 254px;
+    background-size: cover;
+    margin-left: 0px;
+    background-color: #1f2421;
+    display: flex;
+    
+}
+.logo {
+    background-image: url("/static/logo-Photoroom.png");
+    height: 50px;
+    width: 254px;
+    font-size: 24px;
+    flex: 1;    
+    font-weight: bold;
+    position: absolute;
+    
+}
+
+
+/* main styling */
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height:  85vh;
+    background-color: #dce1de;
+    justify-content: start;
+    width: 100%;
+}
+.mainBody {
+    flex-grow: 1; /* Make sure content expands to fill the page before the footer */
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+/*main body*/
+main{
+    display: flex;
+    flex-direction: row;
+}
+
+.mainBodyGuide {
+    position: absolute;
+    height: 85vh;
+    width: 70vw;
+    background: #dce1de;
+    left: 35vh;
+}
+
+/* right side bar styling */
+.rigthSidebar{
+    height: 85vh;
+    width: 4.5rem;
+    background: #216869;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    
+}
+i{
+    font-size: 2rem;
+    padding: 0.8rem;
+    margin-top: 1rem;
+    color: #9cc5a1;
+    
+}
+i:hover{
+    cursor: pointer;
+    box-shadow: 4px 2px 6px #1f2421;
+}
+
+/* centre body  */
+/* .mainBody::-webkit-scrollbar{
+    width: 15px;
+    scrollbar-arrow-color: #216869;
+}
+
+
+.mainBody::-webkit-scrollbar-track{
+    border: 2.5px solid #216869;
+    box-shadow: 2px 0px 1px #373a38;
+}
+.mainBody::-webkit-scrollbar-thumb {
+    background: #1f2421; 
+    border-radius: 2rem;
+    
+} */
+  
+.fileView{
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    width: 50vw;
+}
+
+textarea {
+    width: 100%;
+    height: 33em;
+}
+.mainBodyGuide{
+
+    height: 85vh;
+    width: 70vw;    
+    background: #dce1de;
+    display: flex;
+    flex-direction: row;
+    
+
+}
+.mainBodyGuide p{
+    padding: 1rem 1.5rem 1rem;
+}
+label {
+    font-size: 1.4em;
+    font-weight: bold;
+    justify-content: center;
+    display: flex;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.fileView pre{
+    max-width: 45em;
+    border: 1px solid black;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+h2 {
+    color: #333;
+    font-size: 24px;
+    border-bottom: 2px solid #4CAF50;
+    padding-bottom: 10px;
+    margin-top: 3px;
+}
+
+/* Style for file section containers */
+.file-section {
+    margin-bottom: 30px;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-height: 200px; /* Max height for each section */
+    overflow-y: auto; /* Scroll if content exceeds max height */
+}
+
+/* File lists styling */
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    background-color: #fff;
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+li strong {
+    color: #4CAF50;
+    font-size: 18px;
+}
+
+li a {
+    text-decoration: none;
+    color: #007bff;
+    font-size: 16px;
+}
+
+li a:hover {
+    text-decoration: underline;
+}
+
+/* Empty file message styling */
+li:empty {
+    color: #666;
+    font-style: italic;
+}
+
+/* General page layout */
+.mainBody {
+    max-width: 80vw;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    max-height: calc(100vh - 130px)
+}
+
+/* Responsive styling */
+@media (max-width: 768px) {
+    .mainBody {
+        padding: 15px;
+        margin: 15px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    li {
+        padding: 10px;
+    }
+
+    li a {
+        font-size: 14px;
+    }
+}
+/* left body */
+/* .leftSidebar{
+    height: 85vh;
+    width: 22vw;
+    background: #216869;
+} */
+
+/* Footer styling */
+footer {
+    background-color: #1f2421;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-links {
+    margin-top: 10px;
+}
+
+.footer-links a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 8rem;
+    font-size: 14px;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}
+
+.fileView {
+    max-width: 950px;  /* Increased width */
+    height: auto;
+    margin: 40px;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.fileView h1 {
+    font-size: 28px;
+    color: #4CAF50;
+    text-align: center;
+}
+
+.fileView h2 {
+    font-size: 22px;
+    margin: 10px 0;
+    color: #333;
+}
+
+.fileView p {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+/* Preformatted block for file content */
+pre {
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    font-size: 15px;
+    color: #333;
+    white-space: pre-wrap; /* Ensures long text wraps properly */
+    overflow-x: auto;
+    height: 450px;  /* Increased height */
+    max-height: 450px;  /* Ensures vertical scroll if content exceeds */
+    overflow-y: auto;
+}
+
+/* Back link styling */
+.fileView a {
+    display: inline-block;
+    margin-top: 20px;
+    color: #4CAF50;
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.fileView a:hover {
+    color: #388E3C;
+}
+
+/* Comment section styling */
+.guideComment {
+    max-width: 300px;  /* Reduced width */
+    margin: 40px;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.guideComment label {
+    display: block;
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+/* Textarea styling */
+textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+    resize: none;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+    height: 280px;  /* Reduced height */
+}
+
+/* Submit button styling */
+.submitBtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.submitBtn:hover {
+    background-color: #388E3C;
+}
+
+/* Adjusted layout for two sections */
+div.fileView {
+    width: 68%;  /* Increased width for file content */
+}
+
+div.guideComment {
+    width: 28%;  /* Reduced width for comment section */
+}
+
+@media (max-width: 1000px) {
+    div.fileView, div.guideComment {
+        width: 100%;
+        margin: 0;
+        margin-bottom: 20px;
+    }
+
+    pre {
+        font-size: 12px;
     }
 }
