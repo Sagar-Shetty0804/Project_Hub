@@ -372,38 +372,12 @@ h2 {
 
 /* Heading Styles */
 h1 {
-    color: #333;
-    font-size: 32px;
-    margin-bottom: 20px;
-    font-weight: bold;
+    color: #333; /* Dark heading color */
 }
 
 h2 {
-    color: #666;
-    font-size: 20px;
-    margin: 10px 0;
-    font-weight: normal;
-}
-
-/* Info Text Styling */
-p {
-    color: #666;
-    font-size: 16px;
-}
-
-.backto {
-    color: #49A078;
-    font-size: 18px;
-    font-weight: bold;
-    text-decoration: none;
-    margin-top: 20px;
-    display: inline-block;
-    transition: color 0.3s ease, transform 0.3s ease;
-}
-
-.backto:hover {
-    color: #1f2421;
-    transform: translateX(5px);
+    color: #333; /* Darker heading color for sections */
+    margin-top: 20px; /* Space above section headings */
 }
 
 /* Textarea for Editing Content */
@@ -454,17 +428,12 @@ a:hover {
     background-color: darkred; /* Darker red on hover */
 }
 pre {
-    background-color: #f9f9f9;
-    color: #333;
     border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 20px;
-    width: 100%;
-    font-size: 16px;
-    line-height: 1.6;
-    margin-top: 20px;
+    border-radius: 4px;
+    width: 75vw;
+    margin: 10px;
     overflow-y: auto;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+
 }
 /* Responsive Design Adjustments */
 @media (max-width: 768px) {
