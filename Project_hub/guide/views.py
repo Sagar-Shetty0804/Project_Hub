@@ -7,7 +7,7 @@ from Login_page.models import RegisterStudent
 from student.models import CodeFile,DatabaseFile,AdditionalFile,DocumentFile
 
 # Create your views here.
-GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/1SeRWtqvEvzpFTMKz09zIyaQlzcV_ieF6Zw5kKdxdFg4/edit'
+GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/1YnqOlaZKP39wvaWfyawIa1ips3y2aDUQrZhXNgP64g4/edit'
 def table(request):
     return redirect(GOOGLE_SHEET_URL)
     return render(request,'table.html')
