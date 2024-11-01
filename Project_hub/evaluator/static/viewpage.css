@@ -1,0 +1,319 @@
+/* Basic reset for margin and padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Basic styling for the body */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header styling */
+header {
+    background-color: #1f2421;
+    color: #fff;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    width: 100vw;
+    max-width: 1200px;
+    margin: 0 auto;
+    justify-content: center;
+}
+
+/* Logo styling */
+.logoimage{
+    height: 50px;
+    width: 254px;
+    background-size: cover;
+    margin-left: 0px;
+    background-color: #1f2421;
+    display: flex;
+    
+}
+.logo {
+    background-image: url("/static/logo-Photoroom.png");
+    height: 50px;
+    width: 254px;
+    font-size: 24px;
+    flex: 1;    
+    font-weight: bold;
+    position: absolute;
+    
+}
+
+
+/* main styling */
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height:  85vh;
+    background-color: #dce1de;
+    justify-content: start;
+}
+
+/*main body*/
+main{
+    display: flex;
+    flex-direction: row;
+}
+
+
+
+/* right side bar styling */
+.rigthSidebar{
+    height: 85vh;
+    width: 8vw;
+    background: #216869;
+}
+
+/* centre body  */
+/* .mainBody::-webkit-scrollbar{
+    width: 15px;
+    scrollbar-arrow-color: #216869;
+}
+
+
+.mainBody::-webkit-scrollbar-track{
+    border: 2.5px solid #216869;
+    box-shadow: 2px 0px 1px #373a38;
+}
+.mainBody::-webkit-scrollbar-thumb {
+    background: #1f2421; 
+    border-radius: 2rem;
+    
+} */
+  
+
+
+
+.mainBody{
+    height: 85vh;
+    width: 90vw; 
+    background: #dce1de;
+    overflow: auto;
+
+}
+.mainBody p{
+    padding: 1rem 1.5rem 1rem;
+}
+
+
+/* left body */
+
+
+/* Footer styling */
+footer {
+    background-color: #1f2421;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-links {
+    margin-top: 10px;
+}
+
+.footer-links a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 8rem;
+    font-size: 14px;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}
+
+
+.function{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+i {
+    font-size: 2rem;
+    color: #49A078;
+    padding: 20px;
+}
+
+i:hover{
+    cursor: pointer;
+    box-shadow: 5px 2px 2px black;
+}
+
+
+i{
+    font-size: 2rem;
+    padding: 0.8rem;
+    margin-top: 1rem;
+    color: #9cc5a1;
+    
+}
+i:hover{
+    cursor: pointer;
+    box-shadow: 4px 2px 6px #1f2421;
+}
+
+/* centre body  */
+/* .mainBody::-webkit-scrollbar{
+    width: 15px;
+    scrollbar-arrow-color: #216869;
+}
+
+
+.mainBody::-webkit-scrollbar-track{
+    border: 2.5px solid #216869;
+    box-shadow: 2px 0px 1px #373a38;
+}
+.mainBody::-webkit-scrollbar-thumb {
+    background: #1f2421; 
+    border-radius: 2rem;
+    
+} */
+  
+.fileView{
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    width: 50vw;
+}
+
+textarea {
+    width: 100%;
+    height: 33em;
+}
+.mainBodyGuide{
+
+    height: 85vh;
+    width: 70vw;    
+    background: #dce1de;
+    display: flex;
+    flex-direction: row;
+    
+
+}
+.mainBodyGuide p{
+    padding: 1rem 1.5rem 1rem;
+}
+label {
+    font-size: 1.4em;
+    font-weight: bold;
+    justify-content: center;
+    display: flex;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.fileView pre{
+    max-width: 45em;
+    border: 1px solid black;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+h2 {
+    color: #333;
+    font-size: 24px;
+    border-bottom: 2px solid #4CAF50;
+    padding-bottom: 10px;
+    margin-top: 30px;
+}
+
+/* Style for file section containers */
+.file-section {
+    margin-bottom: 30px;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-height: 200px; /* Max height for each section */
+    overflow-y: auto; /* Scroll if content exceeds max height */
+}
+
+/* File lists styling */
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    background-color: #fff;
+    margin: 10px 0;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+li strong {
+    color: #4CAF50;
+    font-size: 18px;
+}
+
+li a {
+    text-decoration: none;
+    color: #007bff;
+    font-size: 16px;
+}
+
+li a:hover {
+    text-decoration: underline;
+}
+
+/* Empty file message styling */
+li:empty {
+    color: #666;
+    font-style: italic;
+}
+
+/* General page layout */
+.mainBody {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    max-height: calc(100vh - 100px)
+}
+
+/* Responsive styling */
+@media (max-width: 768px) {
+    .mainBody {
+        padding: 15px;
+        margin: 15px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    li {
+        padding: 10px;
+    }
+
+    li a {
+        font-size: 14px;
+    }
+}

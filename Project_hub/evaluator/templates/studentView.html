@@ -1,5 +1,8 @@
 {% extends "eval.html" %}
 {% load static %}
+{% block subcss %}
+<link rel="stylesheet" href="{% static '\viewpage.css' %}"> 
+{% endblock subcss %}
 
 {% block subMainBody %}
 <h2>Code Files</h2>

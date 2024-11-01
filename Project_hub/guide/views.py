@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from django.core.mail import send_mail
+from django.conf import settings
 from Login_page.models import RegisterStudent as reg
 from django.contrib.auth.models import User
 from guide.models import guide_groups,guideCommnets
@@ -79,10 +81,21 @@ def view_file_content_guide(request, file_type, file_id):
     
     if request.method == 'POST':
         comment = request.POST.get('comment')
-        print(comment)
-        gc = RegisterStudent.objects.filter(username = file_obj.group_code).values_list("groupCode")
-        register_student = gc[0][0]
-        register = guideCommnets(group_code = register_student,comment = comment,file_type = file_type,guide_name = request.user,fileName = file_obj.file.name)
+        register_student = file_obj.group_code
+        user_email = register_student.email
+        register = guideCommnets(group_code = register_student.groupCode,comment = comment,file_type = file_type,guide_name = request.user,fileName = file_obj.file.name)
         register.save()
+        subject = f"New Comment on Your {file_type.capitalize()} File"
+        message = f"{request.user.username} commented on your {file_type} file: {file_obj.file.name}\n\nComment: {comment}"
+        
+        send_mail(
+            subject,
+            message,
+            'projecthub338@gmail.com',  # From email (should be your EMAIL_HOST_USER)
+            [register_student.email],  # Recipient's email address
+            fail_silently=False,
+        )
+
     
     return render(request, 'groups\\view_file_content_guide.html', {'file': file_obj, 'file_type': file_type})
+
