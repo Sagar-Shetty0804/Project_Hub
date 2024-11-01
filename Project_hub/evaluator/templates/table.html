@@ -1,4 +1,16 @@
 {% extends "eval.html" %}
+
 {% block subMainBody %}
     
 {% endblock subMainBody %}
+
+{% block sheetScript %}
+<script>
+    // Open the Google Sheet in a new tab
+    window.open("{{ google_sheet_url }}", "_blank");
+    
+    // Optionally, redirect the current tab to a different page if you don't want to leave it blank
+    window.location.href = "/some-other-page/"; <!-- Optional: Replace with a desired URL -->
+</script>
+<p>The Google Sheet should open in a new tab. If it doesn’t open automatically, <a href="{{ google_sheet_url }}" target="_blank">click here</a>.</p>
+{% endblock sheetScript %}

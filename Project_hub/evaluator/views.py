@@ -7,7 +7,7 @@ GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/1YnqOlaZKP39wvaWfyawI
 
 def table(request):
     return redirect(GOOGLE_SHEET_URL)
-    return render(request,'table.html')
+#     return render(request,'table.html',{'google_sheet_url': GOOGLE_SHEET_URL})
 def studentGroups(request):
     data = RegisterStudent.objects.all().values('groupCode','projectName').distinct()
     if request.method == "POST":
@@ -63,10 +63,5 @@ def view_file_content_eval(request, file_type, file_id):
     else:
         return render(request, '404.html')  # Handle unknown file types
     
-    if request.method == 'GET':
-        logBookMarks = request.GET.get('logBookMarks')
-        projectReport = request.GET.get('projectReport')
-        studentEffort = request.GET.get('studentEffort')
-        if logBookMarks != None and projectReport != None and studentEffort != None:
-            print(logBookMarks,projectReport,studentEffort)
+    
     return render(request, 'evalFileView.html', {'file': file_obj, 'file_type': file_type})

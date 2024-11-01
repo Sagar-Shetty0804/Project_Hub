@@ -1,0 +1,105 @@
+/* Center main-content div */
+.mainBody {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 85vh;
+    width: 90vw;
+    background: #dce1de;
+    overflow: auto;
+}
+
+/* Style main-content div */
+.main-content {
+    background-color: #ffffff; /* Change to your preferred color */
+    padding: 20px;
+    border-radius: 10px; /* Rounded corners */
+    height: 90%; /* Adjust as needed */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Optional shadow for effect */
+}
+
+.main-content h1, .main-content h2, .main-content p {
+    color: #2e2e2e; /* Adjust text color */
+}
+
+/* Example pre block styling */
+.main-content pre {
+    background-color: #f5f5f5;
+    padding: 15px;
+    border-radius: 5px;
+    color: #333;
+    font-family: monospace;
+    overflow-y: auto;
+    height: 55%;
+}
+
+.main-content h1 {
+    font-size: 32px;
+    color: #325c4a;
+    margin-bottom: 20px;
+}
+
+.main-content h2 {
+    font-size: 24px;
+    color: #4a8267;
+    margin-bottom: 10px;
+}
+
+.main-content p {
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+/* .main-content pre {
+    background-color: #f2f2f2;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    color: #2e2e2e;
+    font-family: monospace;
+    font-size: 15px;
+} */
+
+/* Back to File List link */
+.main-content a {
+    display: inline-block;
+    margin-top: 15px;
+    color: #4a8267;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.main-content a:hover {
+    text-decoration: underline;
+    color: #325c4a;
+}
+
+/* Styling for file list sections */
+.file-list-section {
+    margin-bottom: 30px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    padding: 15px;
+    border: 1px solid #ddd;
+}
+
+.file-list-section h3 {
+    font-size: 20px;
+    color: #325c4a;
+    margin-bottom: 10px;
+}
+
+.file-list-section a {
+    display: block;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    color: #325c4a;
+    text-decoration: none;
+}
+
+.file-list-section a:hover {
+    background-color: #e2e6ea;
+    color: #2e2e2e;
+}

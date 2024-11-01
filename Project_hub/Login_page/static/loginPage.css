@@ -258,9 +258,12 @@ new */
     position: absolute;
     left: 1rem;
     top: -5vh;
-    width: 42px;
+    width: 60px;
     height: 60px;
     padding-bottom: 5px;
+    justify-content: center;
+    align-items: center;
+    
   }
  
   
