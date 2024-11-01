@@ -70,6 +70,27 @@ def addStudentData(data_dict):
             cell_value = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id, range=cell_range).execute()
             if 'values' not in cell_value:
                 # Empty cell found, add the new member here
+                new_member_class = data_dict['Class']
+                update_body = {
+                    "values": [[new_member_class]]  # Ensure it's a list of lists
+                }
+                service.spreadsheets().values().update(
+                    spreadsheetId=spreadsheet_id,
+                    range=cell_range,
+                    valueInputOption="RAW",
+                    body=update_body
+                ).execute()
+                
+                print(f"Added member '{new_member_name}' to group '{data_dict['groupCode']}' in row {current_row}.")
+                break
+            
+            current_row += 1  # Move to the next row in column C if the cell is not empty
+        
+        while True:
+            cell_range = f"{sheet_name}!D{current_row}"
+            cell_value = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id, range=cell_range).execute()
+            if 'values' not in cell_value:
+                # Empty cell found, add the new member here
                 new_member_name = data_dict['name']
                 update_body = {
                     "values": [[new_member_name]]  # Ensure it's a list of lists
@@ -84,7 +105,7 @@ def addStudentData(data_dict):
                 print(f"Added member '{new_member_name}' to group '{data_dict['groupCode']}' in row {current_row}.")
                 break
             
-            current_row += 1  # Move to the next row in column C if the cell is not empty
+            current_row += 1
 
 
 
@@ -124,7 +145,7 @@ def mergecell(data_dict):
 
         # Finding the next set of 4 empty cells
         while True:
-            range_name = f"{sheet_name}!A{start_row}:D{end_row}"
+            range_name = f"{sheet_name}!A{start_row}:E{end_row}"
             result = sheet.values().get(spreadsheetId=spreadsheet_id, range=range_name).execute()
             values = result.get('values', [])
 
@@ -136,7 +157,7 @@ def mergecell(data_dict):
             end_row = start_row + 3
 
         # Merge and populate columns A, B, and C with data for groupCode, projectName, and name
-        for col, key in zip([0, 1, 2], ['groupCode', 'projectName', 'name']):
+        for col, key in zip([0, 1, 2], ['groupCode', 'projectName', 'Class', 'name']):
             # Define the merge request
             if col != 2:
                 merge_request = {
@@ -184,11 +205,12 @@ def addProjectName(request):
             data_dict = {'projectName':projName,
                         'groupCode':groupCode,
                         'projYear':register.projYear,
-                        'name':register.name}
+                        'name':register.name,
+                        'Class':register.Class}
 
             register.projectName = projName
             register.save()
-            mergecell(data_dict)
+            # mergecell(data_dict)
             messages.success(request,"Registration Successful")
             
             
@@ -233,6 +255,10 @@ def registerStudent(request):
         year = int(year) % 2000
         branch = request.POST.get('branch')
         groupNumber = request.POST.get('groupNumber')
+        rollno = request.POST.get('rollno')
+        division = request.POST.get('division')
+
+        Class = branch+'_'+division+'_'+rollno
 
         global groupCode
         groupCode = projYear+'_'+str(year)+'_'+branch+'_'+groupNumber
@@ -250,7 +276,7 @@ def registerStudent(request):
 
                 elif password == confirmPassword :
 
-                    register = RegisterStudent(name=name ,username=username ,email=email ,year = year,branch = branch,groupNumber = groupNumber,groupCode = groupCode,projYear = projYear)
+                    register = RegisterStudent(name=name ,username=username ,email=email ,year = year,branch = branch,groupNumber = groupNumber,groupCode = groupCode,projYear = projYear,Class = Class)
                     register.save()
 
                     user = User.objects.create_user(
@@ -280,8 +306,9 @@ def registerStudent(request):
                                      'name':name,
                                      'groupCode':groupCode,
                                      'projYear':projYear,
+                                     'Class':Class
                                     }
-                        addStudentData(data_dict)
+                        # addStudentData(data_dict)
 
                     messages.success(request, "Registration succesfull")
                 else:

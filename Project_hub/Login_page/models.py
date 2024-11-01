@@ -12,6 +12,7 @@ class RegisterStudent(models.Model):
     groupNumber = models.CharField(max_length=5,default='00')
     projectName = models.CharField(max_length=100,default='blank')
     projYear = models.CharField(max_length=20,default='00')
+    Class = models.CharField(max_length=20,default='00')
 
     def __str__(self):
         return self.name
