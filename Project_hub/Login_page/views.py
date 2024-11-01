@@ -12,12 +12,12 @@ from googleapiclient.discovery import build
 
 # Create your views here.
 
-creds = service_account.Credentials.from_service_account_file(
-        'project-hub-440106-e683f700cc48.json',
-        scopes=['https://www.googleapis.com/auth/spreadsheets']
-    )
+# creds = service_account.Credentials.from_service_account_file(
+#         'project-hub-440106-e683f700cc48.json',
+#         scopes=['https://www.googleapis.com/auth/spreadsheets']
+#     )
 
-service = build('sheets', 'v4', credentials=creds)
+# service = build('sheets', 'v4', credentials=creds)
 
 def addStudentData(data_dict):
     if data_dict is not None:
