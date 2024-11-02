@@ -14,7 +14,7 @@
     background-color: #ffffff; /* Change to your preferred color */
     padding: 20px;
     border-radius: 10px; /* Rounded corners */
-    height: 90%; /* Adjust as needed */
+    height: 87%; /* Adjust as needed */
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Optional shadow for effect */
 }
 
@@ -67,6 +67,7 @@
     color: #4a8267;
     text-decoration: none;
     font-size: 16px;
+    font-weight: bold;
 }
 
 .main-content a:hover {

@@ -152,11 +152,15 @@ footer {
 }
 i {
     font-size: 2rem;
-    color: #49A078;
+    color: #9cc5a1;
     padding: 20px;
 }
 
 i:hover{
     cursor: pointer;
     box-shadow: 5px 2px 2px black;
+}
+
+.settingicon{
+    margin-top: 50vh;
 }
