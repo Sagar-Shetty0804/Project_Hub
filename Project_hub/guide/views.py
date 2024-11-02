@@ -8,6 +8,9 @@ from django.shortcuts import render,get_object_or_404,redirect
 from Login_page.models import RegisterStudent
 from student.models import CodeFile,DatabaseFile,AdditionalFile,DocumentFile
 
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
 # Create your views here.
 GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/1YnqOlaZKP39wvaWfyawIa1ips3y2aDUQrZhXNgP64g4/edit'
 def table(request):
@@ -99,3 +102,11 @@ def view_file_content_guide(request, file_type, file_id):
     
     return render(request, 'groups\\view_file_content_guide.html', {'file': file_obj, 'file_type': file_type})
 
+def delete_group(request):
+    if request.method == 'POST':
+        group_code = request.POST.get('groupCode')
+        record = guide_groups.objects.filter(groupCode = group_code)
+        record.delete()
+        groups(request)
+    
+    # return render(request,'groups\\studentView.html')

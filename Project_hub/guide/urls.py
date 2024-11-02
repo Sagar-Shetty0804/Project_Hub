@@ -8,4 +8,5 @@ urlpatterns = [
     path('studentView/',views.studentView,name='studentView'),
     path('view_file_content_guide/<str:file_type>/<int:file_id>/', views.view_file_content_guide, name='view_file_content_guide'),
     path('table/',views.table,name='table'),
+    path('delete_group/',views.delete_group,name='delete_group'),
 ]

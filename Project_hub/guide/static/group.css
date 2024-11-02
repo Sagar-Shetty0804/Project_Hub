@@ -413,3 +413,10 @@ div.guideComment {
         font-size: 12px;
     }
 }
+
+#delete{
+    color: red;
+}
+#delete:hover{
+    transform: scale(1.2);
+}

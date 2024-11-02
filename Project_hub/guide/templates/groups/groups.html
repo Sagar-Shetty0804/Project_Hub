@@ -11,20 +11,28 @@
     </div>
     <div class="mainBodyTable">
         <div id="block" class="groupOptions">
+            {% csrf_token %}
+            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
             {% for obj in data %}
+                
                 <a href="{% url 'guide:studentView' %}?button_value={{obj.groupCode}}">
                     <button class="groupOption">
-                        <p>{{obj.groupCode}}</p>
-                        <p>{{obj.projectName}}</p>
-                    </button>
+                        <p>
+                            {{obj.groupCode}}                             
+                        </p>                        
+                        <p>{{obj.projectName}}</p>                        
+                    </button>                                        
                 </a>
+                <button type = 'submit' method = 'POST' value = '{{obj.groupCode}}'>
+                    <i id="delete" class="fa-regular fa-trash-can"></i>
+                </button>
             {% endfor %} 
         </div>                
     </div>
 </div>
 
 {% endblock subBody %}
-{% block Script %}
+{% block script %}
 <script src="{% static 'groups/groups.js' %}"></script>
-{% endblock Script %}
+{% endblock script %}
 
