@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="guidesettings.css">
+    <title>Settings</title>
+</head>
+<body>
+    <div class="container">
+        <header>
+          <div class="header-container">
+            <div class="logo"></div>
+          </div>
+        </header>
+        
+        <div style="height:max-content;" class="settings-page">
+            <nav class="sidebar"></nav>
+            <br>
+            <main class="main-content">
+            <form>
+                <section id="account">
+                    <h3>Account Settings</h3>
+                    <br>
+                    <button type="button" id="popupBtn">Change Password</button>
+
+                    <div id="myPopup" class="popup">
+                    <span class="close" onclick="closePopup()">&times;</span>
+                        <br>
+                    <form>
+                    <label for="current-password">Current Password:</label>
+                    <input type="password" id="current-password">
+                    
+                    <label for="new-password">New Password:</label>
+                    <input type="password" id="new-password">
+                    
+                    <label for="confirm-password">Confirm New Password:</label>
+                    <input type="password" id="confirm-password">
+                    <br>
+                    <button class="update">Update Password</button>
+            </form>
+        </div>           
+                </section>
+                    <button class="logout">Logout</button> <br>
+                    <button class="deletion">Delete your account</button>
+                </main>
+            </div>
+
+            <footer>
+                <div class="footer-container">
+                    <p>&copy; 2024 Project Hub. All rights reserved.</p>
+                    <div class="footer-links">
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms of Service</a>
+                        <a href="#">Contact Us</a>
+                    </div>
+                </div>
+            </footer>
+        </div>
+        <script src="guidesettings.js"></script> 
+        <div class="overlay" id="overlay"></div>
+</body>
+</html>  
