@@ -7,6 +7,9 @@ from guide.models import guide_groups,guideCommnets
 from django.shortcuts import render,get_object_or_404,redirect
 from Login_page.models import RegisterStudent
 from student.models import CodeFile,DatabaseFile,AdditionalFile,DocumentFile
+from django.shortcuts import redirect
+from django.contrib import messages
+from guide.models import guide_groups
 
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -102,11 +105,14 @@ def view_file_content_guide(request, file_type, file_id):
     
     return render(request, 'groups\\view_file_content_guide.html', {'file': file_obj, 'file_type': file_type})
 
-def delete_group(request):
+def delete_selected_groups(request):
     if request.method == 'POST':
-        group_code = request.POST.get('groupCode')
-        record = guide_groups.objects.filter(groupCode = group_code)
-        record.delete()
-        groups(request)
-    
-    # return render(request,'groups\\studentView.html')
+        selected_groups = request.POST.getlist('selected_groups')
+        
+        if selected_groups:
+            guide_groups.objects.filter(groupCode__in=selected_groups).delete()
+            messages.success(request, "Selected groups deleted successfully.")
+        else:
+            messages.warning(request, "No groups selected for deletion.")
+        
+    return redirect('guide:groups')

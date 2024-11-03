@@ -50,8 +50,8 @@ body {
     width: 100%;
     height: 100px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative; /* Position relative for the delete button */
 }
-
 /* Hover effect for buttons */
 .groupOption:hover {
     background-color: #4CAF50;
@@ -66,7 +66,64 @@ body {
     font-size: 18px;
     line-height: 1.2;
 }
+.groupOptionContainer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.deleteButton {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
 
+.deleteButton:hover {
+    background-color: #c0392b;
+}
+
+.groupCheckbox {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+/* Clickable link for group details */
+.groupLink {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    text-align: center;
+}
+
+/* Delete Selected button styling */
+.deleteSelectedButton {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.deleteSelectedButton:hover {
+    background-color: #c0392b;
+}
+.settingicon{
+    margin-top: 38vh;
+}
 /* Responsive styling */
 @media (max-width: 768px) {
     .groupOption {
