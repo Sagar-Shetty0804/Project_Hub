@@ -2,30 +2,27 @@
 {% extends "student\base.html" %}
 {%load static%}
 {% block css %}
-<link rel="stylesheet" href="{% static 'student\view.css' %}">
+<link rel="stylesheet" href="{% static 'student\projectview.css' %}">
 {% endblock css %}
 {% block css_sub %}
 <style>
-    #view{
-        font-size: 2.5rem;
-        color: #dce1de;    
+    #search{
+        font-size: 32px;
+        color: #49A078;
     }
-    #view:hover{
-        box-shadow: none;
+    #upload{
+        color: #ffffff;
+        text-decoration: none;
+        font-size: x-large;
     }
 </style>
 {% endblock css_sub %}
-
 {% block sideBar %}
 <div class="function">
-    <a href="{% url 'student:upload_code_file' %}"><i class="fa-regular fa-file-code" id="code"></i></a>
-    <a href="{% url 'student:database' %}"><i class="fa-solid fa-database" id="database"></i></a>
-    <a href="{% url 'student:upload_document_file' %}"><i class="fa-solid fa-folder" id="folder"></i></a>
-    <a href="{% url 'student:upload_additional_file' %}"><i class="fa-solid fa-paperclip" id="additional"></i></a>
-    <a href="{% url 'student:file_list' %}"><i class="fa-regular fa-eye" id="view"></i></a>
+    <a href"#"><i class="fa-solid fa-bookmark" id="fav" style="padding-left: 26px; width: 80px;"></i></a>
 </div>
 <div class="settings">
-    <a><i class="fa-solid fa-gear" id="sett"></i></a>
+    <i class="fa-solid fa-gear" id="sett"></i>
 </div>
 {% endblock sideBar %}
 {% block mainBody%}

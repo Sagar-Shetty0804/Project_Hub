@@ -111,7 +111,6 @@ def delete_selected_groups(request):
         
         if selected_groups:
             guide_groups.objects.filter(groupCode__in=selected_groups).delete()
-            messages.success(request, "Selected groups deleted successfully.")
         else:
             messages.warning(request, "No groups selected for deletion.")
         

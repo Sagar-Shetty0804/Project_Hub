@@ -102,9 +102,9 @@ def file_list(request):
         messages.error(request, "You do not have a group code associated with your account.")
         return redirect('home')
     code_files = CodeFile.objects.filter(group_code=register_student)
-    database_files = DatabaseFile.objects.all()
-    document_files = DocumentFile.objects.all()
-    additional_files = AdditionalFile.objects.all()
+    database_files = DatabaseFile.objects.filter(group_code=register_student)
+    document_files = DocumentFile.objects.filter(group_code=register_student)
+    additional_files = AdditionalFile.objects.filter(group_code=register_student)
 
     context = {
         'register_student': register_student,
@@ -136,7 +136,7 @@ def project_link(request, group_code):
         'document_files': document_files,
         'additional_files': additional_files,
         }
-        return render(request, 'uploads/file_list.html', context)
+        return render(request, 'uploads/project.html', context)
     except RegisterStudent.DoesNotExist:
         messages.error(request, "No group found with the provided group code.")
         return redirect('home')

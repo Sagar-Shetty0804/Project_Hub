@@ -149,7 +149,8 @@ i:hover{
 }
 #sett{
     width: 80px;
-    padding-left: 28px;
+    padding-left: 26px;
+    margin-top: -3vh;
 }
 
 /* Footer styling */

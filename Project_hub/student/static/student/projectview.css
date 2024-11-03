@@ -85,7 +85,7 @@ main {
     font-size: 32px;
     color: #49A078;
 }
-.options a:hover:not(#upload) {
+.options a:hover:not(#search) {
     color: #49A078;
     box-shadow: 5px 2px 2px black;
 }
@@ -107,7 +107,7 @@ main {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    margin-top: 4rem;
+    margin-top: 60vh;
 
 }
 
@@ -149,8 +149,7 @@ i:hover{
 }
 #sett{
     width: 80px;
-    padding-left: 26px;
-    margin-top: 7vh;
+    padding-left: 28px;
 }
 
 /* Footer styling */
@@ -564,22 +563,6 @@ i:hover{
     box-shadow: 4px 2px 6px #1f2421;
 }
 
-/* centre body  */
-/* .mainBody::-webkit-scrollbar{
-    width: 15px;
-    scrollbar-arrow-color: #216869;
-}
-
-
-.mainBody::-webkit-scrollbar-track{
-    border: 2.5px solid #216869;
-    box-shadow: 2px 0px 1px #373a38;
-}
-.mainBody::-webkit-scrollbar-thumb {
-    background: #1f2421; 
-    border-radius: 2rem;
-    
-} */
   
 .fileView{
     display: flex;
