@@ -22,7 +22,9 @@
     <a href"#"><i class="fa-solid fa-bookmark" id="fav" style="padding-left: 26px; width: 80px;"></i></a>
 </div>
 <div class="settings">
-    <i class="fa-solid fa-gear" id="sett"></i>
+    <a href="{% url 'student:settings' %}">
+        <i class="fa-solid fa-gear" id="sett"></i>
+    </a>
 </div>
 {% endblock sideBar %}
 {% block mainBody%}

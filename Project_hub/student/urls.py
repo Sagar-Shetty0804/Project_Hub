@@ -24,6 +24,7 @@ urlpatterns = [
     path('edit/<str:file_type>/<int:file_id>/', views.edit_file, name='edit_file'),
     path('delete/<str:file_type>/<int:file_id>/', views.delete_file, name='delete_file'),
     path('files/<str:group_code>/', views.project_link, name='file_list'),
+    path('settings/', views.setting, name='settings'),
 ]
 
 if settings.DEBUG:

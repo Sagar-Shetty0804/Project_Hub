@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static "settings.css" %}">
+    <style>
+        /* Custom styles for alert messages */
+        .alert-warning {
+            background-color: rgb(243, 135, 135); /* Light green background */
+            color: rgb(214, 14, 14);
+            padding: 1rem; 
+            
+        }
+        
+        /* Success alert */
+        .alert-success {
+            background-color: #88e69e; /* Light green background */
+            color: #155724; /* Dark green text */
+            padding: 1rem;
+        }
+    </style>
+    <title>Settings</title>
+</head>
+<body style="height: max-content;">
+    <div class="container">
+        <header>
+          <div class="header-container">
+            <div class="logo"></div>
+          </div>
+        </header>
+        {% if messages %}
+{% for message in messages %}
+    
+    <div class="alert alert-{{ message.tags }} d-flex h-8 m-1 p-1" role="alert">
+        <div>
+          {{ message }}
+        </div>
+    </div>
+{% endfor %}
+{% endif %}
+        
+        <div style="height:max-content;" class="settings-page">
+            <nav class="sidebar"></nav>
+            <br>
+            <main class="main-content">
+            
+                <section id="account">
+                    <h3>Account Settings</h3>
+                    <br>
+                    <button type="button" id="popupBtn">Change Password</button>
+
+                    <div id="myPopup" class="popup">
+                    <span class="close" onclick="closePopup()">&times;</span>
+                        <br>
+                    <form method="post" action="{% url 'student:settings' %}" >
+                        {% csrf_token %}
+                        <label for="current-password">Current Password:</label>
+                        <input type="password" id="current-password" name="currentPassword">
+                        
+                        <label for="new-password">New Password:</label>
+                        <input type="password" id="new-password" name="newPassword">
+                        
+                        <label for="confirm-password">Confirm New Password:</label>
+                        <input type="password" id="confirm-password" name="confirmPassword">
+                        <br>
+                        <button class="update" type="submit" name="update">Update Password</button>
+                    </form>
+                    </div>           
+                    <br>
+                </section>
+                <br>
+                            
+                <form action="{% url 'student:settings' %}" method="post">
+                    {% csrf_token %}
+                    <button class="logout" type="submit" name="logout" >Logout</button>
+                <br>
+                
+                </form>
+                <form action="{% url 'student:settings' %}" method="post">
+                    {% csrf_token %}
+                    
+                <br>
+                    <button class="deletion" type="submit" name="delete">Delete your account</button>
+                </form>
+                </main>
+            </div>
+            
+            <footer>
+                <div class="footer-container">
+                    <p>&copy; 2024 Project Hub. All rights reserved.</p>
+                    <div class="footer-links">
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms of Service</a>
+                        <a href="#">Contact Us</a>
+                    </div>
+                </div>
+            </footer>
+        </div>
+        <script>
+            document.querySelector('.logout').addEventListener('click', function(event) {
+              if (!confirm('Are you sure you want to logout?')) {
+                event.preventDefault();
+              }
+            });
+          
+            document.querySelector('.deletion').addEventListener('click', function(event) {
+              if (!confirm('Are you sure you want to delete your account?')) {
+                event.preventDefault();
+              }
+            });
+          </script>
+        <script src="{% static 'settings.js' %}"></script> 
+        <div class="overlay" id="overlay"></div>
+</body>
+</html>
+    

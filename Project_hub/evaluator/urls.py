@@ -7,5 +7,6 @@ urlpatterns = [
     path('studentView/',views.studentView,name='studentView'),
     path('table/',views.table,name='table'),
     path('files/<str:file_type>/<int:file_id>/', views.view_file_content_eval, name='view_file_content_eval'),
+    path('settings/', views.setting, name='settings'),
     
 ]

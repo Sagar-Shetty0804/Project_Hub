@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 from django.http import FileResponse  
 from django.conf import settings  
@@ -262,3 +262,59 @@ def upload_additional_file(request):
         form = AdditionalFileUploadForm()
     
     return render(request, 'uploads\\additional.html', {'form': form})
+
+def setting(request):
+    
+
+    
+    if request.method == 'POST':
+        
+        if 'update' in request.POST:
+            print("update")
+            
+            currentPassword = request.POST.get('currentPassword')
+            confirmPassword = request.POST.get('confirmPassword')
+            newPassword = request.POST.get('newPassword')
+            
+            if currentPassword :
+                # Perform password validation and update logic
+                user = request.user
+                if user.check_password(currentPassword):
+                    if confirmPassword == newPassword :
+                        # user.set_password(newPassword)
+                        # user.save()
+                        if len(newPassword) >= 8:
+                            user.set_password(newPassword)
+                            user.save()
+                        
+                            messages.success(request, 'Password updated successfully.')
+                        else:
+                            messages.warning(request, 'Password must be at least 8 characters long.')
+                    else:
+                        messages.warning(request, 'Passwords do not match.')
+                else:
+                    messages.warning(request, 'Incorrect current password.')
+            else:
+                messages.warning(request, 'Please enter your current password.')        
+        
+        elif 'logout' in request.POST:
+            # Handle logout logic
+            logout(request)
+            messages.success(request, 'Logged out successfully.')
+            return redirect('/')
+        elif 'delete' in request.POST:
+            # Handle delete logic
+            user = request.user
+            user.delete()
+
+            reg = RegisterStudent.objects.filter(username=user)
+            reg.delete()
+
+            messages.success(request, 'Account deleted successfully.')
+            
+            return redirect('/')  
+            print("delete")
+        
+        
+
+    return render(request, 'settings\\settings.html')
