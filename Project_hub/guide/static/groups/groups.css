@@ -31,7 +31,7 @@ body {
 .groupOptions {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid */
-    gap: 20px; /* Spacing between buttons */
+    gap: 40px; /* Spacing between buttons */
     padding: 10px;
 }
 
@@ -117,7 +117,11 @@ body {
     cursor: pointer;
     transition: background-color 0.3s;
 }
-
+.deleteButtonContainer {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
 .deleteSelectedButton:hover {
     background-color: #c0392b;
 }
