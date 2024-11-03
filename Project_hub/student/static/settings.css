@@ -20,7 +20,7 @@ body {
 
 /* Header Styles */
 header {
-    background-color: #1f2421;
+    background-color: #1d1f21;
     color: #fff;
     padding: 40px 20px;
     display: flex;
@@ -69,16 +69,21 @@ header {
     width: 75px;
     background: #216869;
     padding: 15px;
+    background: linear-gradient(135deg, #009688, #004d40);
 }
+
 
 /* Main Content Styles */
 .main-content {
     flex: 1;
-    padding: 20px;
+    padding: 40px;
     background-color: #dce1de;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
 }
-
+.main-content:hover {
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
+}
 /* Form Styles */
 form {
     max-width: 600px;
@@ -87,18 +92,27 @@ form {
 section h3 {
     color: #333;
     margin-bottom: 20px;
+    font-size: 27px;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15);
 }
 
 /* Button Styles */
 button {
     padding: 10px 20px;
     border: none;
-    border-radius: 35px;
+    border-radius: 30px;
     cursor: pointer;
     margin: 5px 0;
-    transition: background-color 0.3s;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
-
+button:hover {
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
 #popupBtn {
     background-color: #49A078;
     color: white;
@@ -124,37 +138,39 @@ button {
 }
 
 .deletion {
-    background-color: #dc3545;
+    background-color: #ef5350;
     color: white;
 }
 
-.deletion:hover{ background-color: orange;}
+.deletion:hover{ background-color: #c62828;
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);}
 
 button:hover {
     opacity: 0.9;
     background-color: #216869;
 }
 
-/* Popup Styles */
 .popup {
     display: none;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
     z-index: 1000;
-    width: 80%;
-    background-color: #eeeeee ;
+    width: 90%;
+    max-width: 500px;
+    transition: all 0.3s ease;
 }
 
 .close {
     position: absolute;
-    right: 10px;
-    top: 5px;
+    right: 15px;
+    top: 1px;
     font-size: 40px;
     cursor: pointer;
     color: red;
@@ -170,10 +186,11 @@ label {
 input[type="password"] {
     width: 100%;
     padding: 8px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     border: 1px solid #ddd;
     border-radius: 4px;
 }
+
 
 /* Overlay Styles */
 .overlay {
