@@ -3,3 +3,48 @@
 {% block css %}
 <link rel="stylesheet" href="{% static 'student\resources.css' %}">
 {% endblock css %}
+
+{% block sideBar %}
+
+
+<div class="settings">
+  <a href="{% url 'student:settings' %}">
+    <i class="fa-solid fa-gear" id="sett"></i>
+  </a>
+
+</div>
+{% endblock sideBar %}
+
+{% block mainBody %}
+    <div class="frontEndLinks">
+        hi
+    </div>
+    <div class="backEndLinks">
+        hi
+    </div>
+    <div class="personal">
+        <div class="addedLinks">
+            {% for link in links %}
+                <a href="http://{{link.reference}}" target="_blank">{{link.linkName}}</a>
+            {% endfor %}
+        </div>
+        <button id= "addLink" name="addLink">add link</button>
+        <div id="myPopup" class="popup">
+            <span class="close" onclick="closePopup()">&times;</span>
+                <br>
+            <form method="post" action="/studentPage/resources/" >
+                {% csrf_token %}
+                <label for="linkName">Link Name</label>
+                <input type="text" id="linkName" name="linkName">
+                <label for="refLink">Reference Link</label>
+                <input type="text" id="refLink" name="refLink">
+                <button class="submitLink" type="submit" name="submitLink">Submit Link</button>
+            </form>
+            
+        </div>
+    </div>
+{% endblock mainBody %}
+
+{% block resScript %}
+    <script src="{% static 'student\resources.js' %}"></script>
+{% endblock resScript %}

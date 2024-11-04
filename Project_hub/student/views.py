@@ -7,7 +7,7 @@ from django.contrib.auth.models import User,Group
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import CodeFileUploadForm, DatabaseFileUploadForm, DocumentFileUploadForm, AdditionalFileUploadForm
-from .models import CodeFile, DatabaseFile, DocumentFile, AdditionalFile
+from .models import CodeFile, DatabaseFile, DocumentFile, AdditionalFile,reference
 import os
 # Create your views here.
 def homePage(request):
@@ -62,7 +62,30 @@ def search(request):
     return render(request, 'student/search.html', context)
 
 def resources(request):
-    return render(request,'student\\resources.html')
+    if request.method == 'POST':
+        user  = request.user
+        link = request.POST.get('refLink')
+        linkName = request.POST.get('linkName')
+        
+        if link:
+            projCode = RegisterStudent.objects.filter(username=user).values('groupCode')
+            if len(projCode) != 0:
+                projCode = projCode[0]['groupCode']
+                register = reference(group_code=projCode,reference=link,linkName=linkName)
+                register.save()
+            else:
+                messages.error(request, "You do not have a group code associated with your account.")
+    
+    user = request.user
+    if user.is_authenticated:
+        projCode = RegisterStudent.objects.filter(username=user).values('groupCode')[0]['groupCode']
+        links = reference.objects.filter(group_code=projCode).values('reference')
+        print(links)
+
+            
+        
+
+    return render(request,'student\\resources.html',{'links':links})
 
 def group_file(request):
     return render(request,'group\\file.html')

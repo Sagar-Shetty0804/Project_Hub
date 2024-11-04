@@ -93,3 +93,10 @@ class AdditionalFile(models.Model):
         return f"{self.group_code.groupCode} - Additional File"
 
 
+class reference(models.Model):
+    group_code = models.CharField(max_length=20)
+    reference = models.CharField(max_length=100)
+    linkName = models.CharField(max_length=50,default='blank')
+
+    def __str__(self):
+        return f"{self.group_code} - Reference link"

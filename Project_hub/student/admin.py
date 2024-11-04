@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib import admin
-from .models import CodeFile, DatabaseFile, DocumentFile, AdditionalFile
+from .models import CodeFile, DatabaseFile, DocumentFile, AdditionalFile, reference
 from Login_page.models import RegisterStudent
 
 class FileAdminForm(forms.ModelForm):
@@ -32,3 +32,4 @@ admin.site.register(CodeFile, FileAdmin)
 admin.site.register(DatabaseFile, FileAdmin)
 admin.site.register(DocumentFile, FileAdmin)
 admin.site.register(AdditionalFile, FileAdmin)
+admin.site.register(reference)
