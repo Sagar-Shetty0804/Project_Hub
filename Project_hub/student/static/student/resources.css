@@ -241,7 +241,7 @@ footer {
 
 .frontEndLinks:hover, .backEndLinks:hover, .addedLinks:hover {
     color: #216869;
-    transform: scale(1.05);
+    /* transform: scale(1); */
 }
 .frontEndLinks a:hover,
 .backEndLinks a:hover,
