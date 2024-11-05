@@ -16,31 +16,50 @@
 {% endblock sideBar %}
 
 {% block mainBody %}
-    <div class="frontEndLinks">
-        hi
-    </div>
-    <div class="backEndLinks">
-        hi
-    </div>
-    <div class="personal">
-        <div class="addedLinks">
-            {% for link in links %}
-                <a href="http://{{link.reference}}" target="_blank">{{link.linkName}}</a>
-            {% endfor %}
+    <div class='up'>
+        <div class="link-section front-end">
+            <h2>Front-End Links</h2>
+            <div class="frontEndLinks">
+                <a href="https://developer.mozilla.org/en-US/docs/Web/HTML">Html</a>
+                <a href="https://developer.mozilla.org/en-US/docs/Web/CSS">Css</a>
+                <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript">JavaScript</a>
+                <a href="https://books.google.co.in/books?hl=en&lr=&id=XyNIEAAAQBAJ&oi=fnd&pg=PR11&dq=articles+on+project+management+in+educational+institutes&ots=UV2-RiJiCU&sig=r_StAuYgMM_Yco9dithmxbtJn_I#v=onepage&q=articles%20on%20project%20management%20in%20educational%20institutes&f=false">Projet Management</a>
+            </div>
         </div>
-        <button id= "addLink" name="addLink">add link</button>
-        <div id="myPopup" class="popup">
-            <span class="close" onclick="closePopup()">&times;</span>
-                <br>
-            <form method="post" action="/studentPage/resources/" >
-                {% csrf_token %}
-                <label for="linkName">Link Name</label>
-                <input type="text" id="linkName" name="linkName">
-                <label for="refLink">Reference Link</label>
-                <input type="text" id="refLink" name="refLink">
-                <button class="submitLink" type="submit" name="submitLink">Submit Link</button>
-            </form>
-            
+        <div class="link-section back-end">
+            <h2>Back-End Links</h2>
+            <div class="backEndLinks">
+                <a href="https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django">Django Mdn</a>
+                <a href="https://docs.djangoproject.com/en/5.1/">Django</a>
+                <a href="https://developer.mozilla.org/en-US/docs/Glossary/Python">Python Mdn</a>
+                <a href="https://developer.mozilla.org/en-US/docs/Glossary/PHP">Php Mdn</a>
+            </div>
+        </div>
+    </div>
+    <div class="down">
+        <div class="link-section personal" style="height: 40vh;"">
+            <h2>Personal Links</h2>
+            <div class="personal">
+                <div class="addedLinks">
+                    {% for link in links %}
+                        <a href="http://{{link.reference}}" target="_blank">{{link.linkName}}</a>
+                    {% endfor %}
+                </div>
+                <button id= "addLink" name="addLink">add link</button>
+                <div id="myPopup" class="popup">
+                    <span class="close" onclick="closePopup()">&times;</span>
+                        <br>
+                    <form method="post" action="/studentPage/resources/" >
+                        {% csrf_token %}
+                        <label for="linkName" style="color: #49A078;font-weight: bold;font-size: 19px;">Link Name</label>
+                        <input type="text" id="linkName" name="linkName" style="margin: 10px;margin-right: 10rem;">
+                        <label for="refLink" style="color: #49A078;font-weight: bold;font-size: 19px;">Reference Link</label>
+                        <input type="text" id="refLink" name="refLink" style="margin: 10px;margin-right: 3rem;">
+                        <button class="submitLink" type="submit" name="submitLink">Submit Link</button>
+                    </form>
+                    
+                </div>
+            </div>
         </div>
     </div>
 {% endblock mainBody %}

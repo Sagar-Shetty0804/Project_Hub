@@ -79,7 +79,7 @@ def resources(request):
     user = request.user
     if user.is_authenticated:
         projCode = RegisterStudent.objects.filter(username=user).values('groupCode')[0]['groupCode']
-        links = reference.objects.filter(group_code=projCode).values('reference')
+        links = reference.objects.filter(group_code=projCode).values('reference', 'linkName')
         print(links)
 
             

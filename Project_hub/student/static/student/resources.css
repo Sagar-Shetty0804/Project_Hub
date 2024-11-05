@@ -15,6 +15,21 @@ body {
     min-height: 100vh;
 }
 
+.mainBody{
+    display: flex;
+    height: 85vh;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.7rem;
+}
+.up{
+    display: flex;
+    flex-direction: row;
+    gap: 7vw;
+    margin-left: 6vw;
+    margin-right: 2.45vw;
+    width: 80vw;
+}
 /* Header styling */
 header {
     background-color: #1f2421;
@@ -81,17 +96,21 @@ main {
 
 
 }
-#resources{
+#resourses{
     font-size: 32px;
     color: #49A078;
 }
-.options a:hover:not(#resources) {
+#group{
+    font-size: 32px;
+    color: #49A078;
+}
+.options a:hover:not(#group) {
     color: #49A078;
     box-shadow: 5px 2px 2px black;
 }
 
 
-/* side bar styling
+/* side bar styling */
 .sideBar{
     width: 5rem;
     height: 100%;
@@ -109,7 +128,7 @@ main {
     justify-content: center;
     margin-top: 12rem;
 
-} */
+}
 
 /* icon styling */
 i {
@@ -123,6 +142,19 @@ i:hover{
     box-shadow: 5px 2px 2px black;
 }
 
+#file{
+    width: 80px;
+    padding-left: 28px;
+}
+#bell{
+    width: 80px;
+    padding-left: 28px;
+}
+#sett{
+    width: 80px;
+    padding-left: 26px;
+    margin-top: 43vh;
+}
 
 /* Footer styling */
 footer {
@@ -150,4 +182,124 @@ footer {
 
 .footer-links a:hover {
     text-decoration: underline;
+}
+
+
+
+/* Link section styling */
+.link-section {
+    width: 90%;
+    max-width: 800px;
+    margin: 15px auto;
+    padding: 20px;
+    border: 2px solid #49A078; /* Greenish border color */
+    border-radius: 10px;
+    background-color: #f5f8f7;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Heading styling within each link section */
+.link-section h2 {
+    color: #216869;
+    font-size: 1.8em;
+    margin-bottom: 15px;
+}
+
+/* Specific styling for each type of link box */
+.front-end, .back-end, .personal {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 10px;
+    height: 220px;
+    width: 50vw;
+}
+
+/* Link styling within each section */
+.frontEndLinks, .backEndLinks, .addedLinks {
+    display: flex;
+    max-height: 110px;
+    overflow-y: auto;
+    width: 33vw;
+    color: #49A078;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1em;
+    padding: 5px;
+    flex-direction: column;
+    transition: color 0.3s, transform 0.3s;
+}
+.frontEndLinks a,
+.backEndLinks a,
+.addedLinks a {
+    color: #49A078;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1em;
+    padding: 5px;
+}
+
+.frontEndLinks:hover, .backEndLinks:hover, .addedLinks:hover {
+    color: #216869;
+    transform: scale(1.05);
+}
+.frontEndLinks a:hover,
+.backEndLinks a:hover,
+.addedLinks a:hover {
+    color: #216869;
+    transform: scale(1.05);
+}
+.personal{
+    margin: 10px;
+}
+/* Popup form styling */
+.popup {
+    width: 90%;
+    max-width: 500px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+    z-index: 1000;
+}
+.popup .close {
+    font-size: 28px;
+    color: #216869;
+    float: right;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+.addedLinks{
+    width: 45vw;
+}
+
+.submitLink{
+    background-color: #49A078;
+    color: white;
+    width: 90px;
+    height: 30px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+#addLink {
+    background-color: #49A078;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1)
+}
+
+#addLink:hover {
+    background-color: #216869;
 }
