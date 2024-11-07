@@ -34,7 +34,7 @@
         {% for file in code_files %}
             <li>
                 <strong>{{ file.group_code.groupCode }}</strong>: 
-                <a href="{% url 'student:view_file_content' 'code' file.id %}">{{ file.file.name }}</a> - Uploaded on {{ file.upload_date }}
+                <a href="{% url 'student:project_file_content' 'code' file.id %}">{{ file.file.name }}</a> - Uploaded on {{ file.upload_date }}
                 {% if user.username == file.group_code.username %}
                 <a href="{% url 'student:edit_file' 'code' file.id %}">Edit</a>
                 <a href="{% url 'student:delete_file' 'code' file.id %}" style="color: red; margin-left: 10px;">Delete</a>
@@ -50,7 +50,7 @@
         {% for file in database_files %}
             <li>
                 <strong>{{ file.group_code.groupCode }}</strong>: 
-                <a href="{% url 'student:view_file_content' 'database' file.id %}">{{ file.file.name }}</a> - Uploaded on {{ file.upload_date }}
+                <a href="{% url 'student:project_file_content' 'database' file.id %}">{{ file.file.name }}</a> - Uploaded on {{ file.upload_date }}
                 {% if user.username == file.group_code.username %}
                 <a href="{% url 'student:delete_file' 'database' file.id %}" style="color: red; margin-left: 10px;">Delete</a>
                 {% endif %}

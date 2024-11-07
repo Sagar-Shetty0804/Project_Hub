@@ -21,9 +21,10 @@ urlpatterns = [
     path('upload/', views.upload_code_file, name='upload_code_file'),
     path('files/', views.file_list, name='file_list'),  # New URL pattern for the file list
     path('files/<str:file_type>/<int:file_id>/', views.view_file_content, name='view_file_content'),  # New URL pattern
+    path('file/<str:file_type>/<int:file_id>/', views.project_file_content, name='project_file_content'),
     path('edit/<str:file_type>/<int:file_id>/', views.edit_file, name='edit_file'),
     path('delete/<str:file_type>/<int:file_id>/', views.delete_file, name='delete_file'),
-    path('files/<str:group_code>/', views.project_link, name='file_list'),
+    path('files/<str:group_code>/', views.project_link, name='project_list'),
     path('settings/', views.setting, name='settings'),
 ]
 

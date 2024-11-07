@@ -1,0 +1,40 @@
+<!DOCTYPE html >
+{% extends "student\base.html" %}
+{%load static%}
+{% block css %}
+<link rel="stylesheet" href="{% static 'student\projectviewcontent.css' %}">
+{% endblock css %}
+{% block css_sub %}
+<style>
+    #search{
+        font-size: 32px;
+        color: #49A078;
+    }
+    #upload{
+        color: #ffffff;
+        text-decoration: none;
+        font-size: x-large;
+    }
+</style>
+{% endblock css_sub %}
+{% block sideBar %}
+<div class="function">
+    <a href"#"><i class="fa-solid fa-bookmark" id="fav" style="padding-left: 26px; width: 80px;"></i></a>
+</div>
+<div class="settings">
+    <a href="{% url 'student:settings' %}">
+        <i class="fa-solid fa-gear" id="sett"></i>
+    </a>
+</div>
+{% endblock sideBar %}
+{% block mainBody%}
+    <h1>File Content</h1>
+
+    <h2>{{ file.file.name }}</h2>
+    <p><strong>Group Code:</strong> {{ file.group_code.groupCode }}</p>
+    <p><strong>Uploaded on:</strong> {{ file.upload_date }}</p>
+
+    <pre>{{ file.content }}</pre>  <!-- Display the file content in a preformatted block -->
+
+
+{% endblock mainBody %}

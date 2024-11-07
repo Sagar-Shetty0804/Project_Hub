@@ -38,7 +38,7 @@
                             {% endfor %}
                         </ul>
                     </td>
-                    <td><a href="{% url 'student:file_list' group_code=group.group_code %}">View Project</a>
+                    <td><a href="{% url 'student:project_list' group_code=group.group_code %}">View Project</a>
                     </td>
                 </tr>
             {% empty %}

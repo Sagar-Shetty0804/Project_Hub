@@ -198,6 +198,23 @@ def view_file_content(request, file_type, file_id):
 
     return render(request, 'uploads\\view_file_content.html', {'file': file_obj, 'file_type': file_type})
 
+def project_file_content(request, file_type, file_id):
+    # Determine the type of file and get the corresponding file object
+    if file_type == 'code':
+        file_obj = get_object_or_404(CodeFile, id=file_id)
+    elif file_type == 'database':
+        file_obj = get_object_or_404(DatabaseFile, id=file_id)
+    elif file_type == 'document':
+        file_obj = get_object_or_404(DocumentFile, id=file_id)
+        if file_obj.file.name.endswith('.pdf'):
+            file_path = os.path.join(settings.MEDIA_ROOT, file_obj.file.name)
+            return FileResponse(open(file_path, 'rb'), content_type='application/pdf')
+    elif file_type == 'additional':
+        file_obj = get_object_or_404(AdditionalFile, id=file_id)
+    else:
+        return render(request, '404.html')  # Handle unknown file types
+
+    return render(request, 'uploads\\projectview.html', {'file': file_obj, 'file_type': file_type})
 
 @login_required
 def edit_file(request, file_type, file_id):
