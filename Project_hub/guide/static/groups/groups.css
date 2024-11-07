@@ -139,3 +139,35 @@ body {
         font-size: 24px;
     }
 }
+
+.deleteSelectedButton, .groupCheckbox {
+    display: none;
+}
+.editButton {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, transform 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.editButton:hover {
+    background-color: #216869;
+    transform: scale(1.1);
+}
+
+.editButton i {
+    font-size: 20px;
+    margin: 0;
+    pointer-events: none; /* Prevents hover effects on the icon itself */
+}
+

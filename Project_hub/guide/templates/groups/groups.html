@@ -1,13 +1,18 @@
 {% extends "guide.html" %}
 {% load static %}
 {% block subcss %}
-<link rel="stylesheet" href="{% static 'groups/groups.css' %}">  
+<link rel="stylesheet" href="{% static 'groups/groups.css' %}">
+
 {% endblock subcss %}
 
 {% block subBody %}
 <div class="mainBody">
     <div id="group" class="mainBodyHead">
         Groups
+        <button class="editButton" onclick="editGroup()">
+            <i class="fa-solid fa-pencil"></i>
+        </button>
+        
     </div>
     <form method="POST" action="{% url 'guide:delete_selected_groups' %}">
         {% csrf_token %}
