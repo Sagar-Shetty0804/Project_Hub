@@ -158,6 +158,7 @@ i {
 
 i:hover{
     cursor: pointer;
+    color: #2c888a;
     box-shadow: 5px 2px 2px black;
 }
 
