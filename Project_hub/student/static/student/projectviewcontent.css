@@ -194,7 +194,7 @@ a{
     display: flex;
     align-items: center;
     flex-direction: column;
-    text-align: center;
+    text-align: start;
     background-color: #ffffff; /* White background for contrast */
     border-radius: 12px; /* Slightly larger border radius */
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Enhanced shadow for depth */
@@ -461,7 +461,7 @@ pre {
     border: 1px solid #ddd;
     border-radius: 8px;
     padding: 20px;
-    width: 100%;
+    width: 85%;
     font-size: 16px;
     line-height: 1.6;
     margin-top: 20px;
