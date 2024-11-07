@@ -12,12 +12,12 @@ from googleapiclient.discovery import build
 
 # Create your views here.
 
-# creds = service_account.Credentials.from_service_account_file(
-#         'project-hub-440106-e683f700cc48.json',
-#         scopes=['https://www.googleapis.com/auth/spreadsheets']
-#     )
+creds = service_account.Credentials.from_service_account_file(
+        'project-hub-440106-872af333b658.json',
+        scopes=['https://www.googleapis.com/auth/spreadsheets']
+    )
 
-# service = build('sheets', 'v4', credentials=creds)
+service = build('sheets', 'v4', credentials=creds)
 
 def addStudentData(data_dict):
     if data_dict is not None:
@@ -81,7 +81,7 @@ def addStudentData(data_dict):
                     body=update_body
                 ).execute()
                 
-                print(f"Added member '{new_member_name}' to group '{data_dict['groupCode']}' in row {current_row}.")
+                print(f"Added member '{new_member_class}' to group '{data_dict['groupCode']}' in row {current_row}.")
                 break
             
             current_row += 1  # Move to the next row in column C if the cell is not empty
@@ -157,9 +157,9 @@ def mergecell(data_dict):
             end_row = start_row + 3
 
         # Merge and populate columns A, B, and C with data for groupCode, projectName, and name
-        for col, key in zip([0, 1, 2], ['groupCode', 'projectName', 'Class', 'name']):
+        for col, key in zip([0, 1, 2, 3], ['groupCode', 'projectName', 'Class', 'name']):
             # Define the merge request
-            if col != 2:
+            if col != 2 and col != 3:
                 merge_request = {
                     "requests": [
                         {
@@ -210,7 +210,7 @@ def addProjectName(request):
 
             register.projectName = projName
             register.save()
-            # mergecell(data_dict)
+            mergecell(data_dict)
             messages.success(request,"Registration Successful")
             
             
@@ -308,7 +308,7 @@ def registerStudent(request):
                                      'projYear':projYear,
                                      'Class':Class
                                     }
-                        # addStudentData(data_dict)
+                        addStudentData(data_dict)
 
                     messages.success(request, "Registration succesfull")
                 else:

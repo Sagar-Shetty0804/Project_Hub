@@ -109,7 +109,7 @@ label {
     padding-top: 1rem;
 }
 
-input[type="text"], input[type="password"], input[type="email"] {
+input[type="text"], input[type="password"], input[type="email"],input[type="number"],select {
     padding: 10px;
     margin-bottom: 15px;
     border: 1px solid #ddd;
