@@ -16,8 +16,10 @@
                 {% for obj in data %}
                     <div class="groupOption">
                         <!-- Checkbox to select the group, positioned outside the anchor link -->
-                        <input type="checkbox" name="selected_groups" value="{{ obj.groupCode }}" class="groupCheckbox">
-                        
+                        <div class="checkbox">
+                            <input type="checkbox" name="selected_groups" value="{{ obj.groupCode }}" class="groupCheckbox">
+                        </div>
+
                         <!-- Group information as a clickable link -->
                         <a href="{% url 'guide:studentView' %}?button_value={{ obj.groupCode }}" class="groupLink">
                             <p>{{ obj.groupCode }}</p>

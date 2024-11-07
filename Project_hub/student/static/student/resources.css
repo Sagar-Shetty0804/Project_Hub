@@ -247,7 +247,7 @@ footer {
 .backEndLinks a:hover,
 .addedLinks a:hover {
     color: #216869;
-    transform: scale(1.05);
+    transform: scale(1.02);
 }
 .personal{
     margin: 10px;

@@ -42,7 +42,7 @@
             <div class="personal">
                 <div class="addedLinks">
                     {% for link in links %}
-                        <a href="http://{{link.reference}}" target="_blank">{{link.linkName}}</a>
+                        <a href="{{link.reference}}" target="_blank">{{link.linkName}}</a>
                     {% endfor %}
                 </div>
                 <button id= "addLink" name="addLink">add link</button>
