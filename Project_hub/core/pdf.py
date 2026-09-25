@@ -10,11 +10,11 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.units import mm
 from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
 
-INK = colors.HexColor("#1B1A17")
-MUTED = colors.HexColor("#6B665C")
-ACCENT = colors.HexColor("#23407A")
-LINE = colors.HexColor("#DDD6C8")
-PAPER = colors.HexColor("#FBF8F2")
+INK = colors.HexColor("#121722")
+MUTED = colors.HexColor("#687387")
+ACCENT = colors.HexColor("#2C4FD6")
+LINE = colors.HexColor("#E0E5EC")
+PAPER = colors.HexColor("#F8FAFC")
 
 
 def certificate(project, student, results):

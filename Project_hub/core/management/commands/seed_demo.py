@@ -75,8 +75,8 @@ PROJECTS = [
     },
 ]
 
-TONES = [("#23407A", "#DCE4F2"), ("#8A3B25", "#F4DDD3"), ("#2F5D4A", "#D9EAE0"),
-         ("#7A5C1E", "#F3E7C9"), ("#3E5566", "#DDE6EC"), ("#7E2D45", "#F2D9E0")]
+TONES = [("#2C4FD6", "#E0E7FF"), ("#C2452D", "#FCE3DD"), ("#0F766E", "#D5F0EC"),
+         ("#1E293B", "#DCE3EE"), ("#475569", "#E2E8F0"), ("#9D2F63", "#F8DDEA")]
 
 SHARED_HELPER = """// Shared date helpers
 export function formatDate(d) {
@@ -99,7 +99,7 @@ def mock_screenshot(title, tone, variant):
     """Draw a simple app-screenshot-like image so demo galleries aren't empty."""
     bg, fg = TONES[tone]
     w, h = 1280, 800
-    img = Image.new("RGB", (w, h), "#F7F4EE")
+    img = Image.new("RGB", (w, h), "#F6F8FB")
     d = ImageDraw.Draw(img)
     try:
         font_big = ImageFont.truetype("arial.ttf", 38)
@@ -109,32 +109,32 @@ def mock_screenshot(title, tone, variant):
     d.rectangle([0, 0, w, 70], fill=bg)
     d.text((32, 20), title, fill=fg, font=font)
     if variant == 0:
-        d.rectangle([0, 70, 250, h], fill="#EDE7DC")
+        d.rectangle([0, 70, 250, h], fill="#E9EEF4")
         for i in range(6):
             d.rounded_rectangle([24, 110 + i * 56, 226, 146 + i * 56], 8, fill="#FFFFFF" if i else fg)
-        d.text((300, 110), "Dashboard", fill="#1B1A17", font=font_big)
+        d.text((300, 110), "Dashboard", fill="#121722", font=font_big)
         for i in range(3):
             x = 300 + i * 320
-            d.rounded_rectangle([x, 180, x + 290, 330], 14, fill="#FFFFFF", outline="#E1D8C8", width=2)
-            d.text((x + 24, 200), ["Orders today", "Avg. wait", "Revenue"][i], fill="#787165", font=font)
+            d.rounded_rectangle([x, 180, x + 290, 330], 14, fill="#FFFFFF", outline="#E0E5EC", width=2)
+            d.text((x + 24, 200), ["Orders today", "Avg. wait", "Revenue"][i], fill="#687387", font=font)
             d.text((x + 24, 250), ["128", "4 min", "₹9,420"][i], fill=bg, font=font_big)
-        d.rounded_rectangle([300, 360, 1240, 760], 14, fill="#FFFFFF", outline="#E1D8C8", width=2)
+        d.rounded_rectangle([300, 360, 1240, 760], 14, fill="#FFFFFF", outline="#E0E5EC", width=2)
         pts = [(340 + i * 85, 700 - random.randint(40, 280)) for i in range(11)]
         d.line(pts, fill=bg, width=5, joint="curve")
     elif variant == 1:
         for i in range(2):
             for j in range(3):
                 x, y = 60 + j * 400, 120 + i * 330
-                d.rounded_rectangle([x, y, x + 360, y + 290], 16, fill="#FFFFFF", outline="#E1D8C8", width=2)
+                d.rounded_rectangle([x, y, x + 360, y + 290], 16, fill="#FFFFFF", outline="#E0E5EC", width=2)
                 d.rounded_rectangle([x + 16, y + 16, x + 344, y + 170], 10, fill=fg)
-                d.text((x + 20, y + 190), f"Item {i * 3 + j + 1}", fill="#1B1A17", font=font)
+                d.text((x + 20, y + 190), f"Item {i * 3 + j + 1}", fill="#121722", font=font)
                 d.rounded_rectangle([x + 20, y + 236, x + 150, y + 272], 8, fill=bg)
     else:
-        d.rounded_rectangle([340, 150, 940, 690], 20, fill="#FFFFFF", outline="#E1D8C8", width=2)
+        d.rounded_rectangle([340, 150, 940, 690], 20, fill="#FFFFFF", outline="#E0E5EC", width=2)
         d.ellipse([560, 200, 720, 360], fill=fg, outline=bg, width=6)
         d.text((500, 400), "Recognised: HELLO", fill=bg, font=font_big)
         for i in range(4):
-            d.rounded_rectangle([400, 480 + i * 45, 880, 510 + i * 45], 8, fill="#EDE7DC")
+            d.rounded_rectangle([400, 480 + i * 45, 880, 510 + i * 45], 8, fill="#E9EEF4")
     buf = io.BytesIO()
     img.save(buf, "PNG", optimize=True)
     return buf.getvalue()

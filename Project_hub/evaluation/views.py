@@ -226,7 +226,7 @@ def export(request, pk):
     head_row = ws.max_row
     for cell in ws[head_row]:
         cell.font = Font(bold=True, color="FFFFFF")
-        cell.fill = PatternFill("solid", fgColor="23407A")
+        cell.fill = PatternFill("solid", fgColor="2C4FD6")
         cell.alignment = Alignment(vertical="center", wrap_text=True)
     ws["A1"].font = Font(bold=True, size=14)
 
