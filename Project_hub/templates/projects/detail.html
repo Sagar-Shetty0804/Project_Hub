@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+{% load hub %}
+{% block title %}{{ project.title }}{% endblock %}
+{% block content %}
+
+{% include "projects/_tabs.html" with active="showcase" %}
+
+<div class="reveal">
+  {% include "partials/cover.html" with extra="hero-cover" %}
+</div>
+
+<div class="layout-side mt-3">
+  <div>
+    <div class="reveal" style="--d:1">
+      <div class="row row-wrap" style="--gap:8px">
+        <span class="eyebrow">{{ project.period_label }} · {{ project.get_branch_display }}</span>
+        <span class="badge {% if project.status == 'completed' %}badge-ok{% elif project.status == 'building' %}badge-accent{% endif %}">{{ project.get_status_display }}</span>
+        {% if not project.is_published %}<span class="badge badge-warn">Hidden from Explore</span>{% endif %}
+      </div>
+      <h1 class="display mt-1" style="font-size:clamp(34px,5vw,54px)">{{ project.title }}</h1>
+      {% if project.tagline %}<p class="serif-italic mt-1" style="font-size:21px;color:var(--ink-2)">{{ project.tagline }}</p>{% endif %}
+    </div>
+
+    <div class="row row-wrap mt-3 reveal" style="--d:2;--gap:8px">
+      <form method="post" action="{% url 'projects:like' project.code %}" data-toggle>{% csrf_token %}
+        <button class="btn toggle-btn {% if liked %}active{% endif %}" data-kind="like" aria-label="Like"><svg class="i"><use href="#i-heart"/></svg><span data-count-label>{{ like_count }}</span></button>
+      </form>
+      <form method="post" action="{% url 'projects:bookmark' project.code %}" data-toggle>{% csrf_token %}
+        <button class="btn toggle-btn {% if bookmarked %}active{% endif %}" data-kind="bookmark"><svg class="i"><use href="#i-bookmark"/></svg><span data-label data-on="Saved" data-off="Save">{% if bookmarked %}Saved{% else %}Save{% endif %}</span></button>
+      </form>
+      {% if project.demo_url %}<a href="{{ project.demo_url }}" target="_blank" rel="noopener" class="btn"><svg class="i"><use href="#i-play"/></svg>Live demo<svg class="i i-sm muted"><use href="#i-external"/></svg></a>{% endif %}
+      {% if can_edit %}<a href="{% url 'projects:edit' project.code %}" class="btn btn-ghost"><svg class="i"><use href="#i-pencil"/></svg>Edit details</a>{% endif %}
+      {% if user.is_admin_role %}
+      <form method="post" action="{% url 'evaluation:feature' project.code %}">{% csrf_token %}
+        <button class="btn btn-ghost"><svg class="i"><use href="#i-star"/></svg>{% if project.is_featured %}Unfeature{% else %}Feature{% endif %}</button>
+      </form>
+      {% endif %}
+    </div>
+
+    <section class="mt-4 reveal">
+      <div class="section-title"><h2>About the project</h2></div>
+      {% if project.abstract %}<div class="prose">{{ project.abstract }}</div>
+      {% else %}<p class="muted">No abstract yet.{% if can_edit %} <a class="link" href="{% url 'projects:edit' project.code %}">Add one</a> so visitors know what you built.{% endif %}</p>{% endif %}
+      {% if project.tags %}<div class="chips mt-2">{% for t in project.tags %}<a class="tag" href="{% url 'projects:explore' %}?tag={{ t|urlencode }}">{{ t }}</a>{% endfor %}</div>{% endif %}
+    </section>
+
+    <section class="mt-4 reveal" id="gallery">
+      <div class="section-title"><h2>Gallery</h2>{% if can_edit %}<button class="btn btn-sm" data-open-dialog="media-dialog"><svg class="i"><use href="#i-upload"/></svg>Add photos &amp; videos</button>{% endif %}</div>
+      {% if videos %}
+      <div class="grid {% if videos|length > 1 %}grid-2{% endif %} mb-2">
+        {% for v in videos %}
+        <div class="video-card">
+          <video src="{{ v.file.url }}" controls preload="metadata" playsinline></video>
+          {% if can_edit %}<form method="post" action="{% url 'projects:media_delete' project.code v.pk %}" class="del" data-confirm="Remove this video?">{% csrf_token %}<button class="btn btn-sm">Remove</button></form>{% endif %}
+        </div>
+        {% if v.caption %}<div class="small muted">{{ v.caption }}</div>{% endif %}
+        {% endfor %}
+      </div>
+      {% endif %}
+      {% if images %}
+      <div class="gallery">
+        {% for m in images %}
+        <figure class="gallery-item" style="margin:0" data-lightbox="{{ m.file.url }}" data-caption="{{ m.caption }}">
+          <img src="{{ m.file.url }}" alt="{{ m.caption|default:project.title }}" loading="lazy">
+          {% if m.caption %}<figcaption>{{ m.caption }}</figcaption>{% endif %}
+          {% if can_edit %}<form method="post" action="{% url 'projects:media_delete' project.code m.pk %}" class="del" data-confirm="Remove this image?" onclick="event.stopPropagation()">{% csrf_token %}<button class="btn btn-sm" aria-label="Remove image"><svg class="i"><use href="#i-trash"/></svg></button></form>{% endif %}
+        </figure>
+        {% endfor %}
+      </div>
+      {% endif %}
+      {% if not images and not videos %}
+      <div class="card">{% if can_edit %}{% include "partials/empty.html" with icon="image" title="Show people what you built" text="Screenshots, hardware photos and a short demo video make your project easy to understand at a glance." %}{% else %}{% include "partials/empty.html" with icon="image" title="No photos yet" text="This team hasn't added screenshots or videos." %}{% endif %}</div>
+      {% endif %}
+    </section>
+
+    <section class="mt-4 reveal" id="links">
+      <div class="section-title"><h2>Links &amp; references</h2></div>
+      {% if links %}
+      <div class="card divider-list">
+        {% for l in links %}
+        <div class="list-row">
+          <svg class="i muted"><use href="#i-link"/></svg>
+          <a href="{{ l.url }}" target="_blank" rel="noopener" style="flex:1;min-width:0"><div style="font-weight:600">{{ l.title }}</div><div class="tiny muted truncate">{{ l.url }}</div></a>
+          {% if can_edit %}<form method="post" action="{% url 'projects:link_delete' project.code l.pk %}">{% csrf_token %}<button class="icon-btn" aria-label="Remove link"><svg class="i i-sm"><use href="#i-x"/></svg></button></form>{% endif %}
+        </div>
+        {% endfor %}
+      </div>
+      {% elif not can_edit %}<p class="muted small">No links shared.</p>{% endif %}
+      {% if can_edit %}
+      <form method="post" action="{% url 'projects:link_add' project.code %}" class="row row-wrap mt-2" style="--gap:8px">
+        {% csrf_token %}
+        <input type="text" name="title" placeholder="Title, e.g. Research paper" required style="flex:1;min-width:180px">
+        <input type="url" name="url" placeholder="https://" required style="flex:2;min-width:220px">
+        <button class="btn"><svg class="i"><use href="#i-plus"/></svg>Add link</button>
+      </form>
+      {% endif %}
+    </section>
+  </div>
+
+  <aside class="stack sticky" style="--gap:20px">
+    <section class="card reveal" style="--d:2">
+      <div class="card-head"><h3>Team</h3><span class="tiny muted mono">{{ project.code }}</span></div>
+      <div class="card-body stack" style="--gap:14px">
+        {% for m in project.members %}
+        <div class="person">
+          {% include "partials/avatar.html" with person=m %}
+          <div><div class="name">{{ m.display_name }} {% if forloop.first %}<span class="lead-pill">Lead</span>{% endif %}</div><div class="sub">{{ m.class_label }}</div></div>
+        </div>
+        {% endfor %}
+        <hr style="margin:4px 0">
+        <div class="person">
+          {% if project.guide %}{% include "partials/avatar.html" with person=project.guide %}
+          <div><div class="name">{{ project.guide.display_name }}</div><div class="sub">Project guide{% if project.guide.designation %} · {{ project.guide.designation }}{% endif %}</div></div>
+          {% else %}<span class="avatar"><svg class="i i-sm"><use href="#i-award"/></svg></span><div class="sub">No guide assigned yet</div>{% endif %}
+        </div>
+      </div>
+    </section>
+
+    {% if can_private %}
+    <section class="card reveal" style="--d:3">
+      <div class="card-head"><h3>Private workspace</h3><svg class="i muted"><use href="#i-lock"/></svg></div>
+      <div class="divider-list">
+        <a class="list-row" href="{% url 'projects:vault' project.code %}"><svg class="i"><use href="#i-code"/></svg><span style="flex:1">Code vault</span><span class="tiny muted">{{ file_count }} file{{ file_count|pluralize }}</span></a>
+        <a class="list-row" href="{% url 'mentoring:workspace' project.code %}"><svg class="i"><use href="#i-flag"/></svg><span style="flex:1">Milestones &amp; logs</span><span class="tiny muted">{{ milestones|length }}</span></a>
+        <a class="list-row" href="{% url 'core:report' project.code %}"><svg class="i"><use href="#i-download"/></svg><span style="flex:1">Project report (PDF)</span></a>
+        {% if project.status == 'completed' and project|is_member_of:user %}
+        <a class="list-row" href="{% url 'core:certificate' project.code user.pk %}"><svg class="i"><use href="#i-award"/></svg><span style="flex:1">My certificate (PDF)</span></a>
+        {% endif %}
+      </div>
+    </section>
+    {% endif %}
+
+    <section class="card card-pad reveal small" style="--d:4">
+      <div class="stack" style="--gap:8px">
+        <div class="spread"><span class="muted">Created</span><span>{{ project.created_at|date:"j M Y" }}</span></div>
+        <div class="spread"><span class="muted">Last update</span><span>{{ project.updated_at|timesince }} ago</span></div>
+        <div class="spread"><span class="muted">Group no.</span><span class="mono">{{ project.group_number|stringformat:"02d" }}</span></div>
+      </div>
+    </section>
+  </aside>
+</div>
+
+{% if can_edit %}
+<dialog class="modal" id="media-dialog">
+  <div class="modal-head"><h3>Add to gallery</h3><button class="icon-btn" data-close aria-label="Close"><svg class="i"><use href="#i-x"/></svg></button></div>
+  <form method="post" action="{% url 'projects:media_upload' project.code %}" enctype="multipart/form-data" class="modal-body">
+    {% csrf_token %}
+    <label class="dropzone" data-dropzone>
+      <input type="file" name="media" multiple accept="image/*,video/mp4,video/webm,video/quicktime">
+      <div class="dz-icon"><svg class="i"><use href="#i-image"/></svg></div>
+      <div class="dz-title">Drop images or videos here</div>
+      <div class="small muted">JPG, PNG, GIF, WEBP · MP4, WEBM, MOV up to 100 MB</div>
+      <div class="dz-list"></div>
+    </label>
+    <div class="field mt-2"><label for="cap">Caption <span class="muted">(optional)</span></label><input type="text" id="cap" name="caption" maxlength="140" placeholder="e.g. Admin dashboard, final version"></div>
+    <div class="upload-progress"><div class="spread tiny muted mb-2" style="margin-bottom:6px"><span>Uploading</span><span class="pct">0%</span></div><div class="progress"><span></span></div></div>
+    <div class="form-actions"><button type="button" class="btn btn-ghost" data-close>Cancel</button><button type="submit" class="btn btn-primary">Upload</button></div>
+  </form>
+</dialog>
+{% endif %}
+{% endblock %}

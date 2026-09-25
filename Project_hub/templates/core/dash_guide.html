@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load hub %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="page-head spread reveal">
+  <div>
+    <div class="eyebrow">{% now "l, j F" %}</div>
+    <h1>Good to see you, {{ user.first_name|default:user.username }}.</h1>
+    <p class="lede">You're guiding {{ projects|length }} group{{ projects|length|pluralize }}.{% if to_review %} <strong>{{ to_review|length }}</strong> submission{{ to_review|length|pluralize }} waiting for your review.{% endif %}</p>
+  </div>
+  <a href="{% url 'mentoring:find' %}" class="btn btn-primary"><svg class="i"><use href="#i-user-plus"/></svg>Find groups{% if unassigned %} <span class="badge plain" style="background:var(--highlight);color:#2A2008">{{ unassigned }}</span>{% endif %}</a>
+</div>
+
+<div class="layout-side">
+  <div>
+    {% if to_review %}
+    <section class="card mb-3 reveal" style="--d:1;border-color:color-mix(in srgb,var(--accent) 35%,var(--line))">
+      <div class="card-head"><h3>Needs your review</h3><span class="badge badge-accent">{{ to_review|length }}</span></div>
+      <div class="divider-list">
+        {% for m in to_review %}
+        <a class="list-row" href="{% url 'mentoring:workspace' m.project.code %}">
+          <svg class="i" style="color:var(--accent-text)"><use href="#i-flag"/></svg>
+          <div style="flex:1;min-width:0"><strong>{{ m.title }}</strong> <span class="muted">· {{ m.project.title }}</span><div class="tiny muted">Submitted {{ m.submitted_at|timesince }} ago</div></div>
+          <svg class="i muted"><use href="#i-chevron-right"/></svg>
+        </a>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+
+    <div class="section-title reveal"><h3>Your groups</h3></div>
+    {% if projects %}
+    <div class="table-wrap reveal" style="--d:2">
+      <table class="table">
+        <thead><tr><th>Project</th><th>Team</th><th>Milestones</th><th>Status</th><th></th></tr></thead>
+        <tbody>
+        {% for p in projects %}
+          <tr>
+            <td><a href="{% url 'mentoring:workspace' p.code %}" style="font-weight:600">{{ p.title }}</a><div class="tiny muted mono">{{ p.code }}</div></td>
+            <td><div class="avatar-stack">{% for m in p.members %}{% include "partials/avatar.html" with person=m size="avatar-sm" %}{% endfor %}</div></td>
+            <td style="min-width:140px">
+              <div class="progress {% if p.approved == p.total_milestones and p.total_milestones %}ok{% endif %}"><span style="--w:{{ p.approved|pct:p.total_milestones }}%"></span></div>
+              <div class="tiny muted mt-1">{{ p.approved }}/{{ p.total_milestones }} approved{% if p.pending_reviews %} · <strong style="color:var(--accent-text)">{{ p.pending_reviews }} to review</strong>{% endif %}</div>
+            </td>
+            <td><span class="badge {% if p.status == 'completed' %}badge-ok{% elif p.status == 'building' %}badge-accent{% endif %}">{{ p.get_status_display }}</span></td>
+            <td class="right nowrap">
+              <a href="{% url 'projects:vault' p.code %}" class="btn btn-sm btn-ghost" title="Code vault"><svg class="i"><use href="#i-code"/></svg></a>
+              <a href="{% url 'mentoring:workspace' p.code %}" class="btn btn-sm">Open</a>
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+      <div class="card reveal">{% url 'mentoring:find' as find_url %}{% include "partials/empty.html" with icon="users" title="No groups yet" text="Adopt student groups to start tracking their milestones and reviewing their code." action_url=find_url action_label="Find groups" %}</div>
+    {% endif %}
+
+    {% if recent_logs %}
+    <div class="section-title mt-4 reveal"><h3>Recent progress logs</h3></div>
+    <div class="card reveal divider-list">
+      {% for log in recent_logs %}
+      <a class="list-row" href="{% url 'mentoring:workspace' log.project.code %}#logs">
+        {% include "partials/avatar.html" with person=log.author size="avatar-sm" %}
+        <div style="flex:1;min-width:0"><div class="small"><strong>{{ log.project.title }}</strong> · {{ log.meeting_date|date:"j M" }}</div><div class="small muted truncate">{{ log.summary }}</div></div>
+      </a>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+
+  <aside class="stack sticky" style="--gap:20px">
+    <section class="card reveal" style="--d:2">
+      <div class="card-head"><h3>Upcoming deadlines</h3><svg class="i muted"><use href="#i-calendar"/></svg></div>
+      <div class="divider-list">
+        {% for m in upcoming %}
+        <a class="list-row" href="{% url 'mentoring:workspace' m.project.code %}">
+          <div class="center" style="width:42px;flex:none"><div style="font:600 20px/1 var(--font-display)">{{ m.due_date|date:"j" }}</div><div class="tiny muted">{{ m.due_date|date:"M" }}</div></div>
+          <div style="flex:1;min-width:0"><div class="small" style="font-weight:600">{{ m.title }}</div><div class="tiny muted truncate">{{ m.project.title }}</div></div>
+          {% if m.is_overdue %}<span class="badge badge-bad">Overdue</span>{% endif %}
+        </a>
+        {% empty %}
+        <div class="card-body small muted">No dated milestones. Set due dates in each group's workspace.</div>
+        {% endfor %}
+      </div>
+    </section>
+    {% if rounds %}
+    <section class="card reveal" style="--d:3">
+      <div class="card-head"><h3>Open review rounds</h3></div>
+      <div class="divider-list">
+        {% for r in rounds %}
+        <a class="list-row" href="{% url 'evaluation:round' r.pk %}"><svg class="i"><use href="#i-clipboard"/></svg><div style="flex:1"><div class="small" style="font-weight:600">{{ r.name }}</div><div class="tiny muted">{{ r.scope_label }}</div></div><svg class="i muted"><use href="#i-chevron-right"/></svg></a>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+  </aside>
+</div>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}People{% endblock %}
+{% block content %}
+<div class="page-head spread reveal">
+  <div>
+    <div class="eyebrow">Admin</div>
+    <h1>People</h1>
+    <p class="lede">Students sign themselves up. Create guide, evaluator and admin accounts here.</p>
+  </div>
+  <button class="btn btn-primary" data-open-dialog="new-faculty"><svg class="i"><use href="#i-user-plus"/></svg>Add faculty</button>
+</div>
+
+<div class="chips mb-2 reveal" style="--d:1">
+  <a href="?" class="chip {% if not role %}active{% endif %}">Everyone</a>
+  {% for value, label in roles %}<a href="?role={{ value }}" class="chip {% if role == value %}active{% endif %}">{{ label }}s</a>{% endfor %}
+</div>
+
+<div class="table-wrap reveal" style="--d:2">
+  <table class="table">
+    <thead><tr><th>Name</th><th>Role</th><th>Email</th><th>Details</th><th>Joined</th></tr></thead>
+    <tbody>
+      {% for p in users %}
+      <tr>
+        <td><div class="person">{% include "partials/avatar.html" with person=p size="avatar-sm" %}<div><div class="name">{{ p.display_name }}</div><div class="sub">@{{ p.username }}</div></div></div></td>
+        <td><span class="badge {% if p.role == 'student' %}{% elif p.role == 'guide' %}badge-ok{% elif p.role == 'evaluator' %}badge-accent{% else %}badge-warn{% endif %}">{{ p.get_role_display }}</span></td>
+        <td class="small">{{ p.email }}</td>
+        <td class="small muted">{% if p.is_student %}{{ p.class_label }}{% else %}{{ p.designation }}{% endif %}</td>
+        <td class="small muted nowrap">{{ p.date_joined|date:"d M Y" }}</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="5" class="center muted" style="padding:32px">Nobody here yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<dialog class="modal" id="new-faculty" {% if form.errors %}data-auto-open{% endif %}>
+  <div class="modal-head"><h3>Add a faculty account</h3><button class="icon-btn" data-close aria-label="Close"><svg class="i"><use href="#i-x"/></svg></button></div>
+  <form method="post" class="modal-body" novalidate>
+    {% csrf_token %}
+    <div class="form-grid">
+      {% include "partials/field.html" with field=form.first_name %}
+      {% include "partials/field.html" with field=form.last_name %}
+      {% include "partials/field.html" with field=form.username hide_help=True %}
+      {% include "partials/field.html" with field=form.role %}
+      {% include "partials/field.html" with field=form.email cls="span-2" %}
+      {% include "partials/field.html" with field=form.designation cls="span-2" hide_help=True %}
+      {% include "partials/field.html" with field=form.password cls="span-2" label="Temporary password" %}
+    </div>
+    <p class="tiny muted mt-1">Share the password with them privately; they can change it in Settings.</p>
+    <div class="form-actions"><button type="button" class="btn btn-ghost" data-close>Cancel</button><button class="btn btn-primary">Create account</button></div>
+  </form>
+</dialog>
+{% endblock %}
+{% block scripts %}<script>document.querySelectorAll("dialog[data-auto-open]").forEach(d => d.showModal());</script>{% endblock %}

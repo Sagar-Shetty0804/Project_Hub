@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% load hub %}
+{% block title %}Mark {{ project.title }}{% endblock %}
+{% block content %}
+<div class="page-head reveal">
+  <div class="row small muted" style="--gap:6px"><a href="{% url 'evaluation:round' round.pk %}" class="link" style="text-decoration:none">{{ round.name }}</a><svg class="i i-sm"><use href="#i-chevron-right"/></svg><span class="mono">{{ project.code }}</span></div>
+  <div class="spread mt-1">
+    <div>
+      <h1>{{ project.title }}</h1>
+      {% if project.tagline %}<p class="serif-italic mt-1" style="font-size:18px;color:var(--ink-2)">{{ project.tagline }}</p>{% endif %}
+    </div>
+    <div class="row" style="--gap:8px">
+      {% if prev_code %}<a href="{% url 'evaluation:mark' round.pk prev_code %}" class="btn btn-sm btn-ghost" title="Previous group"><svg class="i"><use href="#i-chevron-left"/></svg></a>{% endif %}
+      {% if next_code %}<a href="{% url 'evaluation:mark' round.pk next_code %}" class="btn btn-sm btn-ghost" title="Next group"><svg class="i"><use href="#i-chevron-right"/></svg></a>{% endif %}
+    </div>
+  </div>
+  <div class="row row-wrap mt-2" style="--gap:8px">
+    <a href="{% url 'projects:vault' project.code %}" class="btn btn-sm" target="_blank"><svg class="i"><use href="#i-code"/></svg>Code vault</a>
+    <a href="{{ project.get_absolute_url }}" class="btn btn-sm" target="_blank"><svg class="i"><use href="#i-image"/></svg>Showcase</a>
+    <a href="{% url 'mentoring:workspace' project.code %}" class="btn btn-sm" target="_blank"><svg class="i"><use href="#i-flag"/></svg>Milestones</a>
+  </div>
+</div>
+
+{% if not editable %}
+<div class="flag-card mb-3 row" style="--gap:8px"><svg class="i" style="color:var(--warn)"><use href="#i-lock"/></svg>{% if not round.is_open %}This round is locked, so marks are read-only.{% else %}You can view these marks but not change them.{% endif %}</div>
+{% endif %}
+
+<form method="post" data-dirty-guard>
+  {% csrf_token %}
+  <div class="table-wrap reveal" style="--d:1">
+    <table class="table" id="sheet">
+      <thead>
+        <tr>
+          <th>Student</th>
+          {% for c in criteria %}<th class="num criterion-head" {% if c.description %}title="{{ c.description }}"{% endif %}>{{ c.name }}<span class="max">out of {{ c.max_marks|fmt_marks }}</span></th>{% endfor %}
+          <th class="num">Total <span class="max" style="display:block;font:500 11px var(--font-mono);text-transform:none;letter-spacing:0">/ {{ out_of|fmt_marks }}</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for s in row.students %}
+        <tr>
+          <td><div class="person">{% include "partials/avatar.html" with person=s.student %}<div><div class="name">{{ s.student.display_name }}</div><div class="sub">{{ s.student.class_label }}</div></div></div></td>
+          {% for c in criteria %}
+          <td class="num"><input type="number" class="score-input" name="m_{{ s.student.id }}_{{ c.id }}" value="{{ s.marks|get_item:c.id|fmt_marks }}" min="0" max="{{ c.max_marks|fmt_marks }}" step="0.5" data-max="{{ c.max_marks|fmt_marks }}" {% if not editable %}disabled{% endif %} aria-label="{{ c.name }} for {{ s.student.display_name }}"></td>
+          {% endfor %}
+          <td class="num total-cell" data-total>{{ s.total|fmt_marks }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="field mt-3 reveal" style="--d:2">
+    <label for="remark">Remarks for the group</label>
+    <textarea id="remark" name="remark" rows="3" placeholder="Strengths, what to improve, questions from the viva…" {% if not editable %}disabled{% endif %}>{{ row.remark.text }}</textarea>
+    {% if row.remark.author %}<div class="help">Last updated by {{ row.remark.author.display_name }}, {{ row.remark.updated_at|timesince }} ago</div>{% endif %}
+  </div>
+
+  {% if editable %}
+  <div class="form-actions" style="position:sticky;bottom:16px">
+    <button class="btn btn-lg" name="next" value="round" style="box-shadow:var(--shadow-2)">Save &amp; back to round</button>
+    <button class="btn btn-primary btn-lg" style="box-shadow:var(--shadow-3)"><svg class="i"><use href="#i-check"/></svg>Save marks</button>
+  </div>
+  {% endif %}
+</form>
+{% endblock %}
+{% block scripts %}
+<script>
+(function () {
+  const sheet = document.getElementById("sheet");
+  const recalc = (tr) => {
+    let t = 0;
+    tr.querySelectorAll(".score-input").forEach((inp) => {
+      const v = parseFloat(inp.value), max = parseFloat(inp.dataset.max);
+      const bad = inp.value !== "" && (isNaN(v) || v < 0 || v > max);
+      inp.classList.toggle("invalid", bad);
+      if (!bad && !isNaN(v)) t += v;
+    });
+    const cell = tr.querySelector("[data-total]");
+    cell.textContent = Number.isInteger(t) ? t : t.toFixed(1);
+    cell.animate([{ transform: "scale(1.15)" }, { transform: "scale(1)" }], { duration: 250, easing: "ease-out" });
+  };
+  sheet.addEventListener("input", (e) => { const tr = e.target.closest("tr"); if (tr) recalc(tr); });
+  // Enter moves to the next score cell instead of submitting
+  sheet.addEventListener("keydown", (e) => {
+    if (e.key !== "Enter" || !e.target.classList.contains("score-input")) return;
+    e.preventDefault();
+    const all = [...sheet.querySelectorAll(".score-input:not([disabled])")];
+    const next = all[all.indexOf(e.target) + 1];
+    if (next) { next.focus(); next.select(); } else document.getElementById("remark").focus();
+  });
+})();
+</script>
+{% endblock %}

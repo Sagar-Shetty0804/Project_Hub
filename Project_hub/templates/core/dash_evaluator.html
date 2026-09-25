@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="page-head reveal">
+  <div class="eyebrow">{% now "l, j F" %}</div>
+  <h1>Hello, {{ user.first_name|default:user.username }}.</h1>
+  <p class="lede">{% if rounds %}{{ rounds|length }} review round{{ rounds|length|pluralize }} open for marking.{% else %}No review rounds are open right now.{% endif %}</p>
+</div>
+
+<div class="section-title reveal"><h3>Open rounds</h3><a href="{% url 'evaluation:index' %}" class="link small">All rounds</a></div>
+{% if rounds %}
+<div class="grid grid-2">
+  {% for r in rounds %}
+  <a href="{% url 'evaluation:round' r.pk %}" class="card card-pad card-link reveal" style="--d:{{ forloop.counter }}">
+    <div class="eyebrow">{{ r.scope_label }}</div>
+    <h3 class="mt-1" style="font-size:21px">{{ r.name }}</h3>
+    <div class="small muted mt-1">{{ r.rubric.name }}{% if r.review_date %} · {{ r.review_date|date:"j M Y" }}{% endif %}</div>
+    <div class="spread small mt-3"><span class="muted">Students marked</span><span><strong>{{ r.done }}</strong>/{{ r.total }}</span></div>
+    <div class="progress mt-1 {% if r.pct == 100 %}ok{% endif %}"><span style="--w:{{ r.pct }}%"></span></div>
+  </a>
+  {% endfor %}
+</div>
+{% else %}
+<div class="card reveal">{% include "partials/empty.html" with icon="clipboard" title="Nothing to mark" text="When the admin opens a review round, it will show up here." %}</div>
+{% endif %}
+
+<div class="section-title mt-4 reveal"><h3>Recently updated projects</h3><a href="{% url 'projects:explore' %}" class="link small">Explore</a></div>
+<div class="cards">
+  {% for project in recent %}{% include "partials/project_card.html" with d=forloop.counter %}{% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load hub %}
+{% block title %}Team · {{ project.title }}{% endblock %}
+{% block content %}
+{% include "projects/_tabs.html" with active="team" %}
+<div class="layout-side">
+  <div>
+    <div class="section-title reveal"><h2>Members</h2><span class="muted small">{{ memberships|length }} of {{ max_team }}</span></div>
+    <div class="card divider-list reveal" style="--d:1">
+      {% for m in memberships %}
+      <div class="list-row" style="padding:16px 20px">
+        {% include "partials/avatar.html" with person=m.student %}
+        <div style="flex:1;min-width:0">
+          <div style="font-weight:600">{{ m.student.display_name }} {% if m.is_lead %}<span class="lead-pill">Lead</span>{% endif %}{% if m.student == user %} <span class="tiny muted">(you)</span>{% endif %}</div>
+          <div class="small muted">{{ m.student.class_label }} · {{ m.student.email }}</div>
+        </div>
+        <span class="tiny muted nowrap">joined {{ m.joined_at|date:"j M" }}</span>
+        {% if is_lead and not m.is_lead %}
+        <div class="dropdown" data-dropdown>
+          <button class="icon-btn" data-dropdown-trigger aria-label="Member options"><svg class="i"><use href="#i-chevron-down"/></svg></button>
+          <div class="dropdown-panel">
+            <form method="post">{% csrf_token %}<input type="hidden" name="action" value="make_lead"><input type="hidden" name="membership" value="{{ m.pk }}"><button><svg class="i"><use href="#i-star"/></svg>Make team lead</button></form>
+            <form method="post" data-confirm="Remove {{ m.student.display_name }} from the team?">{% csrf_token %}<input type="hidden" name="action" value="remove"><input type="hidden" name="membership" value="{{ m.pk }}"><button style="color:var(--bad)"><svg class="i"><use href="#i-x"/></svg>Remove from team</button></form>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="section-title mt-4 reveal"><h2>Guide</h2></div>
+    <div class="card card-pad reveal">
+      {% if project.guide %}
+      <div class="person">{% include "partials/avatar.html" with person=project.guide size="avatar-lg" %}<div><div class="name" style="font-size:17px">{{ project.guide.display_name }}</div><div class="sub">{{ project.guide.designation|default:"Project guide" }} · {{ project.guide.email }}</div></div></div>
+      {% else %}
+      <p class="muted" style="margin:0">No guide yet. Guides can find your group under <em>Find groups</em> and adopt it. Tell your guide your group code: <span class="kbd">{{ project.code }}</span></p>
+      {% endif %}
+    </div>
+
+    {% if project|is_member_of:user %}
+    <form method="post" class="mt-4 reveal" data-confirm="Leave {{ project.title }}?">{% csrf_token %}<input type="hidden" name="action" value="leave"><button class="btn btn-danger btn-sm"><svg class="i"><use href="#i-logout"/></svg>Leave this project</button></form>
+    {% endif %}
+  </div>
+
+  <aside class="stack sticky" style="--gap:20px">
+    {% if project|is_member_of:user or user.is_admin_role %}
+    <section class="reveal" style="--d:2">
+      <div class="eyebrow mb-2">Invite code</div>
+      <div class="invite-box">
+        <span class="code">{{ project.invite_code }}</span>
+        <button class="btn btn-sm" style="margin-left:auto" data-copy="{{ project.invite_code }}"><svg class="i i-sm"><use href="#i-copy"/></svg>Copy</button>
+      </div>
+      <p class="small muted mt-1">Teammates enter this at <span class="mono">{{ join_url }}</span></p>
+      {% if is_lead %}
+      <form method="post" data-confirm="Generate a new code? The current one will stop working.">{% csrf_token %}<input type="hidden" name="action" value="regenerate"><button class="btn btn-ghost btn-sm">Generate a new code</button></form>
+      {% endif %}
+    </section>
+    {% endif %}
+  </aside>
+</div>
+{% endblock %}

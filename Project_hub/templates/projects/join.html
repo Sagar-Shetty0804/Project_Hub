@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Join a project{% endblock %}
+{% block container_class %}container-narrow{% endblock %}
+{% block content %}
+<div style="max-width:460px;margin:40px auto 0" class="center">
+  <div class="dz-icon reveal" style="width:60px;height:60px;border-radius:16px"><svg class="i i-lg"><use href="#i-key"/></svg></div>
+  <h1 class="mt-2 reveal" style="--d:1">Join your team</h1>
+  <p class="muted mt-1 reveal" style="--d:2">Ask your team lead for the six-character invite code. It's on their project's Team page.</p>
+  <form method="post" class="mt-3 reveal" style="--d:3" novalidate>
+    {% csrf_token %}
+    <div class="field {% if form.invite_code.errors %}has-error{% endif %}">
+      <label for="id_invite_code" class="sr-only">Invite code</label>
+      {{ form.invite_code }}
+      {% for e in form.invite_code.errors %}<div class="error">{{ e }}</div>{% endfor %}
+    </div>
+    <button class="btn btn-primary btn-lg btn-block mt-2">Join project</button>
+  </form>
+  <p class="small muted mt-3">No team yet? <a href="{% url 'projects:create' %}" class="link">Start a project</a> instead.</p>
+</div>
+{% endblock %}

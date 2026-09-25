@@ -1,0 +1,1 @@
+{% load hub %}{% if person.avatar %}<img class="avatar {{ size }}" src="{{ person.avatar.url }}" alt="{{ person.display_name }}" title="{{ person.display_name }}">{% else %}<span class="avatar {{ size }}" data-tone="{{ person|tone }}" title="{{ person.display_name }}">{{ person.initials }}</span>{% endif %}

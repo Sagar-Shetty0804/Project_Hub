@@ -1,0 +1,17 @@
+{% load hub %}
+<div class="reveal" style="margin-bottom:18px">
+  <div class="row small muted" style="--gap:6px">
+    <a href="{% url 'projects:explore' %}" class="link" style="text-decoration:none">Projects</a>
+    <svg class="i i-sm"><use href="#i-chevron-right"/></svg>
+    <span class="mono">{{ project.code }}</span>
+  </div>
+  {% if active != "showcase" %}<h1 class="mt-1" style="font-size:30px">{{ project.title }}</h1>{% endif %}
+</div>
+{% if project|can_private:user %}
+<nav class="tabs reveal" aria-label="Project sections">
+  <a href="{{ project.get_absolute_url }}" class="{% if active == 'showcase' %}active{% endif %}"><svg class="i i-sm"><use href="#i-image"/></svg>Showcase</a>
+  <a href="{% url 'projects:vault' project.code %}" class="{% if active == 'vault' %}active{% endif %}"><svg class="i i-sm"><use href="#i-code"/></svg>Code vault</a>
+  <a href="{% url 'mentoring:workspace' project.code %}" class="{% if active == 'workspace' %}active{% endif %}"><svg class="i i-sm"><use href="#i-flag"/></svg>Milestones &amp; logs</a>
+  <a href="{% url 'projects:team' project.code %}" class="{% if active == 'team' %}active{% endif %}"><svg class="i i-sm"><use href="#i-users"/></svg>Team</a>
+</nav>
+{% endif %}

@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load hub %}
+{% block title %}Explore projects{% endblock %}
+{% block content %}
+<div class="page-head reveal">
+  <div class="eyebrow">Showcase</div>
+  <h1>Explore what your campus is building</h1>
+  <p class="lede">Screenshots, demos and write-ups from every published project. Source code stays private to each team, their guide and the evaluators.</p>
+</div>
+
+{% if featured %}
+<section class="mb-3">
+  <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr))">
+    {% for project in featured %}
+    <a href="{{ project.get_absolute_url }}" class="p-card reveal" style="--d:{{ forloop.counter }};min-height:260px">
+      <span class="featured-ribbon"><svg class="i"><use href="#i-star"/></svg>Featured</span>
+      {% include "partials/cover.html" with extra="featured-cover" %}
+      <div style="position:absolute;inset:auto 0 0 0;padding:60px 20px 18px;background:linear-gradient(transparent,rgba(10,10,8,.78));color:#F4F0E8">
+        <div class="eyebrow" style="color:#D8D0C0">{{ project.get_project_type_display }} · {{ project.branch }}</div>
+        <h3 style="font-size:22px;margin-top:6px">{{ project.title }}</h3>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<form method="get" class="filters mb-2 reveal" data-autosubmit style="--d:2">
+  <div class="input-icon"><svg class="i"><use href="#i-search"/></svg><input type="search" name="q" value="{{ f.q }}" placeholder="Search titles, tech, team members…"></div>
+  <select name="type" aria-label="Project type"><option value="">All types</option>{% for v, l in types %}<option value="{{ v }}" {% if f.type == v %}selected{% endif %}>{{ l }}</option>{% endfor %}</select>
+  <select name="branch" aria-label="Branch"><option value="">All branches</option>{% for v, l in branches %}<option value="{{ v }}" {% if f.branch == v %}selected{% endif %}>{{ v }}</option>{% endfor %}</select>
+  <select name="year" aria-label="Year"><option value="">Any year</option>{% for y in years %}<option value="{{ y }}" {% if f.year == y|stringformat:"d" %}selected{% endif %}>{{ y }}</option>{% endfor %}</select>
+  <select name="sort" aria-label="Sort"><option value="recent" {% if f.sort == 'recent' %}selected{% endif %}>Newest</option><option value="popular" {% if f.sort == 'popular' %}selected{% endif %}>Most liked</option><option value="title" {% if f.sort == 'title' %}selected{% endif %}>A–Z</option></select>
+  {% if f.tag %}<input type="hidden" name="tag" value="{{ f.tag }}">{% endif %}
+  <button class="btn btn-primary">Search</button>
+</form>
+
+{% if top_tags %}
+<div class="chips mb-3 reveal" style="--d:3">
+  <a class="chip {% if not f.tag %}active{% endif %}" href="?{% qs_replace tag='' page='' %}">All tech</a>
+  {% for t in top_tags %}<a class="chip {% if f.tag|lower == t|lower %}active{% endif %}" href="?{% qs_replace tag=t page='' %}">{{ t }}</a>{% endfor %}
+</div>
+{% endif %}
+
+<div class="small muted mb-2">{{ page.paginator.count }} project{{ page.paginator.count|pluralize }}{% if f.q %} matching “{{ f.q }}”{% endif %}</div>
+
+{% if page.object_list %}
+<div class="cards">
+  {% for project in page.object_list %}{% include "partials/project_card.html" with d=forloop.counter0|add:1 %}{% endfor %}
+</div>
+{% if page.has_other_pages %}
+<nav class="pagination" aria-label="Pages">
+  {% if page.has_previous %}<a href="?{% qs_replace page=page.previous_page_number %}" aria-label="Previous"><svg class="i"><use href="#i-chevron-left"/></svg></a>{% endif %}
+  {% for n in page.paginator.page_range %}
+    {% if n == page.number %}<span class="current">{{ n }}</span>{% else %}<a href="?{% qs_replace page=n %}">{{ n }}</a>{% endif %}
+  {% endfor %}
+  {% if page.has_next %}<a href="?{% qs_replace page=page.next_page_number %}" aria-label="Next"><svg class="i"><use href="#i-chevron-right"/></svg></a>{% endif %}
+</nav>
+{% endif %}
+{% else %}
+<div class="card">{% include "partials/empty.html" with icon="search" title="No projects match" text="Try a different search or clear some filters." action_url="?" action_label="Clear filters" %}</div>
+{% endif %}
+{% endblock %}
+{% block head %}<style>.featured-cover{position:absolute;inset:0;aspect-ratio:auto!important}</style>{% endblock %}

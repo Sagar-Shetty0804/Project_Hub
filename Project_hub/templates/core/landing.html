@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block title %}Your college's project archive{% endblock %}
+
+{% block content %}
+<section class="landing-hero">
+  <div>
+  <div class="eyebrow reveal">For students, guides &amp; evaluators</div>
+  <h1 class="mt-2" aria-label="Where college projects live, get guided and get graded.">
+    <span class="word"><span style="--i:0">Where</span></span>
+    <span class="word"><span style="--i:1">college</span></span>
+    <span class="word"><span style="--i:2">projects</span></span>
+    <span class="word"><span style="--i:3"><em>live,</em></span></span>
+    <span class="word"><span style="--i:4">get</span></span>
+    <span class="word"><span style="--i:5">guided</span></span>
+    <span class="word"><span style="--i:6">&amp;</span></span>
+    <span class="word"><span style="--i:7">get</span></span>
+    <span class="word"><span style="--i:8"><span class="scribble">graded.<svg viewBox="0 0 200 20" preserveAspectRatio="none"><path d="M3 14 C 50 4, 120 4, 197 11"/></svg></span></span></span>
+  </h1>
+  <p class="lede reveal" style="--d:6">
+    Keep your team's code in a private vault, show off demos and screenshots to the whole campus,
+    and let your guide and evaluators review, comment and mark in one place. No more spreadsheets.
+  </p>
+  <div class="row row-wrap mt-3 reveal" style="--d:8">
+    <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-lg">Create a student account <svg class="i arrow"><use href="#i-arrow-right"/></svg></a>
+    <a href="{% url 'accounts:login' %}" class="btn btn-lg">Sign in</a>
+  </div>
+
+  <div class="grid grid-3 mt-4 reveal" style="--d:10;max-width:640px">
+    <div><div class="stat" style="padding:0"><div class="num" data-count="{{ stats.projects }}">{{ stats.projects }}</div><div class="sub">projects archived</div></div></div>
+    <div><div class="stat" style="padding:0"><div class="num" data-count="{{ stats.students }}">{{ stats.students }}</div><div class="sub">students</div></div></div>
+    <div><div class="stat" style="padding:0"><div class="num" data-count="{{ stats.files }}">{{ stats.files }}</div><div class="sub">files in private vaults</div></div></div>
+  </div>
+  </div>
+
+  <div class="hero-art" aria-hidden="true">
+    {% for project in showcase %}
+    <div class="hc">
+      {% include "partials/cover.html" %}
+      <div class="hc-body"><div class="eyebrow" style="font-size:10px">{{ project.get_project_type_display }} · {{ project.branch }}</div><strong>{{ project.title|truncatechars:26 }}</strong></div>
+    </div>
+    {% empty %}
+    <div class="hc"><div class="cover" data-tone="0"><div class="cover-art"></div><span class="cover-letter">S</span></div><div class="hc-body"><div class="eyebrow" style="font-size:10px">Major project</div><strong>Smart attendance</strong></div></div>
+    <div class="hc"><div class="cover" data-tone="3"><div class="cover-art"></div><span class="cover-letter">C</span></div><div class="hc-body"><div class="eyebrow" style="font-size:10px">Mini project</div><strong>Campus canteen app</strong></div></div>
+    <div class="hc"><div class="cover" data-tone="2"><div class="cover-art"></div><span class="cover-letter">I</span></div><div class="hc-body"><div class="eyebrow" style="font-size:10px">Minor project</div><strong>IoT irrigation</strong></div></div>
+    {% endfor %}
+    <div class="stamp"><div><b>42/50</b>graded</div></div>
+  </div>
+</section>
+
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    {% for _ in "12" %}
+    <span>Mini projects</span><span>Minor projects</span><span>Major projects</span><span>Private code vault</span>
+    <span>Demo videos</span><span>Guide reviews</span><span>Rubric marking</span><span>Excel export</span>
+    {% endfor %}
+  </div>
+</div>
+
+<section>
+  <div class="section-title reveal"><h2>One place, three roles</h2></div>
+  <div class="grid grid-3">
+    <div class="card role-card reveal" style="--d:1">
+      <span class="num">01</span>
+      <div class="eyebrow">Students</div>
+      <h3 class="mt-1">Build &amp; show</h3>
+      <ul>
+        <li>Private, versioned code vault (drag in a folder or zip)</li>
+        <li>Public showcase with photos &amp; demo videos</li>
+        <li>Join your team with a six-letter invite code</li>
+        <li>Download your completion certificate</li>
+      </ul>
+    </div>
+    <div class="card role-card reveal" style="--d:2">
+      <span class="num">02</span>
+      <div class="eyebrow">Guides</div>
+      <h3 class="mt-1">Mentor &amp; review</h3>
+      <ul>
+        <li>Adopt groups and track milestones</li>
+        <li>Line-by-line comments on code</li>
+        <li>Weekly progress logs &amp; meeting notes</li>
+        <li>Spot identical files across groups</li>
+      </ul>
+    </div>
+    <div class="card role-card reveal" style="--d:3">
+      <span class="num">03</span>
+      <div class="eyebrow">Evaluators</div>
+      <h3 class="mt-1">Mark &amp; publish</h3>
+      <ul>
+        <li>Rubric-based marking per student</li>
+        <li>Lock rounds and publish results</li>
+        <li>Export marks to Excel in one click</li>
+        <li>See everything without chasing files</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+{% if showcase %}
+<section class="mt-4">
+  <div class="section-title reveal"><h2>Recently on show</h2><a href="{% url 'accounts:login' %}" class="link small">Sign in to explore all</a></div>
+  <div class="cards">
+    {% for project in showcase %}{% include "partials/project_card.html" with d=forloop.counter %}{% endfor %}
+  </div>
+</section>
+{% endif %}
+{% endblock %}

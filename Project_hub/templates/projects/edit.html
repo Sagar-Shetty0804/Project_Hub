@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Edit {{ project.title }}{% endblock %}
+{% block container_class %}container-narrow{% endblock %}
+{% block content %}
+{% include "projects/_tabs.html" with active="edit" %}
+<div class="page-head reveal"><div class="eyebrow">Showcase details</div><h2>Edit project</h2><p class="lede">This is what other students see on Explore. Your code is never shown here.</p></div>
+<form method="post" enctype="multipart/form-data" class="card card-body reveal" style="--d:1;padding:28px" novalidate data-dirty-guard>
+  {% csrf_token %}
+  {% include "partials/form_errors.html" %}
+  {% include "partials/field.html" with field=form.title %}
+  {% include "partials/field.html" with field=form.tagline %}
+  {% include "partials/field.html" with field=form.abstract %}
+  {% include "partials/field.html" with field=form.tech_stack %}
+  <div class="form-grid mt-2">
+    {% include "partials/field.html" with field=form.demo_url label="Demo link" %}
+    {% include "partials/field.html" with field=form.status %}
+  </div>
+  <div class="field mt-2">
+    <label for="id_cover">Cover image</label>
+    {% if project.cover %}<img src="{{ project.cover.url }}" alt="" style="width:220px;border-radius:10px;margin-bottom:8px">{% endif %}
+    {{ form.cover }}
+    <div class="help">Optional. Without one, we use your first gallery photo or a generated pattern.</div>
+  </div>
+  <div class="mt-2">{% include "partials/field.html" with field=form.is_published %}</div>
+  <div class="form-actions"><a href="{{ project.get_absolute_url }}" class="btn btn-ghost">Cancel</a><button class="btn btn-primary">Save changes</button></div>
+</form>
+{% endblock %}

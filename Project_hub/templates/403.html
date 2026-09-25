@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Not allowed{% endblock %}
+{% block content %}
+<div class="center" style="padding:60px 0">
+  <div class="display reveal" style="font-size:120px;line-height:1;color:var(--line-strong)">403</div>
+  <h1 class="mt-2 reveal" style="--d:1">This part is private</h1>
+  <p class="muted mt-1 reveal" style="--d:2;max-width:46ch;margin-inline:auto">Code, marks and mentoring notes are only visible to the project's team, their guide and the evaluators.</p>
+  <a href="{% url 'core:dashboard' %}" class="btn btn-primary mt-3 reveal" style="--d:3">Back to your dashboard</a>
+</div>
+{% endblock %}

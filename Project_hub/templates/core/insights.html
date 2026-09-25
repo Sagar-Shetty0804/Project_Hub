@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block title %}Insights{% endblock %}
+{% block content %}
+<div class="page-head spread reveal">
+  <div>
+    <div class="eyebrow">Admin · {% now "j F Y" %}</div>
+    <h1>Department at a glance</h1>
+  </div>
+  <div class="row row-wrap">
+    <a href="{% url 'evaluation:round_new' %}" class="btn"><svg class="i"><use href="#i-clipboard"/></svg>New review round</a>
+    <a href="{% url 'accounts:people' %}" class="btn btn-primary"><svg class="i"><use href="#i-user-plus"/></svg>Add faculty</a>
+  </div>
+</div>
+
+<div class="grid grid-4">
+  <div class="card stat reveal" style="--d:1"><div class="eyebrow">Projects</div><div class="num" data-count="{{ counts.projects }}">{{ counts.projects }}</div><div class="sub">{{ counts.no_guide }} without a guide</div></div>
+  <div class="card stat reveal" style="--d:2"><div class="eyebrow">Students</div><div class="num" data-count="{{ counts.students }}">{{ counts.students }}</div><div class="sub">{{ counts.faculty }} faculty accounts</div></div>
+  <div class="card stat reveal" style="--d:3"><div class="eyebrow">Vault files</div><div class="num" data-count="{{ counts.files }}">{{ counts.files }}</div><div class="sub">{{ counts.storage|filesizeformat }} stored</div></div>
+  <div class="card stat reveal" style="--d:4"><div class="eyebrow">Milestones approved</div><div class="num">{{ ms.approved }}<span class="muted" style="font-size:20px">/{{ ms.total }}</span></div><div class="sub">{{ ms.waiting }} waiting · {% if ms.overdue %}<span style="color:var(--bad)">{{ ms.overdue }} overdue</span>{% else %}none overdue{% endif %}</div></div>
+</div>
+
+<div class="grid grid-2 mt-3">
+  <section class="card reveal" style="--d:1">
+    <div class="card-head"><h3>Projects by branch</h3></div>
+    <div class="card-body">
+      <div class="bars">
+        {% for b in by_branch %}
+        <div class="bar-row" title="{{ b.label }}: {{ b.n }} project{{ b.n|pluralize }}">
+          <span class="truncate">{{ b.label }}</span><div class="track"><div class="fill" style="--w:{{ b.pct }}%"></div></div><span class="val">{{ b.n }}</span>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  <section class="card reveal" style="--d:2">
+    <div class="card-head"><h3>Projects by type</h3></div>
+    <div class="card-body">
+      <div class="bars">
+        {% for b in by_type %}
+        <div class="bar-row" title="{{ b.label }}: {{ b.n }} project{{ b.n|pluralize }}">
+          <span class="truncate">{{ b.label }}</span><div class="track"><div class="fill" style="--w:{{ b.pct }}%"></div></div><span class="val">{{ b.n }}</span>
+        </div>
+        {% endfor %}
+      </div>
+      <hr style="margin:18px 0">
+      <div class="eyebrow mb-2">By status</div>
+      <div class="bars">
+        {% for b in by_status %}
+        <div class="bar-row" title="{{ b.label }}: {{ b.n }} project{{ b.n|pluralize }}">
+          <span class="truncate">{{ b.label }}</span><div class="track"><div class="fill" style="--w:{{ b.pct }}%"></div></div><span class="val">{{ b.n }}</span>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="layout-side mt-3">
+  <section class="card reveal">
+    <div class="card-head"><h3>Evaluation progress</h3><a href="{% url 'evaluation:index' %}" class="link small">All rounds</a></div>
+    {% if rounds %}
+    <div class="divider-list">
+      {% for r in rounds %}
+      <a href="{% url 'evaluation:round' r.pk %}" class="list-row" style="display:grid;grid-template-columns:minmax(0,1fr) 180px auto;gap:16px">
+        <div style="min-width:0"><div class="truncate" style="font-weight:600">{{ r.name }}</div><div class="tiny muted">{{ r.scope_label }}</div></div>
+        <div><div class="progress {% if r.pct == 100 %}ok{% endif %}"><span style="--w:{{ r.pct }}%"></span></div><div class="tiny muted mt-1">{{ r.done }}/{{ r.total }} students marked</div></div>
+        <div class="row" style="--gap:6px">
+          {% if not r.is_open %}<span class="badge plain"><svg class="i i-sm" style="width:12px;height:12px"><use href="#i-lock"/></svg>Locked</span>{% endif %}
+          {% if r.results_published %}<span class="badge badge-ok">Published</span>{% endif %}
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+    {% else %}
+      {% url 'evaluation:round_new' as new_url %}{% include "partials/empty.html" with icon="clipboard" title="No review rounds yet" text="Create a rubric and a review round so evaluators can start marking." action_url=new_url action_label="Create a round" %}
+    {% endif %}
+  </section>
+
+  <aside class="stack" style="--gap:20px">
+    <section class="card reveal" style="--d:2">
+      <div class="card-head"><h3>Guide load</h3></div>
+      <div class="divider-list">
+        {% for g in guides %}
+        <div class="list-row">{% include "partials/avatar.html" with person=g size="avatar-sm" %}<span style="flex:1" class="small">{{ g.display_name }}</span><strong>{{ g.n }}</strong><span class="tiny muted">group{{ g.n|pluralize }}</span></div>
+        {% empty %}
+        <div class="card-body small muted">No guides yet.</div>
+        {% endfor %}
+      </div>
+    </section>
+    <section class="card reveal" style="--d:3">
+      <div class="card-head"><h3>Newest projects</h3></div>
+      <div class="divider-list">
+        {% for p in recent %}
+        <a class="list-row" href="{{ p.get_absolute_url }}"><div style="flex:1;min-width:0"><div class="small truncate" style="font-weight:600">{{ p.title }}</div><div class="tiny muted mono">{{ p.code }}</div></div><span class="tiny muted">{{ p.created_at|timesince }}</span></a>
+        {% endfor %}
+      </div>
+    </section>
+  </aside>
+</div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block header %}{% endblock %}
+{% block footer %}{% endblock %}
+{% block main %}
+<div class="auth">
+  <aside class="auth-art">
+    <a href="{% url 'core:landing' %}" class="brand"><span class="brand-mark">P</span><span>Project<em>Hub</em></span></a>
+    <div class="floating-cards" aria-hidden="true">
+      <div class="fc cover" data-tone="0"><div class="cover-art"></div><span class="cover-letter" style="font-size:110px">S</span></div>
+      <div class="fc cover" data-tone="3"><div class="cover-art"></div><span class="cover-letter" style="font-size:110px">a</span></div>
+      <div class="fc cover" data-tone="2"><div class="cover-art"></div><span class="cover-letter" style="font-size:110px">M</span></div>
+    </div>
+    <blockquote>{% block quote %}Your code stays <em>private</em>. Your work gets <em>seen</em>.{% endblock %}</blockquote>
+    <div class="foot">Mini · Minor · Major projects, from synopsis to final marks.</div>
+  </aside>
+  <section class="auth-form">
+    <div class="inner reveal">
+      {% block form %}{% endblock %}
+    </div>
+  </section>
+</div>
+{% endblock %}

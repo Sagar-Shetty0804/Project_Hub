@@ -1,1 +1,11 @@
+.env
 *.json
+__pycache__/
+*.pyc
+*.sqlite3
+Project_hub/media/
+Project_hub/staticfiles/
+.venv/
+venv/
+
+Project_hub/private_media/

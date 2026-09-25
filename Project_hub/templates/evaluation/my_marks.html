@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load hub %}
+{% block title %}My marks{% endblock %}
+{% block container_class %}container-narrow{% endblock %}
+{% block content %}
+<div class="page-head reveal">
+  <div class="eyebrow">Results</div>
+  <h1>My marks</h1>
+  <p class="lede">Marks appear here once the department publishes a review round.</p>
+</div>
+
+{% for r in results %}
+<article class="card mb-3 reveal" style="--d:{{ forloop.counter }};overflow:hidden">
+  <div class="card-body" style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px;align-items:center">
+    <div>
+      <div class="eyebrow">{{ r.round.scope_label }}{% if r.round.review_date %} · {{ r.round.review_date|date:"j M Y" }}{% endif %}</div>
+      <h2 class="mt-1" style="font-size:22px">{{ r.round.name }}</h2>
+      <a href="{{ r.project.get_absolute_url }}" class="small link">{{ r.project.title }}</a>
+    </div>
+    <div class="result-ring" style="--p:{{ r.percent }}"><span>{{ r.total|fmt_marks }}</span></div>
+  </div>
+  <div style="border-top:1px solid var(--line)">
+    <table class="table">
+      <tbody>
+        {% for row in r.rows %}
+        <tr>
+          <td>{{ row.criterion.name }}{% if row.criterion.description %}<div class="tiny muted">{{ row.criterion.description }}</div>{% endif %}</td>
+          <td style="width:40%"><div class="progress"><span style="--w:{% if row.marks is not None %}{{ row.marks|pct:row.criterion.max_marks }}{% else %}0{% endif %}%"></span></div></td>
+          <td class="num mono nowrap">{% if row.marks is None %}–{% else %}{{ row.marks|fmt_marks }}{% endif %} <span class="muted">/ {{ row.criterion.max_marks|fmt_marks }}</span></td>
+        </tr>
+        {% endfor %}
+        <tr><td><strong>Total</strong></td><td></td><td class="num total-cell nowrap">{{ r.total|fmt_marks }} <span class="muted small">/ {{ r.out_of|fmt_marks }}</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  {% if r.remark and r.remark.text %}
+  <div class="card-body" style="border-top:1px solid var(--line)"><div class="eyebrow">Evaluator remarks</div><div class="quote accent">{{ r.remark.text }}</div></div>
+  {% endif %}
+</article>
+{% empty %}
+<div class="card">{% include "partials/empty.html" with icon="award" title="No results yet" text="You'll get a notification as soon as marks for one of your projects are published." %}</div>
+{% endfor %}
+{% endblock %}

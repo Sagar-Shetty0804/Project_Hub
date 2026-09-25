@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Saved projects{% endblock %}
+{% block content %}
+<div class="page-head reveal"><div class="eyebrow">Your collection</div><h1>Saved projects</h1><p class="lede">Projects you bookmarked for inspiration.</p></div>
+{% if projects %}
+<div class="cards">{% for project in projects %}{% include "partials/project_card.html" with d=forloop.counter %}{% endfor %}</div>
+{% else %}
+{% url 'projects:explore' as explore_url %}
+<div class="card">{% include "partials/empty.html" with icon="bookmark" title="Nothing saved yet" text="Tap Save on any project page to keep it here." action_url=explore_url action_label="Explore projects" %}</div>
+{% endif %}
+{% endblock %}

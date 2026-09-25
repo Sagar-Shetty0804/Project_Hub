@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Find groups{% endblock %}
+{% block content %}
+<div class="page-head reveal">
+  <div class="eyebrow">Guide</div>
+  <h1>Find groups to guide</h1>
+  <p class="lede">These groups don't have a guide yet. Select the ones you're mentoring; they'll get default milestones you can adjust.</p>
+</div>
+
+<form method="get" class="filters mb-3 reveal" data-autosubmit style="--d:1">
+  <select name="type" aria-label="Type"><option value="">All types</option>{% for v, l in types %}<option value="{{ v }}" {% if f.type == v %}selected{% endif %}>{{ l }}</option>{% endfor %}</select>
+  <select name="branch" aria-label="Branch"><option value="">All branches</option>{% for v, l in branches %}<option value="{{ v }}" {% if f.branch == v %}selected{% endif %}>{{ v }}</option>{% endfor %}</select>
+</form>
+
+{% if projects %}
+<form method="post" action="{% url 'mentoring:adopt' %}" id="adopt-form">
+  {% csrf_token %}
+  <div class="table-wrap reveal" style="--d:2">
+    <table class="table">
+      <thead><tr><th style="width:40px"><input type="checkbox" id="check-all" aria-label="Select all"></th><th>Group</th><th>Project</th><th>Team</th><th>Created</th></tr></thead>
+      <tbody>
+        {% for p in projects %}
+        <tr>
+          <td><input type="checkbox" name="codes" value="{{ p.code }}" aria-label="Select {{ p.title }}"></td>
+          <td class="mono small nowrap">{{ p.code }}</td>
+          <td><a href="{{ p.get_absolute_url }}" style="font-weight:600">{{ p.title }}</a>{% if p.tagline %}<div class="tiny muted">{{ p.tagline|truncatechars:80 }}</div>{% endif %}</td>
+          <td><div class="avatar-stack">{% for m in p.members %}{% include "partials/avatar.html" with person=m size="avatar-sm" %}{% endfor %}</div></td>
+          <td class="small muted nowrap">{{ p.created_at|date:"j M Y" }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="form-actions" style="position:sticky;bottom:16px">
+    <button class="btn btn-primary btn-lg" id="adopt-btn" disabled style="box-shadow:var(--shadow-3)"><svg class="i"><use href="#i-user-plus"/></svg><span>Guide selected groups</span></button>
+  </div>
+</form>
+{% else %}
+<div class="card">{% include "partials/empty.html" with icon="users" title="Every group has a guide" text="New groups will show up here as students create projects." %}</div>
+{% endif %}
+{% endblock %}
+{% block scripts %}
+<script>
+(function () {
+  const form = document.getElementById("adopt-form");
+  if (!form) return;
+  const boxes = [...form.querySelectorAll("input[name=codes]")];
+  const btn = document.getElementById("adopt-btn");
+  const sync = () => {
+    const n = boxes.filter((b) => b.checked).length;
+    btn.disabled = n === 0;
+    btn.querySelector("span").textContent = n ? `Guide ${n} group${n > 1 ? "s" : ""}` : "Guide selected groups";
+  };
+  boxes.forEach((b) => b.addEventListener("change", sync));
+  document.getElementById("check-all").addEventListener("change", (e) => { boxes.forEach((b) => (b.checked = e.target.checked)); sync(); });
+})();
+</script>
+{% endblock %}

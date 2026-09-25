@@ -1,0 +1,17 @@
+{% load hub %}
+<article class="p-card reveal" style="--d: {{ d|default:0 }}">
+  {% if project.is_featured %}<span class="featured-ribbon"><svg class="i"><use href="#i-star"/></svg>Featured</span>{% endif %}
+  {% include "partials/cover.html" %}
+  <div class="p-card-body">
+    <div class="eyebrow">{{ project.get_project_type_display }} · {{ project.branch }} · {{ project.batch_year }}</div>
+    <h3><a href="{{ project.get_absolute_url }}">{{ project.title }}</a></h3>
+    {% if project.tagline %}<p class="tagline">{{ project.tagline }}</p>{% endif %}
+    {% if project.tags %}<div class="chips">{% for t in project.tags|slice:":3" %}<span class="tag">{{ t }}</span>{% endfor %}</div>{% endif %}
+    <div class="p-card-foot">
+      <div class="avatar-stack">{% for m in project.members %}{% include "partials/avatar.html" with person=m size="avatar-sm" %}{% endfor %}</div>
+      {% if project.like_count is not None %}
+      <span class="like-count {% if project.id in liked %}liked{% endif %}"><svg class="i i-sm"><use href="#i-heart"/></svg>{{ project.like_count }}</span>
+      {% endif %}
+    </div>
+  </div>
+</article>

@@ -1,0 +1,149 @@
+{% load static hub %}<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}ProjectHub{% endblock %} · ProjectHub</title>
+  <script>
+    (function () {
+      var t; try { t = localStorage.getItem("theme"); } catch (e) {}
+      if (!t) t = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      document.documentElement.dataset.theme = t;
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/app.css' %}">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231B1A17'/%3E%3Ctext x='16' y='22' font-family='Georgia' font-size='18' font-weight='700' fill='%23F4F0E8' text-anchor='middle'%3EP%3C/text%3E%3C/svg%3E">
+  {% block head %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+  {% include "partials/icons.html" %}
+
+  {% block header %}
+  <header class="site-header">
+    <div class="container">
+      <a href="{% if user.is_authenticated %}{% url 'core:dashboard' %}{% else %}{% url 'core:landing' %}{% endif %}" class="brand">
+        <span class="brand-mark">P</span><span>Project<em>Hub</em></span>
+      </a>
+
+      {% if user.is_authenticated %}
+      {% with path=request.path %}
+      <nav class="nav" aria-label="Main">
+        {% if user.is_admin_role %}
+          <a href="{% url 'core:insights' %}" class="{% if path == '/insights/' %}active{% endif %}"><svg class="i"><use href="#i-chart"/></svg>Insights</a>
+        {% else %}
+          <a href="{% url 'core:dashboard' %}" class="{% if path == '/dashboard/' %}active{% endif %}"><svg class="i"><use href="#i-home"/></svg>Dashboard</a>
+        {% endif %}
+        <a href="{% url 'projects:explore' %}" class="{% if path == '/projects/' %}active{% endif %}"><svg class="i"><use href="#i-compass"/></svg>Explore</a>
+        {% if user.is_student %}
+          <a href="{% url 'projects:bookmarks' %}" class="{% if 'saved' in path %}active{% endif %}"><svg class="i"><use href="#i-bookmark"/></svg>Saved</a>
+          <a href="{% url 'evaluation:index' %}" class="{% if path|slice:':12' == '/evaluation/' %}active{% endif %}"><svg class="i"><use href="#i-award"/></svg>My marks</a>
+        {% endif %}
+        {% if user.is_guide %}
+          <a href="{% url 'mentoring:find' %}" class="{% if path == '/mentoring/find/' %}active{% endif %}"><svg class="i"><use href="#i-user-plus"/></svg>Find groups</a>
+        {% endif %}
+        {% if user.is_faculty %}
+          <a href="{% url 'evaluation:index' %}" class="{% if path|slice:':12' == '/evaluation/' %}active{% endif %}"><svg class="i"><use href="#i-clipboard"/></svg>Evaluation</a>
+        {% endif %}
+        {% if user.is_admin_role %}
+          <a href="{% url 'accounts:people' %}" class="{% if path == '/accounts/people/' %}active{% endif %}"><svg class="i"><use href="#i-users"/></svg>People</a>
+        {% endif %}
+      </nav>
+      {% endwith %}
+
+      <div class="header-tools">
+        <button class="icon-btn" data-theme-toggle aria-label="Toggle dark mode" title="Toggle theme">
+          <svg class="i show-light"><use href="#i-moon"/></svg><svg class="i show-dark"><use href="#i-sun"/></svg>
+        </button>
+
+        <div class="dropdown" data-dropdown>
+          <button class="icon-btn" data-dropdown-trigger aria-label="Notifications" aria-expanded="false">
+            <svg class="i"><use href="#i-bell"/></svg>
+            {% if unread_count %}<span class="dot-count">{{ unread_count|stringformat:"d" }}</span>{% endif %}
+          </button>
+          <div class="dropdown-panel notif-panel">
+            <div class="dropdown-head spread">
+              <strong>Notifications</strong>
+              {% if unread_count %}
+              <form method="post" action="{% url 'notifications:read_all' %}">{% csrf_token %}
+                <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                <button class="btn btn-ghost btn-sm" style="width:auto">Mark all read</button>
+              </form>
+              {% endif %}
+            </div>
+            {% for n in recent_notifications %}
+              <a class="notif-item {% if not n.is_read %}unread{% endif %}" href="{% url 'notifications:open' n.pk %}">
+                {{ n.text }}<time>{{ n.created_at|timesince }} ago</time>
+              </a>
+            {% empty %}
+              <div class="small muted" style="padding:18px 10px;text-align:center">You're all caught up.</div>
+            {% endfor %}
+            <a href="{% url 'notifications:inbox' %}" class="small" style="justify-content:center;border-top:1px solid var(--line);border-radius:0 0 7px 7px;margin-top:4px">See all</a>
+          </div>
+        </div>
+
+        <div class="dropdown" data-dropdown>
+          <button class="avatar-btn" data-dropdown-trigger aria-label="Account menu" aria-expanded="false">
+            {% include "partials/avatar.html" with person=user %}
+          </button>
+          <div class="dropdown-panel">
+            <div class="dropdown-head">
+              <div style="font-weight:600">{{ user.display_name }}</div>
+              <div class="small muted">{{ user.get_role_display }}{% if user.class_label %} · {{ user.class_label }}{% endif %}</div>
+            </div>
+            <a href="{% url 'accounts:settings' %}"><svg class="i"><use href="#i-sliders"/></svg>Settings</a>
+            <a href="{% url 'notifications:inbox' %}"><svg class="i"><use href="#i-bell"/></svg>All notifications</a>
+            {% if user.is_superuser %}<a href="/admin/"><svg class="i"><use href="#i-lock"/></svg>Django admin</a>{% endif %}
+            <form method="post" action="{% url 'accounts:logout' %}">{% csrf_token %}
+              <button><svg class="i"><use href="#i-logout"/></svg>Sign out</button>
+            </form>
+          </div>
+        </div>
+        <button class="icon-btn menu-toggle" aria-label="Menu"><svg class="i"><use href="#i-menu"/></svg></button>
+      </div>
+      {% else %}
+      <div class="header-tools">
+        <button class="icon-btn" data-theme-toggle aria-label="Toggle dark mode"><svg class="i show-light"><use href="#i-moon"/></svg><svg class="i show-dark"><use href="#i-sun"/></svg></button>
+        <a href="{% url 'accounts:login' %}" class="btn btn-ghost">Sign in</a>
+        <a href="{% url 'accounts:register' %}" class="btn btn-primary">Create account</a>
+      </div>
+      {% endif %}
+    </div>
+  </header>
+  {% endblock %}
+
+  {% if messages %}
+  <div class="toasts" role="status" aria-live="polite">
+    {% for message in messages %}
+      <div class="toast toast-{{ message.tags }}">
+        <svg class="i"><use href="#i-{% if message.tags == 'success' %}check{% elif message.tags == 'info' %}bell{% else %}alert{% endif %}"/></svg>
+        <span>{{ message }}</span>
+        <button aria-label="Dismiss"><svg class="i i-sm"><use href="#i-x"/></svg></button>
+      </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% block main %}
+  <main>
+    <div class="container {% block container_class %}{% endblock %}">
+      {% block content %}{% endblock %}
+    </div>
+  </main>
+  {% endblock %}
+
+  {% block footer %}
+  <footer class="site-footer">
+    <div class="container spread">
+      <span>ProjectHub · built for college project teams</span>
+      <span class="serif-italic">Code stays private. Work gets seen.</span>
+    </div>
+  </footer>
+  {% endblock %}
+
+  <script src="{% static 'js/app.js' %}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

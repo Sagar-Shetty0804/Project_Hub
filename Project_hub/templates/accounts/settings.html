@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Settings{% endblock %}
+{% block container_class %}container-narrow{% endblock %}
+{% block content %}
+<div class="page-head reveal">
+  <div class="eyebrow">Account</div>
+  <h1>Settings</h1>
+</div>
+
+<section class="card reveal" style="--d:1">
+  <div class="card-head"><h3>Profile</h3><span class="badge badge-accent plain">{{ user.get_role_display }}</span></div>
+  <form method="post" enctype="multipart/form-data" class="card-body">
+    {% csrf_token %}<input type="hidden" name="action" value="profile">
+    <div class="row mb-3">
+      {% include "partials/avatar.html" with person=user size="avatar-lg" %}
+      <div>
+        <div style="font-weight:600;font-size:17px">{{ user.display_name }}</div>
+        <div class="small muted">@{{ user.username }} · {{ user.email }}</div>
+      </div>
+    </div>
+    <div class="form-grid">
+      {% for field in profile_form %}
+        {% include "partials/field.html" with field=field %}
+      {% endfor %}
+    </div>
+    <div class="form-actions"><button class="btn btn-primary">Save profile</button></div>
+  </form>
+</section>
+
+<section class="card mt-3 reveal" style="--d:2">
+  <div class="card-head"><h3>Change password</h3></div>
+  <form method="post" class="card-body">
+    {% csrf_token %}<input type="hidden" name="action" value="password">
+    {% include "partials/field.html" with field=password_form.old_password label="Current password" %}
+    <div class="form-grid mt-2">
+      {% include "partials/field.html" with field=password_form.new_password1 label="New password" hide_help=True %}
+      {% include "partials/field.html" with field=password_form.new_password2 label="Confirm new password" %}
+    </div>
+    <div class="form-actions"><button class="btn">Update password</button></div>
+  </form>
+</section>
+
+<section class="card mt-3 reveal" style="--d:3;border-color:color-mix(in srgb,var(--bad) 30%,var(--line))">
+  <div class="card-head"><h3 style="color:var(--bad)">Delete account</h3></div>
+  <div class="card-body">
+    <p class="muted small">This removes your account and your team memberships. Files you uploaded stay with the project so your teammates don't lose work.</p>
+    <button class="btn btn-danger" data-open-dialog="delete-dialog"><svg class="i"><use href="#i-trash"/></svg>Delete my account</button>
+  </div>
+</section>
+
+<dialog class="modal" id="delete-dialog">
+  <div class="modal-head"><h3>Delete your account?</h3><button class="icon-btn" data-close aria-label="Close"><svg class="i"><use href="#i-x"/></svg></button></div>
+  <form method="post" class="modal-body">
+    {% csrf_token %}<input type="hidden" name="action" value="delete">
+    <p class="muted small">This can't be undone. Enter your password to confirm.</p>
+    <div class="field"><label for="cp">Password</label><input type="password" id="cp" name="confirm_password" required></div>
+    <div class="form-actions"><button type="button" class="btn btn-ghost" data-close>Cancel</button><button class="btn btn-danger">Delete forever</button></div>
+  </form>
+</dialog>
+{% endblock %}

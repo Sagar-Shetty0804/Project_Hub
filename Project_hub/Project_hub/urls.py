@@ -1,35 +1,21 @@
-"""
-URL configuration for Project_hub project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.1/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
-from django.contrib import admin
-from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib import admin
+from django.urls import include, path
 
-
-admin.site.site_header = "Project_hub Admin"
-admin.site.site_title = "Project_hub Admin Portal"
-admin.site.index_title = "Welcome to Project_hub Portal"
+admin.site.site_header = "ProjectHub Admin"
+admin.site.site_title = "ProjectHub Admin"
+admin.site.index_title = "Manage ProjectHub"
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('',include('Login_page.urls')),
-    path('studentPage/', include(('student.urls', 'student'), namespace='student')),
-    path('guide/',include(('guide.urls','guide'),namespace='guide')),
-    path('evaluator/',include(('evaluator.urls','evaluator'),namespace='evaluator')),
+    path("admin/", admin.site.urls),
+    path("", include("core.urls")),
+    path("accounts/", include("accounts.urls")),
+    path("projects/", include("projects.urls")),
+    path("mentoring/", include("mentoring.urls")),
+    path("evaluation/", include("evaluation.urls")),
+    path("notifications/", include("notifications.urls")),
 ]
+
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

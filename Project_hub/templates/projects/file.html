@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+{% load hub %}
+{% block title %}{{ file.name }} · {{ project.code }}{% endblock %}
+{% block head %}
+<style>
+  .diff { font: 13px/1.6 var(--font-mono); white-space: pre; overflow: auto; }
+  .diff div { padding: 0 14px; }
+  .diff .add { background: color-mix(in srgb, var(--ok) 14%, transparent); color: var(--ok); }
+  .diff .del { background: color-mix(in srgb, var(--bad) 12%, transparent); color: var(--bad); }
+  .diff .meta { color: var(--accent-text); background: var(--accent-soft); }
+  .comment { display: flex; gap: 12px; padding: 14px 18px; }
+  .comment.resolved { opacity: .55; }
+  .line-ref { font: 600 11.5px var(--font-mono); color: var(--accent-text); background: var(--accent-soft); padding: 2px 6px; border-radius: 4px; cursor: pointer; }
+  .version-row { display: flex; gap: 10px; align-items: flex-start; padding: 11px 18px; }
+  .version-row.current { background: var(--accent-soft); }
+</style>
+{% endblock %}
+{% block content %}
+{% include "projects/_tabs.html" with active="vault" %}
+
+<nav class="crumbs mb-2 reveal">
+  <a href="{% url 'projects:vault' project.code %}">{{ project.code }}</a>
+  {% for c in crumbs %}<span class="sep">/</span><a href="{% url 'projects:vault' project.code %}?dir={{ c.path|urlencode }}">{{ c.name }}</a>{% endfor %}
+  <span class="sep">/</span><strong>{{ file.name }}</strong>
+</nav>
+
+{% if not file.is_latest %}
+<div class="flag-card mb-2 reveal row row-wrap" style="--gap:10px">
+  <svg class="i" style="color:var(--warn)"><use href="#i-history"/></svg>
+  <span>You're viewing <strong>version {{ file.version }}</strong>, an older copy of this file.</span>
+  <a class="link small" href="{% url 'projects:file' project.code history.0.pk %}">Go to latest (v{{ history.0.version }})</a>
+</div>
+{% endif %}
+
+<div class="layout-side" style="grid-template-columns:minmax(0,1fr) 320px">
+  <div class="stack" style="--gap:20px">
+    <section class="code-view reveal" style="--d:1">
+      <div class="code-toolbar">
+        <div class="row" style="--gap:10px">
+          <span class="badge plain">v{{ file.version }}</span>
+          {% if lines %}<span class="muted">{{ file.line_count }} line{{ file.line_count|pluralize }}</span>{% endif %}
+          <span class="muted">{{ file.size|filesizeformat }}</span>
+          {% if file.is_text %}<span class="muted">{{ file.language }}</span>{% endif %}
+        </div>
+        <div class="row" style="--gap:6px">
+          {% if previous and file.is_text and previous.is_text %}
+            {% if diff is None %}<a href="?compare=1" class="btn btn-sm btn-ghost"><svg class="i"><use href="#i-layers"/></svg>Changes vs v{{ previous.version }}</a>
+            {% else %}<a href="?" class="btn btn-sm btn-ghost"><svg class="i"><use href="#i-code"/></svg>Show file</a>{% endif %}
+          {% endif %}
+          {% if can_edit and file.is_text and file.is_latest %}<a href="{% url 'projects:file_edit' project.code file.pk %}" class="btn btn-sm"><svg class="i"><use href="#i-pencil"/></svg>Edit</a>{% endif %}
+          <a href="{% url 'projects:file_raw' project.code file.pk %}?download=1" class="btn btn-sm"><svg class="i"><use href="#i-download"/></svg>Download</a>
+        </div>
+      </div>
+
+      {% if diff is not None %}
+        <div class="diff code-scroll">{% for kind, line in diff %}<div class="{{ kind }}">{{ line }}</div>{% empty %}<div class="ctx muted" style="padding:20px">No text changes between these versions.</div>{% endfor %}</div>
+      {% elif lines %}
+        <div class="code-scroll">
+          <table class="code-table" id="code" data-lang="{{ file.language }}">
+            {% for line in lines %}<tr id="L{{ forloop.counter }}" class="{% if forloop.counter in commented_lines %}has-comment{% endif %}"><td class="ln" data-line="{{ forloop.counter }}">{{ forloop.counter }}</td><td class="lc">{{ line }}</td></tr>
+            {% endfor %}
+          </table>
+        </div>
+        <script type="text/plain" id="code-src">{{ file.content|escape }}</script>
+      {% elif file.is_text %}
+        <div class="card-body small muted">This file has {{ file.line_count }} lines, which is too long to show here. Download it to read it.</div>
+      {% elif file.is_image %}
+        <div style="padding:24px;display:grid;place-items:center;background:var(--surface-2)"><img src="{% url 'projects:file_raw' project.code file.pk %}" alt="{{ file.name }}" style="max-height:70vh;border-radius:8px"></div>
+      {% elif file.is_pdf %}
+        <iframe src="{% url 'projects:file_raw' project.code file.pk %}" title="{{ file.name }}" style="width:100%;height:78vh;border:0;display:block"></iframe>
+      {% else %}
+        {% include "partials/empty.html" with icon="file" title="No preview for this file" text="It's a binary or very large file. Download it to open it." %}
+      {% endif %}
+    </section>
+
+    <section class="card reveal" id="comments">
+      <div class="card-head"><h3>Review comments</h3><span class="tiny muted">{% if lines %}Click a line number to comment on it{% endif %}</span></div>
+      <div class="divider-list">
+        {% for c in comments %}
+        <div class="comment {% if c.resolved %}resolved{% endif %}">
+          {% include "partials/avatar.html" with person=c.author size="avatar-sm" %}
+          <div style="flex:1;min-width:0">
+            <div class="row row-wrap small" style="--gap:8px">
+              <strong>{{ c.author.display_name }}</strong>
+              {% if c.author.is_faculty %}<span class="badge badge-accent plain" style="height:18px">{{ c.author.get_role_display }}</span>{% endif %}
+              {% if c.line %}{% if c.file_id == file.id %}<a class="line-ref" href="#L{{ c.line }}" data-goto="{{ c.line }}">L{{ c.line }}</a>{% else %}<a class="line-ref" href="{% url 'projects:file' project.code c.file_id %}#L{{ c.line }}">v{{ c.file.version }} · L{{ c.line }}</a>{% endif %}{% endif %}
+              <span class="tiny muted">{{ c.created_at|timesince }} ago</span>
+              {% if c.resolved %}<span class="badge badge-ok" style="height:18px">Resolved</span>{% endif %}
+            </div>
+            <div class="mt-1" style="white-space:pre-line">{{ c.body }}</div>
+          </div>
+          {% if can_edit or c.author == user %}
+          <form method="post">{% csrf_token %}<input type="hidden" name="action" value="resolve"><input type="hidden" name="comment" value="{{ c.pk }}"><button class="btn btn-sm btn-ghost" title="{% if c.resolved %}Reopen{% else %}Mark resolved{% endif %}"><svg class="i"><use href="#i-{% if c.resolved %}history{% else %}check{% endif %}"/></svg></button></form>
+          {% endif %}
+        </div>
+        {% empty %}
+        <div class="card-body small muted">No comments yet.{% if user.is_faculty %} Your feedback here notifies the whole team.{% endif %}</div>
+        {% endfor %}
+      </div>
+      <form method="post" class="card-body" style="border-top:1px solid var(--line)" id="comment-form">
+        {% csrf_token %}<input type="hidden" name="action" value="comment">
+        <div class="row mb-2" style="--gap:8px"><span class="small muted">Commenting on</span><span class="line-ref" id="line-label">whole file</span><input type="hidden" name="line" id="line-input"><button type="button" class="btn btn-sm btn-ghost hide" id="line-clear">Clear line</button></div>
+        <textarea name="body" rows="3" placeholder="Leave feedback, a question or a suggestion…" required></textarea>
+        <div class="form-actions" style="margin-top:12px"><button class="btn btn-primary btn-sm"><svg class="i"><use href="#i-message"/></svg>Post comment</button></div>
+      </form>
+    </section>
+  </div>
+
+  <aside class="stack sticky" style="--gap:20px">
+    <section class="card reveal" style="--d:2">
+      <div class="card-head"><h3>History</h3><span class="tiny muted">{{ history|length }} version{{ history|length|pluralize }}</span></div>
+      <div class="divider-list" style="max-height:420px;overflow:auto">
+        {% for h in history %}
+        <div class="version-row {% if h.pk == file.pk %}current{% endif %}">
+          <span class="badge plain" style="height:20px">v{{ h.version }}</span>
+          <a href="{% url 'projects:file' project.code h.pk %}" style="flex:1;min-width:0">
+            <div class="small truncate" style="font-weight:600">{{ h.note|default:"Uploaded" }}</div>
+            <div class="tiny muted">{{ h.uploaded_by.display_name|default:"Someone" }} · {{ h.uploaded_at|date:"j M, H:i" }}</div>
+          </a>
+          {% if can_edit and not h.is_latest %}
+          <form method="post" action="{% url 'projects:file_restore' project.code h.pk %}" data-confirm="Restore version {{ h.version }} as the latest?">{% csrf_token %}<button class="btn btn-sm btn-ghost" title="Restore this version"><svg class="i"><use href="#i-history"/></svg></button></form>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+    {% if can_edit %}
+    <form method="post" action="{% url 'projects:file_delete' project.code file.pk %}" data-confirm="Delete {{ file.path }} and all {{ history|length }} version(s)? This can't be undone." class="reveal" style="--d:3">
+      {% csrf_token %}<button class="btn btn-danger btn-sm btn-block"><svg class="i"><use href="#i-trash"/></svg>Delete file</button>
+    </form>
+    {% endif %}
+  </aside>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% if lines and diff is None %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+(function () {
+  const table = document.getElementById("code");
+  const src = document.getElementById("code-src");
+  // Highlight the whole file, then re-split into lines, re-opening spans that cross line breaks.
+  if (window.hljs && src) {
+    const ta = document.createElement("textarea");
+    ta.innerHTML = src.textContent;
+    const lang = table.dataset.lang;
+    let html;
+    try {
+      html = hljs.getLanguage(lang) ? hljs.highlight(ta.value, { language: lang }).value : hljs.highlightAuto(ta.value).value;
+    } catch (e) { html = null; }
+    if (html) {
+      const open = [];
+      const cells = table.querySelectorAll(".lc");
+      html.split("\n").forEach((line, i) => {
+        const prefix = open.join("");
+        const re = /<span[^>]*>|<\/span>/g;
+        let m;
+        while ((m = re.exec(line))) { if (m[0] === "</span>") open.pop(); else open.push(m[0]); }
+        if (cells[i]) cells[i].innerHTML = prefix + line + "</span>".repeat(open.length);
+      });
+      table.classList.add("hljs");
+    }
+  }
+
+  // Line selection -> comment form
+  const label = document.getElementById("line-label");
+  const input = document.getElementById("line-input");
+  const clear = document.getElementById("line-clear");
+  const select = (n, scroll) => {
+    table.querySelectorAll("tr.hl").forEach((r) => r.classList.remove("hl"));
+    if (!n) { input.value = ""; label.textContent = "whole file"; clear.classList.add("hide"); return; }
+    const row = document.getElementById("L" + n);
+    if (!row) return;
+    row.classList.add("hl");
+    input.value = n; label.textContent = "line " + n; clear.classList.remove("hide");
+    if (scroll) row.scrollIntoView({ block: "center", behavior: "smooth" });
+  };
+  table.addEventListener("click", (e) => {
+    const ln = e.target.closest(".ln");
+    if (!ln) return;
+    select(ln.dataset.line);
+    history.replaceState(null, "", "#L" + ln.dataset.line);
+    document.querySelector("#comment-form textarea").focus({ preventScroll: true });
+  });
+  clear.addEventListener("click", () => { select(null); history.replaceState(null, "", location.pathname); });
+  document.querySelectorAll("[data-goto]").forEach((a) => a.addEventListener("click", (e) => { e.preventDefault(); select(a.dataset.goto, true); }));
+  const m = location.hash.match(/^#L(\d+)$/);
+  if (m) select(m[1], true);
+})();
+</script>
+{% endif %}
+{% endblock %}

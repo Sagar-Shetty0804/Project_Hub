@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load hub %}
+{% block title %}{% if rubric %}Edit rubric{% else %}New rubric{% endif %}{% endblock %}
+{% block container_class %}container-narrow{% endblock %}
+{% block content %}
+<div class="page-head reveal">
+  <div class="eyebrow">Evaluation · Rubric</div>
+  <h1>{% if rubric %}Edit “{{ rubric.name }}”{% else %}New rubric{% endif %}</h1>
+  <p class="lede">List what evaluators score each student on, and the maximum marks for each.</p>
+</div>
+<form method="post" class="card card-body reveal" style="--d:1;padding:28px" novalidate>
+  {% csrf_token %}
+  {% include "partials/field.html" with field=form.name label="Rubric name" %}
+  {% include "partials/field.html" with field=form.description %}
+
+  <div class="spread mt-3 mb-2"><span class="label" style="margin:0">Criteria</span><span class="small">Total: <strong id="total" class="total-cell">0</strong></span></div>
+  <div id="criteria" class="stack" style="--gap:10px">
+    {% for c in criteria %}
+    <div class="crit-row" style="display:grid;grid-template-columns:1.2fr 90px 1.6fr 38px;gap:8px">
+      <input type="text" name="c_name" value="{{ c.name }}" placeholder="Criterion" maxlength="60">
+      <input type="number" name="c_max" value="{{ c.max_marks|fmt_marks }}" min="0.5" step="0.5" placeholder="Max">
+      <input type="text" name="c_desc" value="{{ c.description }}" placeholder="What to look for (optional)" maxlength="200">
+      <button type="button" class="icon-btn" data-remove aria-label="Remove criterion"><svg class="i"><use href="#i-x"/></svg></button>
+    </div>
+    {% endfor %}
+  </div>
+  <button type="button" class="btn btn-sm btn-ghost mt-2" id="add-crit"><svg class="i"><use href="#i-plus"/></svg>Add criterion</button>
+  <template id="crit-tpl">
+    <div class="crit-row" style="display:grid;grid-template-columns:1.2fr 90px 1.6fr 38px;gap:8px;animation:fade-down .3s var(--ease)">
+      <input type="text" name="c_name" placeholder="Criterion" maxlength="60">
+      <input type="number" name="c_max" min="0.5" step="0.5" placeholder="Max">
+      <input type="text" name="c_desc" placeholder="What to look for (optional)" maxlength="200">
+      <button type="button" class="icon-btn" data-remove aria-label="Remove criterion"><svg class="i"><use href="#i-x"/></svg></button>
+    </div>
+  </template>
+  {% if rubric and rubric.rounds.exists %}<p class="tiny muted mt-2">This rubric is used by {{ rubric.rounds.count }} round(s). Once marks exist, you can rename criteria and change maximums, but not add or remove them.</p>{% endif %}
+  <div class="form-actions"><a href="{% url 'evaluation:index' %}" class="btn btn-ghost">Cancel</a><button class="btn btn-primary">Save rubric</button></div>
+</form>
+{% endblock %}
+{% block scripts %}
+<script>
+(function () {
+  const list = document.getElementById("criteria");
+  const tpl = document.getElementById("crit-tpl");
+  const total = document.getElementById("total");
+  const sum = () => {
+    const t = [...list.querySelectorAll("[name=c_max]")].reduce((a, i) => a + (parseFloat(i.value) || 0), 0);
+    total.textContent = Number.isInteger(t) ? t : t.toFixed(1);
+  };
+  const add = () => { list.appendChild(tpl.content.cloneNode(true)); sum(); };
+  document.getElementById("add-crit").addEventListener("click", () => { add(); list.lastElementChild.querySelector("input").focus(); });
+  list.addEventListener("click", (e) => { const b = e.target.closest("[data-remove]"); if (b) { b.closest(".crit-row").remove(); sum(); } });
+  list.addEventListener("input", sum);
+  // A new rubric starts with a typical set of criteria to edit
+  if (!list.children.length) {
+    [["Problem understanding", 10], ["Implementation", 20], ["Presentation", 10], ["Report & documentation", 10]].forEach(([name, max]) => {
+      add();
+      list.lastElementChild.querySelector("[name=c_name]").value = name;
+      list.lastElementChild.querySelector("[name=c_max]").value = max;
+    });
+  }
+  sum();
+})();
+</script>
+{% endblock %}

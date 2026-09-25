@@ -1,0 +1,10 @@
+{# Project cover: uploaded/first gallery image, or a generated pattern. #}
+<div class="cover {{ extra }}" data-tone="{{ project.tone }}">
+  {% if project.cover_image %}
+    <img src="{{ project.cover_image }}" alt="" loading="lazy">
+  {% else %}
+    <div class="cover-art"></div>
+    <span class="cover-code">{{ project.code }}</span>
+    <span class="cover-letter">{{ project.title|first|upper }}</span>
+  {% endif %}
+</div>

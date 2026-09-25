@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}{% if file %}Edit {{ file.name }}{% else %}New file{% endif %}{% endblock %}
+{% block content %}
+{% include "projects/_tabs.html" with active="vault" %}
+<form method="post" class="code-view reveal" data-dirty-guard>
+  {% csrf_token %}
+  <div class="code-toolbar">
+    {% if file %}
+      <span class="row" style="--gap:8px"><svg class="i i-sm"><use href="#i-pencil"/></svg><span class="mono">{{ file.path }}</span><span class="badge plain">editing v{{ file.version }}</span></span>
+    {% else %}
+      <span class="row" style="--gap:8px;flex:1;min-width:260px"><svg class="i i-sm"><use href="#i-plus"/></svg>
+        <input type="text" name="path" required placeholder="path/to/file.py" value="{% if directory %}{{ directory }}/{% endif %}" style="height:34px;font-family:var(--font-mono);font-size:13.5px;max-width:420px" autofocus>
+      </span>
+    {% endif %}
+    <span class="tiny muted">Tab inserts 4 spaces</span>
+  </div>
+  <textarea name="content" class="editor" spellcheck="false" style="border:0;border-radius:0;box-shadow:none;background:var(--surface)">{% if file %}{{ file.content }}{% endif %}</textarea>
+  <div class="code-toolbar" style="border-top:1px solid var(--line);border-bottom:0">
+    {% if file %}<input type="text" name="note" maxlength="160" placeholder="Describe your change (optional)" style="height:36px;max-width:420px">{% else %}<span></span>{% endif %}
+    <div class="row" style="--gap:8px">
+      <a href="{% if file %}{% url 'projects:file' project.code file.pk %}{% else %}{% url 'projects:vault' project.code %}{% endif %}" class="btn btn-sm btn-ghost">Cancel</a>
+      <button class="btn btn-sm btn-primary"><svg class="i"><use href="#i-check"/></svg>{% if file %}Save as v{{ file.version|add:1 }}{% else %}Create file{% endif %}</button>
+    </div>
+  </div>
+</form>
+{% endblock %}

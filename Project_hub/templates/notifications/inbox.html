@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Notifications{% endblock %}
+{% block container_class %}container-narrow{% endblock %}
+{% block content %}
+<div class="page-head spread reveal">
+  <div><div class="eyebrow">Inbox</div><h1>Notifications</h1></div>
+  {% if unread_count %}
+  <form method="post" action="{% url 'notifications:read_all' %}">{% csrf_token %}<button class="btn btn-sm"><svg class="i"><use href="#i-check"/></svg>Mark all as read</button></form>
+  {% endif %}
+</div>
+<div class="card divider-list reveal" style="--d:1">
+  {% for n in items %}
+  <a class="list-row {% if not n.is_read %}notif-item unread{% endif %}" href="{% url 'notifications:open' n.pk %}" style="display:flex!important;padding:14px 20px!important">
+    {% if n.actor %}{% include "partials/avatar.html" with person=n.actor size="avatar-sm" %}{% else %}<span class="avatar avatar-sm"><svg class="i i-sm"><use href="#i-bell"/></svg></span>{% endif %}
+    <div style="flex:1;min-width:0">{{ n.text }}<div class="tiny muted">{{ n.created_at|date:"j M Y, H:i" }} · {{ n.created_at|timesince }} ago</div></div>
+    {% if not n.is_read %}<span style="width:8px;height:8px;border-radius:50%;background:var(--accent)"></span>{% endif %}
+  </a>
+  {% empty %}
+  {% include "partials/empty.html" with icon="bell" title="No notifications" text="Comments, reviews, new teammates and results will show up here." %}
+  {% endfor %}
+</div>
+{% endblock %}

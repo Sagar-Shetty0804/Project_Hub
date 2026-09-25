@@ -1,0 +1,31 @@
+{% extends "accounts/auth_base.html" %}
+{% block title %}Create account{% endblock %}
+{% block quote %}Start the project <em>once</em>. Everyone on the team joins with a code.{% endblock %}
+{% block form %}
+<div class="eyebrow">Student account</div>
+<h1 class="mt-1">Create your account</h1>
+<p class="muted mt-1">You'll create or join your project group right after this.</p>
+
+<form method="post" class="mt-3" novalidate>
+  {% csrf_token %}
+  {% include "partials/form_errors.html" %}
+  <div class="form-grid">
+    {% include "partials/field.html" with field=form.first_name %}
+    {% include "partials/field.html" with field=form.last_name %}
+    {% include "partials/field.html" with field=form.username cls="span-2" hide_help=True %}
+    {% include "partials/field.html" with field=form.email cls="span-2" label="College email" %}
+  </div>
+  <div class="form-grid mt-2" style="grid-template-columns:1.4fr .8fr 1fr">
+    {% include "partials/field.html" with field=form.branch %}
+    {% include "partials/field.html" with field=form.division %}
+    {% include "partials/field.html" with field=form.roll_no label="Roll no." %}
+  </div>
+  <div class="form-grid mt-2">
+    {% include "partials/field.html" with field=form.password1 label="Password" hide_help=True %}
+    {% include "partials/field.html" with field=form.password2 label="Confirm password" hide_help=True %}
+  </div>
+  <p class="tiny muted mt-1">At least 8 characters, not all numbers, and not too similar to your name.</p>
+  <button class="btn btn-primary btn-lg btn-block mt-3">Create account <svg class="i arrow"><use href="#i-arrow-right"/></svg></button>
+</form>
+<p class="small muted mt-3 center">Already registered? <a class="link" href="{% url 'accounts:login' %}">Sign in</a></p>
+{% endblock %}

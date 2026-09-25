@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}New project{% endblock %}
+{% block container_class %}container-narrow{% endblock %}
+{% block content %}
+<div class="page-head reveal">
+  <div class="eyebrow">Step 1 of 2</div>
+  <h1>Start a new project</h1>
+  <p class="lede">You'll be the team lead. Next, you'll get an invite code to share with your teammates. The group code (like <span class="mono">MA2-25-COMPS-04</span>) is generated for you.</p>
+</div>
+<form method="post" class="card card-body reveal" style="--d:1;padding:28px" novalidate>
+  {% csrf_token %}
+  {% include "partials/form_errors.html" %}
+  {% include "partials/field.html" with field=form.title label="Project title" %}
+  {% include "partials/field.html" with field=form.tagline %}
+  <div class="form-grid mt-2">
+    {% include "partials/field.html" with field=form.project_type label="Project type" %}
+    {% include "partials/field.html" with field=form.semester %}
+    {% include "partials/field.html" with field=form.batch_year label="Year" hide_help=True %}
+    {% include "partials/field.html" with field=form.branch %}
+  </div>
+  <div class="mt-2">{% include "partials/field.html" with field=form.tech_stack label="Tech stack" %}</div>
+  <div class="mt-2">{% include "partials/field.html" with field=form.abstract label="Abstract" %}</div>
+  <p class="tiny muted mt-1">Mini = second year, Minor = third year, Major = final year.</p>
+  <div class="form-actions"><a href="{% url 'core:dashboard' %}" class="btn btn-ghost">Cancel</a><button class="btn btn-primary">Create project <svg class="i arrow"><use href="#i-arrow-right"/></svg></button></div>
+</form>
+{% endblock %}

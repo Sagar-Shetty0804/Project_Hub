@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% load hub %}
+{% block title %}Code vault · {{ project.title }}{% endblock %}
+{% block content %}
+{% include "projects/_tabs.html" with active="vault" %}
+
+<div class="spread mb-2 reveal">
+  <nav class="crumbs" aria-label="Folder">
+    <a href="{% url 'projects:vault' project.code %}"><svg class="i i-sm" style="vertical-align:-2px"><use href="#i-folder"/></svg> {{ project.code }}</a>
+    {% for c in crumbs %}<span class="sep">/</span>{% if forloop.last %}<span>{{ c.name }}</span>{% else %}<a href="?dir={{ c.path|urlencode }}">{{ c.name }}</a>{% endif %}{% endfor %}
+  </nav>
+  {% if can_edit %}
+  <div class="row" style="--gap:8px">
+    <a href="{% url 'projects:vault_new' project.code %}{% if directory %}?dir={{ directory|urlencode }}{% endif %}" class="btn btn-sm"><svg class="i"><use href="#i-plus"/></svg>New file</a>
+    <button class="btn btn-sm btn-primary" data-open-dialog="upload-dialog"><svg class="i"><use href="#i-upload"/></svg>Upload</button>
+  </div>
+  {% endif %}
+</div>
+
+<div class="layout-side">
+  <div class="stack" style="--gap:20px">
+    {% if flags %}
+    <section class="flag-card reveal">
+      <div class="row" style="--gap:8px"><svg class="i" style="color:var(--warn)"><use href="#i-alert"/></svg><strong>{{ flags|length }} file{{ flags|length|pluralize }} identical to another group's</strong></div>
+      <p class="small mt-1" style="color:var(--ink-2)">Byte-for-byte matches (ignoring files under 300 bytes). This is a hint worth a conversation, not proof of copying: shared templates or libraries also match.</p>
+      <details class="disclosure">
+        <summary class="small link" style="text-decoration:none">Show matches <svg class="i i-sm chev" style="vertical-align:-3px"><use href="#i-chevron-down"/></svg></summary>
+        <div class="disc-body mt-1 small">
+          {% for f in flags %}
+          <div style="padding:6px 0;border-top:1px dashed color-mix(in srgb,var(--warn) 30%,transparent)">
+            <a href="{% url 'projects:file' project.code f.file.pk %}" class="mono">{{ f.file.path }}</a> matches
+            {% for o in f.others %}<a class="link" href="{% url 'projects:file' o.project.code o.pk %}">{{ o.project.code }}/{{ o.path }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}
+          </div>
+          {% endfor %}
+        </div>
+      </details>
+    </section>
+    {% endif %}
+
+    <section class="card reveal" style="--d:1;overflow:hidden">
+      <div class="code-toolbar">
+        <span class="row" style="--gap:6px"><svg class="i i-sm"><use href="#i-lock"/></svg>Private to the team, guide &amp; evaluators</span>
+        <span class="muted">{{ total_files }} file{{ total_files|pluralize }} · {{ total_size|filesizeformat }}</span>
+      </div>
+      <div class="divider-list">
+        {% if directory %}
+        <a class="fs-row" href="{% if crumbs|length > 1 %}?dir={{ crumbs|slice:':-1'|last|get_item:'path'|urlencode }}{% else %}{% url 'projects:vault' project.code %}{% endif %}">
+          <svg class="i"><use href="#i-chevron-left"/></svg><span class="name">..</span><span></span><span></span>
+        </a>
+        {% endif %}
+        {% for d in dirs %}
+        <a class="fs-row dir" href="?dir={{ d.path|urlencode }}">
+          <svg class="i"><use href="#i-folder"/></svg><span class="name truncate">{{ d.name }}</span><span class="meta">{{ d.count }} file{{ d.count|pluralize }}</span><span></span>
+        </a>
+        {% endfor %}
+        {% for f in files %}
+        <a class="fs-row" href="{% url 'projects:file' project.code f.pk %}">
+          <svg class="i"><use href="#i-{% if f.is_image %}image{% elif f.is_text %}file-text{% else %}file{% endif %}"/></svg>
+          <span class="name truncate">{{ f.name }}</span>
+          <span class="meta">{% if f.version > 1 %}<span class="badge plain" style="height:18px">v{{ f.version }}</span> {% endif %}{{ f.size|filesizeformat }}</span>
+          <span class="meta">{{ f.uploaded_at|timesince }} ago</span>
+        </a>
+        {% endfor %}
+      </div>
+      {% if not dirs and not files %}
+        {% if can_edit %}
+        {% include "partials/empty.html" with icon="code" title="Your vault is empty" text="Upload source files one by one, drop a whole folder, or upload a .zip; we'll unpack it and keep the folder structure." %}
+        <div class="center" style="margin-top:-24px;padding-bottom:36px"><button class="btn btn-primary" data-open-dialog="upload-dialog"><svg class="i"><use href="#i-upload"/></svg>Upload code</button></div>
+        {% else %}
+        {% include "partials/empty.html" with icon="code" title="No code uploaded yet" text="The team hasn't added any files." %}
+        {% endif %}
+      {% endif %}
+    </section>
+
+    {% if readme and readme.is_text %}
+    <section class="card reveal">
+      <div class="code-toolbar"><span class="row" style="--gap:6px"><svg class="i i-sm"><use href="#i-book"/></svg><span class="mono">{{ readme.name }}</span></span></div>
+      <div class="readme prose" id="readme" style="white-space:normal">{{ readme.content|linebreaksbr }}</div>
+      <script type="text/plain" id="readme-src">{{ readme.content|escape }}</script>
+    </section>
+    {% endif %}
+  </div>
+
+  <aside class="stack sticky" style="--gap:20px">
+    <section class="card reveal" style="--d:2">
+      <div class="card-head"><h3>Recent uploads</h3><svg class="i muted"><use href="#i-history"/></svg></div>
+      <div class="divider-list">
+        {% for f in recent %}
+        <a class="list-row" href="{% url 'projects:file' project.code f.pk %}" style="padding:11px 18px">
+          {% if f.uploaded_by %}{% include "partials/avatar.html" with person=f.uploaded_by size="avatar-sm" %}{% endif %}
+          <div style="flex:1;min-width:0"><div class="mono small truncate">{{ f.path }}</div><div class="tiny muted">v{{ f.version }} · {{ f.uploaded_at|timesince }} ago{% if f.note %} · {{ f.note }}{% endif %}</div></div>
+        </a>
+        {% empty %}
+        <div class="card-body small muted">No uploads yet.</div>
+        {% endfor %}
+      </div>
+    </section>
+    <section class="panel small reveal" style="--d:3">
+      <strong>How versions work</strong>
+      <p class="muted mt-1" style="margin-bottom:0">Uploading a file with the same path creates a new version; unchanged files are skipped. Every old version stays in the file's history and can be restored.</p>
+    </section>
+  </aside>
+</div>
+
+{% if can_edit %}
+<dialog class="modal" id="upload-dialog" style="width:min(600px,calc(100vw - 32px))">
+  <div class="modal-head"><h3>Upload to {% if directory %}<span class="mono">{{ directory }}/</span>{% else %}the vault{% endif %}</h3><button class="icon-btn" data-close aria-label="Close"><svg class="i"><use href="#i-x"/></svg></button></div>
+  <form method="post" action="{% url 'projects:vault_upload' project.code %}" enctype="multipart/form-data" class="modal-body">
+    {% csrf_token %}
+    <input type="hidden" name="dir" value="{{ directory }}">
+    <label class="dropzone" data-dropzone>
+      <input type="file" name="files" multiple>
+      <div class="dz-icon"><svg class="i"><use href="#i-upload"/></svg></div>
+      <div class="dz-title">Drop files, a folder, or a .zip</div>
+      <div class="small muted">Up to 20 MB per file. <span class="mono">node_modules</span>, <span class="mono">.git</span> and <span class="mono">__pycache__</span> are skipped.</div>
+      <div class="dz-list"></div>
+    </label>
+    <div class="row mt-1 small" style="--gap:6px">
+      <span class="muted">or</span>
+      <label class="link" style="cursor:pointer;text-decoration:none">choose a folder<input type="file" name="files" webkitdirectory multiple class="sr-only"></label>
+    </div>
+    <div class="field mt-2"><label for="note">What changed? <span class="muted">(optional)</span></label><input type="text" id="note" name="note" maxlength="160" placeholder="e.g. Added login validation"></div>
+    <div class="upload-progress"><div class="spread tiny muted" style="margin-bottom:6px"><span>Uploading</span><span class="pct">0%</span></div><div class="progress"><span></span></div></div>
+    <div class="form-actions"><button type="button" class="btn btn-ghost" data-close>Cancel</button><button type="submit" class="btn btn-primary">Upload</button></div>
+  </form>
+</dialog>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+{% if readme and readme.is_text and readme.extension == "md" %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js"></script>
+<script>
+  (function () {
+    var src = document.getElementById("readme-src");
+    if (!src || !window.marked || !window.DOMPurify) return;
+    var ta = document.createElement("textarea");
+    ta.innerHTML = src.textContent;
+    document.getElementById("readme").innerHTML = DOMPurify.sanitize(marked.parse(ta.value));
+  })();
+</script>
+{% endif %}
+{% endblock %}

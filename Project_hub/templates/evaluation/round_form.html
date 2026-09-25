@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}New review round{% endblock %}
+{% block container_class %}container-narrow{% endblock %}
+{% block content %}
+<div class="page-head reveal">
+  <div class="eyebrow">Evaluation</div>
+  <h1>Open a review round</h1>
+  <p class="lede">Pick which projects this round covers. Every project matching the type, semester, year (and branch, if chosen) appears on the marking sheet.</p>
+</div>
+<form method="post" class="card card-body reveal" style="--d:1;padding:28px" novalidate>
+  {% csrf_token %}
+  {% include "partials/form_errors.html" %}
+  {% include "partials/field.html" with field=form.name label="Round name" %}
+  <p class="tiny muted" style="margin-top:4px">e.g. “Mid-semester review” or “Final viva”</p>
+  <div class="mt-2">{% include "partials/field.html" with field=form.rubric %}</div>
+  <div class="form-grid mt-2">
+    {% include "partials/field.html" with field=form.project_type label="Project type" %}
+    {% include "partials/field.html" with field=form.semester %}
+    {% include "partials/field.html" with field=form.batch_year label="Year" hide_help=True %}
+    {% include "partials/field.html" with field=form.branch %}
+  </div>
+  <div class="mt-2">{% include "partials/field.html" with field=form.review_date label="Review date (optional)" %}</div>
+  <div class="form-actions"><a href="{% url 'evaluation:index' %}" class="btn btn-ghost">Cancel</a><button class="btn btn-primary">Open round</button></div>
+</form>
+{% endblock %}
